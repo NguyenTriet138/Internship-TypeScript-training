@@ -115,6 +115,9 @@
     "baseUrl": "./src",
     "paths": {
       "@models/*": ["models/*"],
+      "@assets/*": ["assets/*"],
+      "@controller/*": ["controller/*"],
+      "@view/*": ["view/*"],
       "@services/*": ["services/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"]
