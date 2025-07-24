@@ -4,35 +4,75 @@
     <meta charset="UTF-8" />
     <meta name="keywords" content="product list, product management, product management container">
     <meta name="description" content="Free Web tutorial for Product Management.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management</title>
-    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/layout/style.css">
     <link rel="icon" href="../../assets/images/productLogo.png" type="image/jpg" sizes="20x20">
-    <style>
-      .header-title {
-        font-size: var(--fs-title-xl);
-        font-weight: var(--fw-bold);
-        width: 100%;
-        color: var(--clr-header);
-      }
-
-      .product-management-container {
-        padding: 80px 150px;
-        background-color: var(--clr-bg);
-      }
-    </style>
   </head>
   <body>
-    <main class="product-management-container">
+    <main class="container">
       <header>
         <h1 class="header-title">Management</h1>
       </header>
 
-      <section class="product-management">
-        <div class="product-list">
-          <!-- Product items will be dynamically inserted here -->
+      <button id="add-product-btn" class="button add-btn">Add New Product</button>
+
+      <section class="filter-section">
+        <div class="filter-group">
+          <label class="filter-label" for="product-search">Product</label>
+          <input
+            type="text"
+            id="product-search"
+            class="filter-input"
+            placeholder="Search"
+          />
         </div>
-        <button id="add-product-btn" class="button">Add New Product</button>
+        <div class="filter-group">
+          <label class="filter-label" for="status-filter">Status</label>
+          <select id="status-filter" class="filter-input">
+            <option>All</option>
+            <option>Available</option>
+            <option>Sold out</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="type-filter">Type</label>
+          <select id="type-filter" class="filter-input">
+            <option>All</option>
+            <option>Bravo</option>
+            <option>Alfa</option>
+            <option>Gold</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="quantity-search">Quantity</label>
+          <input
+            type="text"
+            id="quantity-search"
+            class="filter-input"
+            placeholder="Search"
+          />
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="brand-search">Brand</label>
+          <input
+            type="text"
+            id="brand-search"
+            class="filter-input"
+            placeholder="Search"
+          />
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="price-search">Price</label>
+          <input
+            type="text"
+            id="price-search"
+            class="filter-input"
+            placeholder="Search"
+          />
+        </div>
+      </section>
     </main>
   </body>
 </html>

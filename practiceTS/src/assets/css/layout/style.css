@@ -1,0 +1,31 @@
+body {
+  padding: 40px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--clr-bg);
+  /* border-radius: 12px; */
+  /* box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); */
+  overflow: hidden;
+}
+
+.header-title {
+  font-size: var(--fs-title-xl);
+  font-weight: var(--fw-bold);
+  width: 100%;
+  color: var(--clr-header);
+}
+
+.button.add-btn {
+  font-size: var(--fs-md);
+  background: transparent;
+  color: var(--clr-btn);
+  border: 1px solid var(--clr-btn);
+}
+
+.button.add-btn:hover {
+  background: var(--clr-btn);
+  color: var(--clr-bg);
+}
