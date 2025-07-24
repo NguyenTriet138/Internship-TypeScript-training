@@ -21,5 +21,40 @@ body {
 .button-container {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 20px;
+}
+
+.filter-section {
+  padding: 20px 0 0;
+  border-bottom: 1px solid #e9ecef;
+  display: grid;
+  grid-template-columns: 2.5fr 0.75fr 0.6fr 1.25fr 2.5fr 0.5fr 0.8fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 12px;
+}
+
+.filter-label {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semi-bold);
+  color: var(--clr-text-dark);
+}
+
+.filter-input {
+  padding: 8px 0;
+  border: 1px solid #d1d5db;
+  border: none;
+  font-size: var(--fs-md);
+  color: #6b7280;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
