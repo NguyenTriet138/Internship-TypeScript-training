@@ -16,12 +16,11 @@ view.onSubmit(async (username, password) => {
       localStorage.setItem('currentUser', JSON.stringify(user));
 
       if (user.role !== 'admin') {
-        view.showMessage('Login successful! Redirecting...', 'success');
-        window.location.href = '../../view/pages/login.html';
+        view.redirectToLoginPage();
       } else {
-        view.showMessage('Login successful!', 'success');
-        window.location.href = '../../view/pages/index.html';
+        view.redirectToHomePage();
       }
+      
     } else {
       view.showMessage('Invalid username or password');
     }

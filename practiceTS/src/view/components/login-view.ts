@@ -19,4 +19,12 @@ export class LoginView {
     this.messageBox.textContent = msg;
     this.messageBox.style.color = type === 'success' ? 'green' : 'red';
   }
+
+  redirectToHomePage() {
+    window.location.href = '../../view/pages/index.html';
+  }
+
+  redirectToLoginPage() {
+    window.location.href = '../../view/pages/login.html';
+  }
 }
