@@ -25,7 +25,7 @@ body {
   line-height: 150%;
 }
 
-form .form-group {
+.form-group {
   margin-bottom: 16px;
 }
 
@@ -33,7 +33,7 @@ form .form-group {
   font-size: var(--fs-lg);
   width: 100%;
   padding: 10px;
-  border: 1px solid #666666;
+  border: 1px solid var(--clr-bg-light);
   border-radius: 5px;
 }
 
