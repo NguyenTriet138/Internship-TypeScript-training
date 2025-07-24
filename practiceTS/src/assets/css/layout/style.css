@@ -18,14 +18,8 @@ body {
   color: var(--clr-header);
 }
 
-.button.add-btn {
-  font-size: var(--fs-md);
-  background: transparent;
-  color: var(--clr-btn);
-  border: 1px solid var(--clr-btn);
-}
-
-.button.add-btn:hover {
-  background: var(--clr-btn);
-  color: var(--clr-bg);
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
