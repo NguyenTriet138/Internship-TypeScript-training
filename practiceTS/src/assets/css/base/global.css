@@ -18,8 +18,6 @@ body {
   padding: 0;
   line-height: 1;
   overflow-x: auto;
-  display: flex;
-  justify-content: center;
   background-color: var(--clr-bg);
   overflow-x: auto;
 }

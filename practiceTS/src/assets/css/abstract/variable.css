@@ -23,8 +23,9 @@
   --fw-bolder: 900;
 
   /* Colors */
-  --clr-bg: #ffffff;
+  --clr-bg: #fff;
   --clr-bg-light: #666;
+  --clr-header: #0C0033;
   /* --clr-bg: #ffffff;
   --clr-accent: #ebebeb;
   --clr-border: #ccc;
