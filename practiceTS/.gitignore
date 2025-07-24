@@ -1,9 +1,11 @@
 # dependencies
 node_modules/
 
-# compiled output
-dist/
+# Build directories
 build/
+node_modules/
+dist/
+.parcel-cache/
 
 # TypeScript cache
 *.tsbuildinfo
