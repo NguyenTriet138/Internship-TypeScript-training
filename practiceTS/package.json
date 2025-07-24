@@ -6,14 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "parcel ./view/pages/index.html",
-    "dev": "ts-node src/index.ts"
+    "start": "parcel ./src/view/pages/login.html",
+    "dev": "ts-node src/index.ts",
+    "server": "json-server --watch db.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "ts-node": "^10.9.1"
+    "json-server": "^1.0.0-beta.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.8.3"
   }
 }
