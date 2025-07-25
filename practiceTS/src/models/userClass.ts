@@ -1,3 +1,5 @@
+const API_BASE_URL = 'http://localhost:3000';
+
 export class User {
   id: number;
   username: string;
@@ -24,7 +26,7 @@ export class User {
 }
 
 export class UserModel {
-  private apiUrl = 'http://localhost:3000/users';
+  private apiUrl = API_BASE_URL + '/users';
 
   async login(username: string, password: string): Promise<User | null> {
     try {
