@@ -20,6 +20,7 @@
   background: transparent;
   color: var(--clr-btn);
   border: 1px solid var(--clr-btn);
+  font-weight: var(--fw-normal);
 }
 
 .button.add-btn:hover {
