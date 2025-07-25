@@ -31,13 +31,7 @@ export class UserController {
         this.model.saveUser(user);
         this.view.showMessage('Login successful!', 'success');
 
-        setTimeout(() => {
-          if (user.isAdmin()) {
-            this.view.redirectToHomePage();
-          } else {
-            this.view.showMessage('Access denied. Admin privileges required.');
-          }
-        }, 1000);
+        this.view.redirectToHomePage();
       } else {
         this.view.showMessage('Invalid username or password');
       }
@@ -48,10 +42,6 @@ export class UserController {
     } finally {
       this.view.setLoading(false);
     }
-  }
-
-  checkAdminAccess(): boolean {
-    return this.model.isAdmin(this.model.getCurrentUser());
   }
 
   logout(): void {

@@ -2,17 +2,11 @@ export class User {
   id: number;
   username: string;
   password: string;
-  role: string;
 
   constructor(data: { id: number; username: string; password: string; role: string }) {
     this.id = data.id;
     this.username = data.username;
     this.password = data.password;
-    this.role = data.role;
-  }
-
-  isAdmin(): boolean {
-    return this.role === 'admin';
   }
 
   toJSON(): string {
@@ -20,7 +14,6 @@ export class User {
       id: this.id,
       username: this.username,
       password: this.password,
-      role: this.role,
     });
   }
 
@@ -65,9 +58,5 @@ export class UserModel {
 
   logout(): void {
     localStorage.removeItem('currentUser');
-  }
-
-  isAdmin(user: User | null): boolean {
-    return user?.isAdmin() ?? false;
   }
 }
