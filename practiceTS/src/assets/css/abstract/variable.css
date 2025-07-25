@@ -1,0 +1,38 @@
+:root {
+  /* Font */
+  --font-primary: 'Open-san', sans-serif;
+
+  /* Font Sizes */
+  --fs-sm: 10px;
+  --fs-md: 14px;
+  --fs-lg: 16px;
+  --fs-xl: 18px;
+
+  /* Font Size Title*/
+  --fs-title-sm: 18px;
+  --fs-title-md: 23px;
+  --fs-title-lg: 50px;
+  --fs-title-xl: 60px;
+
+  /* Font Weight */
+  --fw-light: 300;
+  --fw-normal: 400;
+  --fw-medium: 500;
+  --fw-semi-bold: 600;
+  --fw-bold: 700;
+  --fw-bolder: 900;
+
+  /* Colors */
+  --clr-bg: #fff;
+  --clr-bg-light: #666;
+  --clr-header: #0C0033;
+  /* --clr-bg: #ffffff;
+  --clr-accent: #ebebeb;
+  --clr-border: #ccc;
+  --clr-hover: #000000;
+  --clr-text-dark: #333;
+  --clr-text-light: #666;
+  --clr-contrast-line: #f0f0f0;
+  --clr-preview-bg: #f5f5f5;
+  --clr-preview-border: #e2e2e2; */
+}
