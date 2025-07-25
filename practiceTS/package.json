@@ -8,14 +8,21 @@
     "build": "tsc",
     "start": "parcel ./src/view/pages/login.html",
     "dev": "ts-node src/index.ts",
-    "server": "json-server --watch db.json"
+    "server": "json-server --watch db.json",
+    "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@eslint/js": "^9.31.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "eslint": "^9.31.0",
+    "globals": "^16.3.0",
     "json-server": "^1.0.0-beta.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.38.0"
   }
 }
