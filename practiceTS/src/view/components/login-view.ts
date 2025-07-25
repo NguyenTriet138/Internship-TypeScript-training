@@ -3,6 +3,7 @@ export type MessageType = 'error' | 'success';
 export class LoginView {
   private form = document.getElementById('login-form') as HTMLFormElement;
   private messageBox = document.getElementById('form-message') as HTMLElement;
+  private submitButton = document.querySelector('#login-form button[type="submit"]') as HTMLButtonElement;
 
   onSubmit(callback: (username: string, password: string) => void) {
     this.form.addEventListener('submit', (e) => {
@@ -18,6 +19,19 @@ export class LoginView {
   showMessage(msg: string, type: MessageType = 'error') {
     this.messageBox.textContent = msg;
     this.messageBox.style.color = type === 'success' ? 'green' : 'red';
+    this.messageBox.style.display = 'block';
+  }
+
+  clearMessage() {
+    this.messageBox.textContent = '';
+    this.messageBox.style.display = 'none';
+  }
+
+  setLoading(isLoading: boolean) {
+    if (this.submitButton) {
+      this.submitButton.disabled = isLoading;
+      this.submitButton.textContent = isLoading ? 'Logging in...' : 'Login';
+    }
   }
 
   redirectToHomePage() {
