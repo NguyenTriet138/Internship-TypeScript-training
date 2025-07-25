@@ -2,13 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="keywords" content="product list, product management, product management container">
-    <meta name="description" content="Free Web tutorial for Product Management.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+      name="keywords"
+      content="product list, product management, product management container"
+    />
+    <meta name="description" content="Free Web tutorial for Product Management." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Management</title>
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/layout/style.css">
-    <link rel="icon" href="../../assets/images/productLogo.png" type="image/jpg" sizes="20x20">
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="../../assets/css/layout/style.css" />
+    <link rel="icon" href="../../assets/images/productLogo.png" type="image/jpg" sizes="20x20" />
   </head>
   <body>
     <main class="container">
@@ -19,65 +22,134 @@
       <div class="button-container">
         <button id="add-product-btn" class="button add-btn">Add New Product</button>
       </div>
-      
-      <section class="filter-section">
-        <div class="filter-group">
-          <label class="filter-label" for="product-search">Product</label>
-          <input
-            type="text"
-            id="product-search"
-            class="filter-input"
-            placeholder="Search"
-          />
+
+      <section class="product-table">
+        <div class="product-header">
+          <div class="title-group">
+            <label class="product-label" for="product-search">Product</label>
+            <input type="text" id="product-search" class="product-filter" placeholder="Search" />
+          </div>
+          <div class="title-group">
+            <label class="product-label" for="status-filter">Status</label>
+            <select id="status-filter" class="product-filter selection">
+              <option>All</option>
+              <option>Available</option>
+              <option>Sold out</option>
+            </select>
+          </div>
+          <div class="title-group">
+            <label class="product-label" for="type-filter">Type</label>
+            <select id="type-filter" class="product-filter selection">
+              <option>All</option>
+              <option>Bravo</option>
+              <option>Alfa</option>
+              <option>Gold</option>
+            </select>
+          </div>
+          <div class="title-group">
+            <label class="product-label" for="quantity-search">Quantity</label>
+            <input type="text" id="quantity-search" class="product-filter" placeholder="Search" />
+          </div>
+          <div class="title-group">
+            <label class="product-label" for="brand-search">Brand</label>
+            <input type="text" id="brand-search" class="product-filter" placeholder="Search" />
+          </div>
+          <div class="title-group">
+            <label class="product-label" for="price-search">Price</label>
+            <input type="text" id="price-search" class="product-filter" placeholder="Search" />
+          </div>
+          <div class="title-group">
+            <label class="product-label">Action</label>
+            <input class="product-filter" />
+          </div>
         </div>
-        <div class="filter-group">
-          <label class="filter-label" for="status-filter">Status</label>
-          <select id="status-filter" class="filter-input">
-            <option>All</option>
-            <option>Available</option>
-            <option>Sold out</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label class="filter-label" for="type-filter">Type</label>
-          <select id="type-filter" class="filter-input">
-            <option>All</option>
-            <option>Bravo</option>
-            <option>Alfa</option>
-            <option>Gold</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label class="filter-label" for="quantity-search">Quantity</label>
-          <input
-            type="text"
-            id="quantity-search"
-            class="filter-input"
-            placeholder="Search"
-          />
-        </div>
-        <div class="filter-group">
-          <label class="filter-label" for="brand-search">Brand</label>
-          <input
-            type="text"
-            id="brand-search"
-            class="filter-input"
-            placeholder="Search"
-          />
-        </div>
-        <div class="filter-group">
-          <label class="filter-label" for="price-search">Price</label>
-          <input
-            type="text"
-            id="price-search"
-            class="filter-input"
-            placeholder="Search"
-          />
-        </div>
-        <div class="filter-group">
-          <label class="filter-label">Action</label>
-          <input class="filter-input"/>
-        </div>
+
+        <section class="product-display">
+          <article class="product-item" data-product-id="1" data-product-name="Louis Vuitton" data-product-status="Available" data-product-type="Bravo" data-product-quantity="9177" data-product-brand="Evan Flores" data-product-price="452.85" data-product-image="product-1">
+            <div class="product-info cell-info">
+              <img src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Image" class="product-image"/>
+              <span class="product-info-txt">Louis Vuitton</span>
+            </div>
+            <span class="status-badge status-available cell-info">Available</span>
+            <span class="cell-info product-info-txt">Bravo</span>
+            <span class="product-quantity cell-info product-info-txt">9177</span>
+            <div class="brand-info cell-info">
+              <img src="../../assets/images/EvanFlores.jpg" alt="EvanFlores Image" class="brand-avatar"/>
+              <span class="product-info-txt">Evan Flores</span>
+            </div>
+            <span class="cell-info product-info-txt">$452.85</span>
+            <div class="action-menu cell-info">
+              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
+              <nav class="dropdown-menu">
+                <button class="dropdown-item">Edit</button>
+                <button class="dropdown-item delete">Delete</button>
+              </nav>
+            </div>
+          </article>
+          <article class="product-item" data-product-id="1" data-product-name="Louis Vuitton" data-product-status="Available" data-product-type="Bravo" data-product-quantity="9177" data-product-brand="Evan Flores" data-product-price="452.85" data-product-image="product-1">
+            <div class="product-info cell-info">
+              <img src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Image" class="product-image"/>
+              <span class="product-info-txt">Louis Vuitton</span>
+            </div>
+            <span class="status-badge status-available cell-info">Available</span>
+            <span class="cell-info product-info-txt">Bravo</span>
+            <span class="product-quantity cell-info product-info-txt">9177</span>
+            <div class="brand-info cell-info">
+              <img src="../../assets/images/EvanFlores.jpg" alt="EvanFlores Image" class="brand-avatar"/>
+              <span class="product-info-txt">Evan Flores</span>
+            </div>
+            <span class="cell-info product-info-txt">$452.85</span>
+            <div class="action-menu cell-info">
+              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
+              <nav class="dropdown-menu">
+                <button class="dropdown-item">Edit</button>
+                <button class="dropdown-item delete">Delete</button>
+              </nav>
+            </div>
+          </article>
+          <article class="product-item" data-product-id="1" data-product-name="Louis Vuitton" data-product-status="Available" data-product-type="Bravo" data-product-quantity="9177" data-product-brand="Evan Flores" data-product-price="452.85" data-product-image="product-1">
+            <div class="product-info cell-info">
+              <img src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Image" class="product-image"/>
+              <span class="product-info-txt">Louis Vuitton</span>
+            </div>
+            <span class="status-badge status-available cell-info">Available</span>
+            <span class="cell-info product-info-txt">Bravo</span>
+            <span class="product-quantity cell-info product-info-txt">9177</span>
+            <div class="brand-info cell-info">
+              <img src="../../assets/images/EvanFlores.jpg" alt="EvanFlores Image" class="brand-avatar"/>
+              <span class="product-info-txt">Evan Flores</span>
+            </div>
+            <span class="cell-info product-info-txt">$452.85</span>
+            <div class="action-menu cell-info">
+              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
+              <nav class="dropdown-menu">
+                <button class="dropdown-item">Edit</button>
+                <button class="dropdown-item delete">Delete</button>
+              </nav>
+            </div>
+          </article>
+          <article class="product-item" data-product-id="1" data-product-name="Louis Vuitton" data-product-status="Available" data-product-type="Bravo" data-product-quantity="9177" data-product-brand="Evan Flores" data-product-price="452.85" data-product-image="product-1">
+            <div class="product-info cell-info">
+              <img src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Image" class="product-image"/>
+              <span class="product-info-txt">Louis Vuitton</span>
+            </div>
+            <span class="status-badge status-available cell-info">Available</span>
+            <span class="cell-info product-info-txt">Bravo</span>
+            <span class="product-quantity cell-info product-info-txt">9177</span>
+            <div class="brand-info cell-info">
+              <img src="../../assets/images/EvanFlores.jpg" alt="EvanFlores Image" class="brand-avatar"/>
+              <span class="product-info-txt">Evan Flores</span>
+            </div>
+            <span class="cell-info product-info-txt">$452.85</span>
+            <div class="action-menu cell-info">
+              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
+              <nav class="dropdown-menu">
+                <button class="dropdown-item">Edit</button>
+                <button class="dropdown-item delete">Delete</button>
+              </nav>
+            </div>
+          </article>
+        </section>
       </section>
     </main>
   </body>

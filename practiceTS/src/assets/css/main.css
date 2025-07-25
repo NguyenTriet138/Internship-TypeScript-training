@@ -7,5 +7,6 @@
 
 /* 4. Components */
 @import './components/button.css';
+@import './components/text.css';
 
 /* 5. Layout */
