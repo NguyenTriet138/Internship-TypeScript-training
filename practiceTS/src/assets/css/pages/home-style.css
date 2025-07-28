@@ -44,7 +44,7 @@ body {
 }
 
 .product-table tbody tr:first-child td {
-  margin-top: 30px;
+  padding-top: 30px;
 }
 
 .title-group {
