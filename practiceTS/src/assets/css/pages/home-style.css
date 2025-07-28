@@ -188,8 +188,8 @@ body {
 
 .dropdown-menu {
   position: absolute;
-  right: 25px;
-  top: 60%;
+  right: 15px;
+  top: 70%;
   background: var(--clr-bg);
   border: 1px solid var(--clr-bg);
   border-radius: 8px;
