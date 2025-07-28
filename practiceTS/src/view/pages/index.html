@@ -2,37 +2,110 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="keywords" content="product list, product management, product management container">
-    <meta name="description" content="Free Web tutorial for Product Management.">
+    <meta
+      name="keywords"
+      content="product list, product management, product management container"
+    />
+    <meta name="description" content="Free Web tutorial for Product Management." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Management</title>
     <link rel="stylesheet" href="../../assets/css/main.css" />
-    <link rel="icon" href="../../assets/images/productLogo.png" type="image/jpg" sizes="20x20">
-    <style>
-      .header-title {
-        font-size: var(--fs-title-xl);
-        font-weight: var(--fw-bold);
-        width: 100%;
-        color: var(--clr-header);
-      }
-
-      .product-management-container {
-        padding: 80px 150px;
-        background-color: var(--clr-bg);
-      }
-    </style>
+    <link rel="stylesheet" href="../../assets/css/pages/home-style.css" />
+    <link rel="icon" href="../../assets/images/productLogo.png" type="image/jpg" sizes="20x20" />
   </head>
   <body>
-    <main class="product-management-container">
+    <main class="container">
       <header>
         <h1 class="header-title">Management</h1>
       </header>
 
-      <section class="product-management">
-        <div class="product-list">
-          <!-- Product items will be dynamically inserted here -->
-        </div>
-        <button id="add-product-btn" class="button">Add New Product</button>
+      <div class="button-container">
+        <button id="add-product-btn" class="button add-btn">Add New Product</button>
+      </div>
+
+      <div class="product-table-container">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="product-search">Product</label>
+                  <input
+                    type="text"
+                    id="product-search"
+                    class="product-filter text text-info"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="status-filter">Status</label>
+                  <select id="status-filter" class="product-filter text text-info selection">
+                    <option>All</option>
+                    <option>Available</option>
+                    <option>Sold out</option>
+                  </select>
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="type-filter">Type</label>
+                  <select id="type-filter" class="product-filter text text-info selection">
+                    <option>All</option>
+                    <option>Bravo</option>
+                    <option>Alfa</option>
+                    <option>Gold</option>
+                  </select>
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="quantity-search">Quantity</label>
+                  <input
+                    type="text"
+                    id="quantity-search"
+                    class="product-filter text text-info"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="brand-search">Brand</label>
+                  <input
+                    type="text"
+                    id="brand-search"
+                    class="product-filter text text-info"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="price-search">Price</label>
+                  <input
+                    type="text"
+                    id="price-search"
+                    class="product-filter text text-info"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <div class="text text-title action-title">Action</div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="product-display">
+            <!-- Products will be rendered here -->
+          </tbody>
+        </table>
+      </div>
     </main>
+
+    <script type="module" src="../../../dist/index.js" defer></script>
   </body>
 </html>

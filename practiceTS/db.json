@@ -10,5 +10,62 @@
       "username": "user1",
       "password": "123456"
     }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Louis Vuitton",
+      "quantity": 9177,
+      "price": 452.85,
+      "status": "Available",
+      "type": "Bravo",
+      "brand": "Evan Flores",
+      "productImage": "../../assets/images/LouisVuitton.jpg",
+      "brandImage": "../../assets/images/EvanFlores.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Johnson & Johnson",
+      "quantity": 3064,
+      "price": 901.31,
+      "status": "Sold out",
+      "type": "Alfa",
+      "brand": "Arlene Wilson",
+      "productImage": "../../assets/images/Johnson&Johnson.jpg",
+      "brandImage": "../../assets/images/ArleneWilson.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Starbucks",
+      "quantity": 9195,
+      "price": 641.20,
+      "status": "Available",
+      "type": "Bravo",
+      "brand": "Jennie Cooper",
+      "productImage": "../../assets/images/Starbucks.jpg",
+      "brandImage": "../../assets/images/JennieCooper.jpg"
+    },
+    {
+      "id": 4,
+      "name": "The Walt Disney",
+      "quantity": 3128,
+      "price": 510.30,
+      "status": "Sold out",
+      "type": "Alfa",
+      "brand": "Philip Steward",
+      "productImage": "../../assets/images/TheWaltDisney.jpg",
+      "brandImage": "../../assets/images/PhilipSteward.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Mitsubishi",
+      "quantity": 9892,
+      "price": 828.90,
+      "status": "Available",
+      "type": "Bravo",
+      "brand": "Jorge Black",
+      "productImage": "../../assets/images/Mitsubishi.jpg",
+      "brandImage": "../../assets/images/JorgeBlack.jpg"
+    }
   ]
 }

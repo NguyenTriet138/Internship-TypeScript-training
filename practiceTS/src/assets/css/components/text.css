@@ -1,0 +1,14 @@
+.text {
+  font-size: var(--fs-md);
+  color: var(--clr-text-dark);
+}
+
+.text-info {
+  line-height: 20px;
+  letter-spacing: 0.25px;
+}
+
+.text-title {
+  font-weight: var(--fw-semi-bold);
+  line-height: 24px;
+}
