@@ -1,44 +1,24 @@
 // src/model/product-model.ts
 const API_BASE_URL = 'http://localhost:3000';
 
+export enum ProductStatus {
+  Available = "Available",
+  SoldOut = "Sold out",
+}
+
 /** Define Product */
 export class Product {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  status: "Available" | "Sold out";
-  type: string;
-  brand: string;
-  productImage: string;
-  brandImage: string;
-
   constructor(
-    id: number,
-    name: string,
-    quantity: number,
-    price: number,
-    status: "Available" | "Sold out",
-    type: string,
-    brand: string,
-    productImage: string,
-    brandImage: string
-  ) {
-    this.id = id;
-    this.name = name;
-    this.quantity = quantity;
-    this.price = price;
-    this.status = status;
-    this.type = type;
-    this.brand = brand;
-    this.productImage = productImage;
-    this.brandImage = brandImage;
-  }
-
-  /** Return price with config */
-  getFormattedPrice(): string {
-    return `$${this.price.toFixed(2)}`;
-  }
+    public id: number,
+    public name: string,
+    public quantity: number,
+    public price: number,
+    public status: ProductStatus,
+    public type: string,
+    public brand: string,
+    public productImage: string,
+    public brandImage: string
+  ) {}
 
   /** Check product status */
   isAvailable(): boolean {
@@ -62,7 +42,7 @@ export class ProductModel {
           p.name,
           p.quantity,
           p.price,
-          p.status,
+          p.status === "Available" ? ProductStatus.Available : ProductStatus.SoldOut,
           p.type,
           p.brand,
           p.productImage,

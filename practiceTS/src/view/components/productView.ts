@@ -1,5 +1,5 @@
 // src/view/product-view.ts
-import { Product } from "../../models/productModel.js";
+import { Product, ProductStatus } from "../../models/productModel.js";
 
 export class ProductView {
   private tbody: HTMLElement;
@@ -26,7 +26,7 @@ export class ProductView {
           </div>
         </td>
         <td>
-          <span class="status-badge ${product.isAvailable() ? "status-available" : "status-sold-out"}">
+          <span class="status-badge ${product.status === ProductStatus.Available ? "status-available" : "status-sold-out"}">
             ${product.status}
           </span>
         </td>
@@ -38,7 +38,7 @@ export class ProductView {
             <span class="text text-info">${product.brand}</span>
           </div>
         </td>
-        <td><span class="text text-info">${product.getFormattedPrice()}</span></td>
+        <td><span class="text text-info">$${product.price.toFixed(2)}</span></td>
         <td>
           <div class="action-menu">
             <button class="action-btn" data-action="menu" aria-label="Product actions">⋯</button>
