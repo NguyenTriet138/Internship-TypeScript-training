@@ -44,6 +44,28 @@
       "brand": "Jennie Cooper",
       "productImage": "../../assets/images/Starbucks.jpg",
       "brandImage": "../../assets/images/JennieCooper.jpg"
+    },
+    {
+      "id": 4,
+      "name": "The Walt Disney",
+      "quantity": 3128,
+      "price": 510.30,
+      "status": "Sold out",
+      "type": "Alfa",
+      "brand": "Philip Steward",
+      "productImage": "../../assets/images/TheWaltDisney.jpg",
+      "brandImage": "../../assets/images/PhilipSteward.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Mitsubishi",
+      "quantity": 9892,
+      "price": 828.90,
+      "status": "Available",
+      "type": "Bravo",
+      "brand": "Jorge Black",
+      "productImage": "../../assets/images/Mitsubishi.jpg",
+      "brandImage": "../../assets/images/JorgeBlack.jpg"
     }
   ]
 }
