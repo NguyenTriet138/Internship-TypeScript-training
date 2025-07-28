@@ -23,175 +23,282 @@
         <button id="add-product-btn" class="button add-btn">Add New Product</button>
       </div>
 
-      <section class="product-table">
-        <div class="product-header">
-          <div class="title-group">
-            <label class="product-label" for="product-search">Product</label>
-            <input type="text" id="product-search" class="product-filter" placeholder="Search" />
-          </div>
-          <div class="title-group">
-            <label class="product-label" for="status-filter">Status</label>
-            <select id="status-filter" class="product-filter selection">
-              <option>All</option>
-              <option>Available</option>
-              <option>Sold out</option>
-            </select>
-          </div>
-          <div class="title-group">
-            <label class="product-label" for="type-filter">Type</label>
-            <select id="type-filter" class="product-filter selection">
-              <option>All</option>
-              <option>Bravo</option>
-              <option>Alfa</option>
-              <option>Gold</option>
-            </select>
-          </div>
-          <div class="title-group">
-            <label class="product-label" for="quantity-search">Quantity</label>
-            <input type="text" id="quantity-search" class="product-filter" placeholder="Search" />
-          </div>
-          <div class="title-group">
-            <label class="product-label" for="brand-search">Brand</label>
-            <input type="text" id="brand-search" class="product-filter" placeholder="Search" />
-          </div>
-          <div class="title-group">
-            <label class="product-label" for="price-search">Price</label>
-            <input type="text" id="price-search" class="product-filter" placeholder="Search" />
-          </div>
-          <div class="title-group">
-            <div class="product-label action-menu">Action</div>
-          </div>
-        </div>
-
-        <section class="product-display">
-          <article class="product-item" data-product-id="1">
-            <div class="product-info cell-info">
-              <img src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Image" class="product-image"/>
-              <span class="product-info-txt">Louis Vuitton</span>
-            </div>
-            <span class="status-badge status-available cell-info">Available</span>
-            <span class="cell-info product-info-txt">Bravo</span>
-            <span class="product-quantity cell-info product-info-txt">9177</span>
-            <div class="brand-info cell-info">
-              <img src="../../assets/images/EvanFlores.jpg" alt="EvanFlores Image" class="brand-avatar"/>
-              <span class="product-info-txt">Evan Flores</span>
-            </div>
-            <span class="cell-info product-info-txt">$452.85</span>
-            <div class="action-menu cell-info">
-              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
-              <nav class="dropdown-menu">
-                <button class="dropdown-item">Edit</button>
-                <button class="dropdown-item delete">Delete</button>
-              </nav>
-            </div>
-          </article>
-          <article class="product-item" data-product-id="2">
-            <div class="product-info cell-info">
-              <img src="../../assets/images/Johnson&Johnson.jpg" alt="Johnson & Johnson Image" class="product-image"/>
-              <span class="product-info-txt">Johnson & Johnson</span>
-            </div>
-            <span class="status-badge status-sold-out cell-info">Sold out</span>
-            <span class="cell-info product-info-txt">Alfa</span>
-            <span class="product-quantity cell-info product-info-txt">3064</span>
-            <div class="brand-info cell-info">
-              <img src="../../assets/images/ArleneWilson.jpg" alt="Arlene Wilson Image" class="brand-avatar"/>
-              <span class="product-info-txt">Arlene Wilson</span>
-            </div>
-            <span class="cell-info product-info-txt">$901.31</span>
-            <div class="action-menu cell-info">
-              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
-              <nav class="dropdown-menu">
-                <button class="dropdown-item">Edit</button>
-                <button class="dropdown-item delete">Delete</button>
-              </nav>
-            </div>
-          </article>
-          <article class="product-item" data-product-id="3">
-            <div class="product-info cell-info">
-              <img src="../../assets/images/Starbucks.jpg" alt="Starbucks Image" class="product-image"/>
-              <span class="product-info-txt">Starbucks</span>
-            </div>
-            <span class="status-badge status-available cell-info">Available</span>
-            <span class="cell-info product-info-txt">Bravo</span>
-            <span class="product-quantity cell-info product-info-txt">9195</span>
-            <div class="brand-info cell-info">
-              <img src="../../assets/images/JennieCooper.jpg" alt="Jennie Cooper Image" class="brand-avatar"/>
-              <span class="product-info-txt">Jennie Cooper</span>
-            </div>
-            <span class="cell-info product-info-txt">$641.20</span>
-            <div class="action-menu cell-info">
-              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
-              <nav class="dropdown-menu">
-                <button class="dropdown-item">Edit</button>
-                <button class="dropdown-item delete">Delete</button>
-              </nav>
-            </div>
-          </article>
-          <article class="product-item" data-product-id="4">
-            <div class="product-info cell-info">
-              <img src="../../assets/images/TheWaltDisney.jpg" alt="The Walt Disney Image" class="product-image"/>
-              <span class="product-info-txt">The Walt Disney</span>
-            </div>
-            <span class="status-badge status-sold-out cell-info">Sold out</span>
-            <span class="cell-info product-info-txt">Alfa</span>
-            <span class="product-quantity cell-info product-info-txt">3128</span>
-            <div class="brand-info cell-info">
-              <img src="../../assets/images/PhilipSteward.jpg" alt="Philip Steward Image" class="brand-avatar"/>
-              <span class="product-info-txt">Philip Steward</span>
-            </div>
-            <span class="cell-info product-info-txt">$510.30</span>
-            <div class="action-menu cell-info">
-              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
-              <nav class="dropdown-menu">
-                <button class="dropdown-item">Edit</button>
-                <button class="dropdown-item delete">Delete</button>
-              </nav>
-            </div>
-          </article>
-          <article class="product-item" data-product-id="5">
-            <div class="product-info cell-info">
-              <img src="../../assets/images/Mitsubishi.jpg" alt="Mitsubishi Image" class="product-image"/>
-              <span class="product-info-txt">Mitsubishi</span>
-            </div>
-            <span class="status-badge status-available cell-info">Available</span>
-            <span class="cell-info product-info-txt">Bravo</span>
-            <span class="product-quantity cell-info product-info-txt">9892</span>
-            <div class="brand-info cell-info">
-              <img src="../../assets/images/JorgeBlack.jpg" alt="Jorge Black Image" class="brand-avatar"/>
-              <span class="product-info-txt">Jorge Black</span>
-            </div>
-            <span class="cell-info product-info-txt">$828.90</span>
-            <div class="action-menu cell-info">
-              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
-              <nav class="dropdown-menu">
-                <button class="dropdown-item">Edit</button>
-                <button class="dropdown-item delete">Delete</button>
-              </nav>
-            </div>
-          </article>
-          <article class="product-item" data-product-id="6">
-            <div class="product-info cell-info">
-              <img src="../../assets/images/IBM.jpg" alt="IBM Image" class="product-image"/>
-              <span class="product-info-txt">IBM</span>
-            </div>
-            <span class="status-badge status-sold-out cell-info">Sold out</span>
-            <span class="cell-info product-info-txt">Gold</span>
-            <span class="product-quantity cell-info product-info-txt">9011</span>
-            <div class="brand-info cell-info">
-              <img src="../../assets/images/GladysJones.jpg" alt="Gladys Jones Image" class="brand-avatar"/>
-              <span class="product-info-txt">Gladys Jones</span>
-            </div>
-            <span class="cell-info product-info-txt">$845.59</span>
-            <div class="action-menu cell-info">
-              <button class="action-btn" aria-label="Product actions" onclick="event.stopPropagation()">⋯</button>
-              <nav class="dropdown-menu">
-                <button class="dropdown-item">Edit</button>
-                <button class="dropdown-item delete">Delete</button>
-              </nav>
-            </div>
-          </article>
-        </section>
-      </section>
+      <div class="product-table-container">
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="product-search">Product</label>
+                  <input
+                    type="text"
+                    id="product-search"
+                    class="product-filter"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="status-filter">Status</label>
+                  <select id="status-filter" class="product-filter selection">
+                    <option>All</option>
+                    <option>Available</option>
+                    <option>Sold out</option>
+                  </select>
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="type-filter">Type</label>
+                  <select id="type-filter" class="product-filter selection">
+                    <option>All</option>
+                    <option>Bravo</option>
+                    <option>Alfa</option>
+                    <option>Gold</option>
+                  </select>
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="quantity-search">Quantity</label>
+                  <input
+                    type="text"
+                    id="quantity-search"
+                    class="product-filter"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="brand-search">Brand</label>
+                  <input
+                    type="text"
+                    id="brand-search"
+                    class="product-filter"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <label class="text text-title" for="price-search">Price</label>
+                  <input
+                    type="text"
+                    id="price-search"
+                    class="product-filter"
+                    placeholder="Search"
+                  />
+                </div>
+              </th>
+              <th>
+                <div class="title-group">
+                  <div class="text text-title action-title">Action</div>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="product-display">
+            <tr data-product-id="1">
+              <td>
+                <div class="product-info">
+                  <img
+                    src="../../assets/images/LouisVuitton.jpg"
+                    alt="Louis Vuitton Image"
+                    class="product-image"
+                  />
+                  <span class="text text-info">Louis Vuitton</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge status-available">Available</span>
+              </td>
+              <td>
+                <span class="text text-info">Bravo</span>
+              </td>
+              <td>
+                <span class="product-quantity">9177</span>
+              </td>
+              <td>
+                <div class="brand-info">
+                  <img
+                    src="../../assets/images/EvanFlores.jpg"
+                    alt="Evan Flores Image"
+                    class="brand-avatar"
+                  />
+                  <span class="text text-info">Evan Flores</span>
+                </div>
+              </td>
+              <td>
+                <span class="text text-info">$452.85</span>
+              </td>
+              <td>
+                <div class="action-menu">
+                  <button
+                    class="action-btn"
+                    aria-label="Product actions"
+                    onclick="event.stopPropagation()"
+                  >
+                    ⋯
+                  </button>
+                  <nav class="dropdown-menu">
+                    <button class="dropdown-item">Edit</button>
+                    <button class="dropdown-item delete">Delete</button>
+                  </nav>
+                </div>
+              </td>
+            </tr>
+            <tr data-product-id="2">
+              <td>
+                <div class="product-info">
+                  <img
+                    src="../../assets/images/Johnson&Johnson.jpg"
+                    alt="Johnson & Johnson Image"
+                    class="product-image"
+                  />
+                  <span class="text text-info">Johnson & Johnson</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge status-sold-out">Sold out</span>
+              </td>
+              <td>
+                <span class="text text-info">Alfa</span>
+              </td>
+              <td>
+                <span class="product-quantity">3064</span>
+              </td>
+              <td>
+                <div class="brand-info">
+                  <img
+                    src="../../assets/images/ArleneWilson.jpg"
+                    alt="Arlene Wilson Image"
+                    class="brand-avatar"
+                  />
+                  <span class="text text-info">Arlene Wilson</span>
+                </div>
+              </td>
+              <td>
+                <span class="text text-info">$901.31</span>
+              </td>
+              <td>
+                <div class="action-menu">
+                  <button
+                    class="action-btn"
+                    aria-label="Product actions"
+                    onclick="event.stopPropagation()"
+                  >
+                    ⋯
+                  </button>
+                  <nav class="dropdown-menu">
+                    <button class="dropdown-item">Edit</button>
+                    <button class="dropdown-item delete">Delete</button>
+                  </nav>
+                </div>
+              </td>
+            </tr>
+            <tr data-product-id="3">
+              <td>
+                <div class="product-info">
+                  <img
+                    src="../../assets/images/Starbucks.jpg"
+                    alt="Starbucks Image"
+                    class="product-image"
+                  />
+                  <span class="text text-info">Starbucks</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge status-available">Available</span>
+              </td>
+              <td>
+                <span class="text text-info">Bravo</span>
+              </td>
+              <td>
+                <span class="product-quantity">9195</span>
+              </td>
+              <td>
+                <div class="brand-info">
+                  <img
+                    src="../../assets/images/JennieCooper.jpg"
+                    alt="Jennie Cooper Image"
+                    class="brand-avatar"
+                  />
+                  <span class="text text-info">Jennie Cooper</span>
+                </div>
+              </td>
+              <td>
+                <span class="text text-info">$641.20</span>
+              </td>
+              <td>
+                <div class="action-menu">
+                  <button
+                    class="action-btn"
+                    aria-label="Product actions"
+                    onclick="event.stopPropagation()"
+                  >
+                    ⋯
+                  </button>
+                  <nav class="dropdown-menu">
+                    <button class="dropdown-item">Edit</button>
+                    <button class="dropdown-item delete">Delete</button>
+                  </nav>
+                </div>
+              </td>
+            </tr>
+            <tr data-product-id="4">
+              <td>
+                <div class="product-info">
+                  <img
+                    src="../../assets/images/TheWaltDisney.jpg"
+                    alt="The Walt Disney Image"
+                    class="product-image"
+                  />
+                  <span class="text text-info">The Walt Disney</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-badge status-sold-out">Sold out</span>
+              </td>
+              <td>
+                <span class="text text-info">Alfa</span>
+              </td>
+              <td>
+                <span class="product-quantity">3128</span>
+              </td>
+              <td>
+                <div class="brand-info">
+                  <img
+                    src="../../assets/images/PhilipSteward.jpg"
+                    alt="Philip Steward Image"
+                    class="brand-avatar"
+                  />
+                  <span class="text text-info">Philip Steward</span>
+                </div>
+              </td>
+              <td>
+                <span class="text text-info">$510.30</span>
+              </td>
+              <td>
+                <div class="action-menu">
+                  <button
+                    class="action-btn"
+                    aria-label="Product actions"
+                    onclick="event.stopPropagation()"
+                  >
+                    ⋯
+                  </button>
+                  <nav class="dropdown-menu">
+                    <button class="dropdown-item">Edit</button>
+                    <button class="dropdown-item delete">Delete</button>
+                  </nav>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </main>
   </body>
 </html>
