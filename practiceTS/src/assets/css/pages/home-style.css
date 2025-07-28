@@ -36,11 +36,15 @@ body {
 }
 
 .product-table thead th {
-  padding: 25px 12px 30px;
+  padding: 25px 12px 0;
 }
 
 .product-table tbody td {
   padding: 0 12px;
+}
+
+.product-table tbody tr:first-child td {
+  margin-top: 30px;
 }
 
 .title-group {
@@ -57,9 +61,6 @@ body {
 .product-filter {
   padding: 8px 2px;
   border: none;
-  font-size: var(--fs-md);
-  letter-spacing: 0.25px;
-  line-height: 20px;
   width: 100%;
   background: transparent;
 }
@@ -189,8 +190,8 @@ body {
   position: absolute;
   right: 25px;
   top: 60%;
-  background: white;
-  border: 1px solid #e5e7eb;
+  background: var(--clr-bg);
+  border: 1px solid var(--clr-bg);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   min-width: 100px;
@@ -200,23 +201,22 @@ body {
 
 .dropdown-item {
   padding: 12px 16px;
-  font-size: 14px;
+  font-size: var(--fs-md);
   font-weight: var(--fw-semi-bold);
   cursor: pointer;
   border: none;
   background: none;
   width: 100%;
   text-align: center;
-  color: #374151;
   transition: background-color 0.2s;
 }
 
 .dropdown-item:hover {
-  background: #f3f4f6;
+  background: #f1f3f9;
 }
 
 .dropdown-item.delete {
-  color: #db303f;
+  color: var(--clr-btn-red);
 }
 
 .dropdown-item.delete:hover {
@@ -225,10 +225,4 @@ body {
 
 .action-menu:hover .dropdown-menu {
   display: block;
-}
-
-.price-cell {
-  font-size: var(--fs-md);
-  color: var(--clr-text-dark);
-  font-weight: var(--fw-semi-bold);
 }
