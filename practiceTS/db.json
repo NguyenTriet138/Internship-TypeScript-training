@@ -66,6 +66,17 @@
       "brand": "Jorge Black",
       "productImage": "../../assets/images/Mitsubishi.jpg",
       "brandImage": "../../assets/images/JorgeBlack.jpg"
+    },
+    {
+      "id": 6,
+      "name": "IBM",
+      "quantity": 9011,
+      "price": 845.59,
+      "status": "Sold out",
+      "type": "Gold",
+      "brand": "Gladys Jones",
+      "productImage": "../../assets/images/IBM.jpg",
+      "brandImage": "../../assets/images/GladysJones.jpg"
     }
   ]
 }
