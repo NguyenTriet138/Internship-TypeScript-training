@@ -36,7 +36,7 @@ body {
   width: 100%;
   padding: 10px;
   border: 1px solid var(--clr-bg-light);
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .form-message {

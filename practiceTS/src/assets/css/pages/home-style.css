@@ -12,6 +12,7 @@
   font-weight: var(--fw-bold);
   width: 100%;
   color: var(--clr-header);
+  margin-bottom: 45px;
 }
 
 .button-container {
