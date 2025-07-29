@@ -26,7 +26,7 @@ export class ProductView {
   }
 
   /**
-   * Render the products list and attach event listeners
+   * Render the products list and add event listeners
    */
   renderProducts(products: Product[]): void {
     if (!this.tbody) return;
@@ -35,7 +35,7 @@ export class ProductView {
   }
 
   /**
-   * Attach click handlers to each product row
+   * Handle click product row
    */
   private attachRowClickHandlers(): void {
     if (!this.tbody) return;
@@ -62,9 +62,6 @@ export class ProductView {
     window.location.href = "./productDetail.html";
   }
 
-  /**
-   * Render a single product row
-   */
   private renderRow(product: Product): string {
     return `
       <tr data-product-id="${product.id}">
@@ -79,9 +76,6 @@ export class ProductView {
     `;
   }
 
-  /**
-   * Render product info cell
-   */
   private renderProductInfo(product: Product): string {
     return `
       <td>
@@ -93,9 +87,6 @@ export class ProductView {
     `;
   }
 
-  /**
-   * Render status cell
-   */
   private renderStatusCell(product: Product): string {
     const statusClass = product.status === ProductStatus.Available ? "status-available" : "status-sold-out";
     return `
@@ -107,23 +98,14 @@ export class ProductView {
     `;
   }
 
-  /**
-   * Render type cell
-   */
   private renderTypeCell(product: Product): string {
     return `<td><span class="text text-info">${product.type}</span></td>`;
   }
 
-  /**
-   * Render quantity cell
-   */
   private renderQuantityCell(product: Product): string {
     return `<td><span class="product-quantity">${product.quantity}</span></td>`;
   }
 
-  /**
-   * Render brand info cell
-   */
   private renderBrandInfo(product: Product): string {
     return `
       <td>
@@ -135,16 +117,10 @@ export class ProductView {
     `;
   }
 
-  /**
-   * Render price cell
-   */
   private renderPriceCell(product: Product): string {
     return `<td><span class="text text-info">$${product.price.toFixed(2)}</span></td>`;
   }
 
-  /**
-   * Render action menu cell
-   */
   private renderActionMenu(product: Product): string {
     return `
       <td>
@@ -159,9 +135,6 @@ export class ProductView {
     `;
   }
 
-  /**
-   * Get element by ID with type assertion
-   */
   private getElement<T extends HTMLElement>(id: string, elementType: new () => T): T | null {
     const element = document.getElementById(id);
     return element instanceof elementType ? element : null;
@@ -227,7 +200,7 @@ export class ProductView {
   }
 
   /**
-   * Attach back button handler
+   * Navigate to home page when click Back button
    */
   private attachBackButtonHandler(): void {
     const backButton = this.getElement(this.selectors.goBackButton, HTMLButtonElement);

@@ -2,27 +2,19 @@
 import { ProductModel } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 
-/**
- * Interface for page-specific handlers
- */
 interface PageHandler {
   check: () => boolean;
   handle: () => Promise<void>;
 }
 
-/**
- * ProductController manages the interaction between ProductModel and ProductView
- */
 export class ProductController {
-  private readonly model: ProductModel;
-  private readonly view: ProductView;
   private readonly pageHandlers: PageHandler[];
 
-  constructor(model: ProductModel, view: ProductView) {
-    this.model = model;
-    this.view = view;
-
-    // Define page handlers
+  constructor(
+    private readonly model: ProductModel,
+    private readonly view: ProductView
+  ) {
+    /** pageHandlers is using for check url path and load page. */
     this.pageHandlers = [
       {
         check: () => this.isIndexPage(),
@@ -40,7 +32,6 @@ export class ProductController {
    */
   async init(): Promise<void> {
     try {
-      // Find and execute the appropriate page handler
       const handler = this.pageHandlers.find(h => h.check());
       if (handler) {
         await handler.handle();
@@ -50,30 +41,24 @@ export class ProductController {
     }
   }
 
-  /**
-   * Check if current page is the index page
-   */
   private isIndexPage(): boolean {
     const path = window.location.pathname;
     return path.endsWith("index.html") || path.endsWith("/");
   }
 
-  /**
-   * Check if current page is the detail page
-   */
   private isDetailPage(): boolean {
     return window.location.pathname.endsWith("productDetail.html");
   }
 
   /**
-   * Navigate to a specific page
+   * Navigate to a page
    */
   private navigate(page: string): void {
     window.location.href = page;
   }
 
   /**
-   * Handle errors consistently
+   * Handle errors: show alert when got error
    */
   private handleError(message: string, error: unknown): void {
     console.error(message, error);
@@ -82,7 +67,7 @@ export class ProductController {
   }
 
   /**
-   * Get stored product ID from localStorage
+   * Get product ID from localStorage
    */
   private getStoredProductId(): number | null {
     const id = localStorage.getItem("selectedProductId");
@@ -106,16 +91,28 @@ export class ProductController {
    */
   private async loadProductDetail(): Promise<void> {
     try {
+      // Get product ID
       const productId = this.getStoredProductId();
+      console.log('Loading product details for ID:', productId);
 
       if (!productId) {
         throw new Error("No product selected");
       }
 
+      console.log('Fetching product data...');
       const product = await this.model.getProductById(productId);
+
+      if (!product) {
+        throw new Error("Product data is empty");
+      }
+
+      // Render the product details
+      console.log('Rendering product:', product);
       this.view.renderProductDetail(product);
+      console.log('Product details rendered successfully');
 
     } catch (error) {
+      console.error('Detailed error in loadProductDetail:', error);
       this.handleError('Failed to load product details', error);
     }
   }

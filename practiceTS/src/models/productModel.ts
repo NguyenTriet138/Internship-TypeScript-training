@@ -1,14 +1,6 @@
 // src/model/product-model.ts
+import { ApiService, API_CONFIG } from '../utils/apiService.js';
 
-// Configuration
-const API_CONFIG = {
-  baseUrl: 'http://localhost:3000',
-  endpoints: {
-    products: '/products'
-  }
-} as const;
-
-// Types and Interfaces
 export enum ProductStatus {
   Available = "Available",
   SoldOut = "Sold out",
@@ -26,16 +18,13 @@ interface ProductData {
   name: string;
   quantity: number;
   price: number;
-  status: string;
-  type: string;
+  status: ProductStatus;
+  type: ProductType;
   brand: string;
   productImage: string;
   brandImage: string;
 }
 
-/**
- * Product entity representing a product in the system
- */
 export class Product {
   constructor(
     public id: number,
@@ -49,17 +38,15 @@ export class Product {
     public brandImage: string
   ) {}
 
-  /** Check if product is available */
   isAvailable(): boolean {
     return this.status === ProductStatus.Available;
   }
 
-  /** Check if product is in stock */
   isInStock(): boolean {
     return this.quantity > 0;
   }
 
-  /** Format price with currency */
+  /** Format price */
   formatPrice(currency: string = '$'): string {
     return `${currency}${this.price.toFixed(2)}`;
   }
@@ -80,35 +67,16 @@ export class Product {
   }
 }
 
-/**
- * ProductModel handles all product-related data operations
- */
 export class ProductModel {
-  private readonly apiUrl: string;
+  private readonly apiService: ApiService;
 
   constructor() {
-    this.apiUrl = API_CONFIG.baseUrl + API_CONFIG.endpoints.products;
+    this.apiService = new ApiService(API_CONFIG);
   }
 
-  /**
-   * Fetch data from the API
-   */
-  private async fetchFromApi<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const response = await fetch(this.apiUrl + endpoint, options);
-
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} - ${response.statusText}`);
-    }
-
-    return response.json();
-  }
-
-  /**
-   * Get all products from the API
-   */
   async getAllProducts(): Promise<Product[]> {
     try {
-      const data = await this.fetchFromApi<ProductData[]>('');
+      const data = await this.apiService.get<ProductData[]>(API_CONFIG.endpoints.products);
       return data.map(Product.fromJSON);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -116,12 +84,9 @@ export class ProductModel {
     }
   }
 
-  /**
-   * Get a single product by ID
-   */
   async getProductById(id: number): Promise<Product> {
     try {
-      const data = await this.fetchFromApi<ProductData>(`/${id}`);
+      const data = await this.apiService.get<ProductData>(API_CONFIG.endpoints.products, id);
       return Product.fromJSON(data);
     } catch (error) {
       console.error(`Error fetching product ${id}:`, error);
