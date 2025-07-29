@@ -20,4 +20,5 @@ body {
   overflow-x: auto;
   background-color: var(--clr-bg);
   overflow-x: auto;
+  padding: 40px;
 }

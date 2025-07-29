@@ -27,23 +27,23 @@
       <section class="content">
         <form class="left-section">
           <fieldset class="form-group">
-            <label class="form-label" for="productName">Name</label>
+            <label class="text text-title-lg" for="productName">Name</label>
             <input type="text" id="productName" class="form-input" value="Louis Vuitton"/>
           </fieldset>
 
           <fieldset class="form-group">
-            <label class="form-label" for="productQuantity">Quantity</label>
+            <label class="text text-title-lg" for="productQuantity">Quantity</label>
             <input type="number" id="productQuantity" class="form-input" value="100"/>
           </fieldset>
 
           <fieldset class="form-group">
-            <label class="form-label" for="productPrice">Price</label>
+            <label class="text text-title-lg" for="productPrice">Price</label>
             <input type="number" id="productPrice" class="form-input" value="1000" step="0.01"/>
           </fieldset>
 
           <div class="form-row">
             <fieldset class="form-group">
-              <label class="form-label" for="productStatus">Status</label>
+              <label class="text text-title-lg" for="productStatus">Status</label>
               <select id="productStatus" class="form-select">
                 <option value="Available">Available</option>
                 <option value="Sold out">Sold out</option>
@@ -51,7 +51,7 @@
             </fieldset>
 
             <fieldset class="form-group">
-              <label class="form-label" for="productType">Types</label>
+              <label class="text text-title-lg" for="productType">Types</label>
               <select id="productType" class="form-select">
                 <option value="Bravo">Bravo</option>
                 <option value="Alfa">Alfa</option>
@@ -61,36 +61,35 @@
             </fieldset>
           </div>
 
-          <section class="brand-section">
+          <div class="form-row">
             <fieldset class="form-group">
-              <label class="form-label" for="brandName">Brand</label>
+              <label class="text text-title-lg" for="brandName">Brand</label>
               <div class="brand-input-group">
-                <div class="brand-avatar" id="brandAvatar"></div>
                 <input type="text" id="brandName" class="form-input" value="Evan Flores" style="flex: 1"/>
               </div>
             </fieldset>
 
             <fieldset class="form-group">
-              <label class="form-label">Brand Image</label>
+              <label class="text text-title-lg">Brand Image</label>
               <div class="upload-section">
                 <div class="brand-avatar" id="brandImagePreview"></div>
-                <button type="button" class="upload-btn">
+                <button type="button" class="upload-btn text text-info">
                   <!-- 📷 Upload photo -->
                    <i class="fa-solid fa-cloud-arrow-up"></i>
                   Upload photo
                 </button>
               </div>
             </fieldset>
-          </section>
+          </div>
 
           <nav class="action-buttons">
-            <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
-            <button type="button" class="btn btn-primary" onclick="saveProduct()">Save</button>
+            <button type="button" class="button" onclick="goBack()">Back</button>
+            <button type="button" class="button add-btn" onclick="saveProduct()">Save</button>
           </nav>
         </form>
 
         <aside class="right-section">
-          <figure class="product-image-large" id="productImageLarge"></figure>
+          <img class="product-image-large" id="productImageLarge" src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Img" />
 
           <div class="upload-area" onclick="uploadProductImage()">
             <i class="fa-solid fa-cloud-arrow-up"></i>
