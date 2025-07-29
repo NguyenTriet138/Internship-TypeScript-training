@@ -71,7 +71,7 @@
             <fieldset class="form-group">
               <label class="text text-title-lg">Brand Image</label>
               <div class="upload-section">
-                <div class="brand-avatar" id="brandImagePreview"></div>
+                <img src="../../assets/images/EvanFlores.jpg" alt="Evan Flores Img" class="brand-avatar" id="brandImagePreview" />
                 <button type="button" class="upload-btn text text-info">
                   <!-- 📷 Upload photo -->
                    <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -82,15 +82,15 @@
           </div>
 
           <nav class="action-buttons">
-            <button type="button" class="button secondary-btn" onclick="goBack()">Back</button>
-            <button type="button" class="button primary-btn" onclick="saveProduct()">Save</button>
+            <button type="button" class="button secondary-btn" id="goBack">Back</button>
+            <button type="button" class="button primary-btn" id="saveInfo">Save</button>
           </nav>
         </form>
 
         <aside class="right-section">
           <img class="product-image-large" id="productImageLarge" src="../../assets/images/LouisVuitton.jpg" alt="Louis Vuitton Img" />
 
-          <div class="upload-area" onclick="uploadProductImage()">
+          <div class="upload-area" id="uploadArea">
             <i class="fa-solid fa-cloud-arrow-up"></i>
             <div class="upload-text">Click to upload</div>
           </div>
