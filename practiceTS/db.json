@@ -20,8 +20,8 @@
       "status": "Available",
       "type": "Bravo",
       "brand": "Evan Flores",
-      "productImage": "../../assets/images/LouisVuitton.jpg",
-      "brandImage": "../../assets/images/EvanFlores.jpg"
+      "productImage": "https://i.ibb.co/CsQFh2nq/Louis-Vuitton.jpg",
+      "brandImage": "https://i.ibb.co/RGVggnWk/Evan-Flores.jpg"
     },
     {
       "id": 2,
@@ -31,8 +31,8 @@
       "status": "Sold out",
       "type": "Alfa",
       "brand": "Arlene Wilson",
-      "productImage": "../../assets/images/Johnson&Johnson.jpg",
-      "brandImage": "../../assets/images/ArleneWilson.jpg"
+      "productImage": "https://i.ibb.co/7xYVypNg/Johnson-Johnson.jpg",
+      "brandImage": "https://i.ibb.co/SwKd1RPz/Arlene-Wilson.jpg"
     },
     {
       "id": 3,
@@ -42,8 +42,8 @@
       "status": "Available",
       "type": "Bravo",
       "brand": "Jennie Cooper",
-      "productImage": "../../assets/images/Starbucks.jpg",
-      "brandImage": "../../assets/images/JennieCooper.jpg"
+      "productImage": "https://i.ibb.co/93CPr57r/Starbucks.jpg",
+      "brandImage": "https://i.ibb.co/xq3JcxWM/Jennie-Cooper.jpg"
     },
     {
       "id": 4,
@@ -53,8 +53,8 @@
       "status": "Sold out",
       "type": "Alfa",
       "brand": "Philip Steward",
-      "productImage": "../../assets/images/TheWaltDisney.jpg",
-      "brandImage": "../../assets/images/PhilipSteward.jpg"
+      "productImage": "https://i.ibb.co/Pz5jQ8F5/The-Walt-Disney.jpg",
+      "brandImage": "https://i.ibb.co/V0BZLVtk/Philip-Steward.jpg"
     },
     {
       "id": 5,
@@ -64,8 +64,8 @@
       "status": "Available",
       "type": "Bravo",
       "brand": "Jorge Black",
-      "productImage": "../../assets/images/Mitsubishi.jpg",
-      "brandImage": "../../assets/images/JorgeBlack.jpg"
+      "productImage": "https://i.ibb.co/Dgz36J2R/Mitsubishi.jpg",
+      "brandImage": "https://i.ibb.co/tPk5CvCx/Jorge-Black.jpg"
     },
     {
       "id": 6,
@@ -75,8 +75,8 @@
       "status": "Sold out",
       "type": "Gold",
       "brand": "Gladys Jones",
-      "productImage": "../../assets/images/IBM.jpg",
-      "brandImage": "../../assets/images/GladysJones.jpg"
+      "productImage": "https://i.ibb.co/RGstJf17/IBM.jpg",
+      "brandImage": "https://i.ibb.co/C5ZrK7dq/Gladys-Jones.jpg"
     }
   ]
 }
