@@ -35,10 +35,10 @@ export class LoginView {
   }
 
   redirectToHomePage() {
-    window.location.href = '../../view/pages/index.html';
+    window.location.href = '/home.html';
   }
 
   redirectToLoginPage() {
-    window.location.href = '../../view/pages/login.html';
+    window.location.href = '/login.html';
   }
 }

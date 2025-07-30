@@ -205,7 +205,7 @@ export class ProductView {
   private attachBackButtonHandler(): void {
     const backButton = this.getElement(this.selectors.goBackButton, HTMLButtonElement);
     backButton?.addEventListener("click", () => {
-      window.location.href = "./index.html";
+      window.location.href = "./home.html";
     });
   }
 }

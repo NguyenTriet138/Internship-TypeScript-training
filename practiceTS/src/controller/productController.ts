@@ -43,7 +43,7 @@ export class ProductController {
 
   private isIndexPage(): boolean {
     const path = window.location.pathname;
-    return path.endsWith("index.html") || path.endsWith("/");
+    return path.endsWith("home.html") || path.endsWith("/");
   }
 
   private isDetailPage(): boolean {
@@ -63,7 +63,7 @@ export class ProductController {
   private handleError(message: string, error: unknown): void {
     console.error(message, error);
     alert(message);
-    this.navigate("./index.html");
+    this.navigate("./home.html");
   }
 
   /**
