@@ -43,11 +43,11 @@ export class ProductController {
 
   private isIndexPage(): boolean {
     const path = window.location.pathname;
-    return path.endsWith("home.html") || path.endsWith("/");
+    return path.endsWith("home") || path.endsWith("/");
   }
 
   private isDetailPage(): boolean {
-    return window.location.pathname.endsWith("productDetail.html");
+    return window.location.pathname.endsWith("productDetail");
   }
 
   /**
@@ -63,7 +63,7 @@ export class ProductController {
   private handleError(message: string, error: unknown): void {
     console.error(message, error);
     alert(message);
-    this.navigate("./home.html");
+    this.navigate("./home");
   }
 
   /**
@@ -92,7 +92,9 @@ export class ProductController {
   private async loadProductDetail(): Promise<void> {
     try {
       // Get product ID
-      const productId = this.getStoredProductId();
+      // const productId = this.getStoredProductId();
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get("id");
       console.log('Loading product details for ID:', productId);
 
       if (!productId) {
@@ -100,7 +102,7 @@ export class ProductController {
       }
 
       console.log('Fetching product data...');
-      const product = await this.model.getProductById(productId);
+      const product = await this.model.getProductById(+productId);
 
       if (!product) {
         throw new Error("Product data is empty");

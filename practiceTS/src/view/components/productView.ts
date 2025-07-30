@@ -58,8 +58,8 @@ export class ProductView {
    * Navigate to product detail page
    */
   private navigateToProductDetail(productId: string): void {
-    localStorage.setItem("selectedProductId", productId);
-    window.location.href = "./productDetail.html";
+    // localStorage.setItem("selectedProductId", productId);
+    window.location.href = `./productDetail?id=${productId}`;
   }
 
   private renderRow(product: Product): string {
@@ -205,7 +205,7 @@ export class ProductView {
   private attachBackButtonHandler(): void {
     const backButton = this.getElement(this.selectors.goBackButton, HTMLButtonElement);
     backButton?.addEventListener("click", () => {
-      window.location.href = "./home.html";
+      window.location.href = "./home";
     });
   }
 }
