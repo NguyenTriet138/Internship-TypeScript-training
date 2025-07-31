@@ -244,13 +244,14 @@
 
 .modal {
   background: white;
-  border-radius: 1rem;
+  border-radius: 12px;
   padding: 24px;
   max-width: 500px;
   width: 90%;
-  max-height: 90vh;
+  max-height: 95vh;
   overflow-y: auto;
   position: relative;
+  box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.1);
 }
 
 .modal-header {
@@ -261,15 +262,16 @@
 }
 
 .modal-title {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: var(--fs-xl);
+  line-height: 28px;
+  font-weight: var(--fw-semi-bold);
   color: #1e293b;
 }
 
 .close-btn {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 25px;
   cursor: pointer;
   color: #667085;
 }
@@ -287,4 +289,22 @@
   width: 65px;
   height: 65px;
   border-radius: 50%;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.action-buttons.modal-active {
+  padding-top: 16px;
+  max-width: 100%;
+  justify-content: flex-end;
+}
+
+.action-buttons.modal-active .button.primary-btn,
+.action-buttons.modal-active .button.secondary-btn {
+  width: auto;
+  min-width: 100px;
 }
