@@ -116,11 +116,9 @@ export class ProductModel {
    */
   async uploadImageToImgBB(imageData: string, apiKey: string): Promise<string> {
     try {
-      console.log('Uploading image to ImgBB...');
 
       const response = await this.apiService.uploadToImgBB(imageData, apiKey);
 
-      console.log('Image uploaded successfully, display URL:', response.data.display_url);
       return response.data.display_url;
     } catch (error) {
       console.error('Error uploading image to ImgBB:', error);

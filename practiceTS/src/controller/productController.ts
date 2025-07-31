@@ -95,13 +95,11 @@ export class ProductController {
       // const productId = this.getStoredProductId();
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get("id");
-      console.log('Loading product details for ID:', productId);
 
       if (!productId) {
         throw new Error("No product selected");
       }
 
-      console.log('Fetching product data...');
       const product = await this.model.getProductById(+productId);
 
       if (!product) {
@@ -109,13 +107,11 @@ export class ProductController {
       }
 
       // Render the product details and attach Save button
-      console.log('Rendering product:', product);
       this.view.renderProductDetail(product);
       this.view.attachSaveButtonHandler(async () => {
         await this.handleSaveProduct(product.id);
       });
       this.view.initializeImageUpload();
-      console.log('Product details rendered successfully');
     } catch (error) {
       console.error('Detailed error in loadProductDetail:', error);
       this.handleError('Failed to load product details', error);

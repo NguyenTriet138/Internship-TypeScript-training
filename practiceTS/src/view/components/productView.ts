@@ -146,11 +146,9 @@ export class ProductView {
    * Render product detail page
    */
   renderProductDetail(product: Product): void {
-    console.log("Rendering product details:", product);
     try {
       this.updateProductDetailFields(product);
       this.attachBackButtonHandler();
-      console.log("Product details rendered successfully");
     } catch (error) {
       console.error("Error rendering product details:", error);
     }

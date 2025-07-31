@@ -66,7 +66,6 @@ export class ApiService {
   public async fetch<T>(endpoint: string, options?: RequestInit): Promise<T> {
     try {
       const url = this.getUrl(endpoint);
-      console.log('Fetching from:', url);
 
       const response = await fetch(url, {
         ...options,
@@ -81,7 +80,6 @@ export class ApiService {
       }
 
       const data = await response.json();
-      console.log('Received data:', data);
       return data;
     } catch (error) {
       console.error('Fetch error:', error);
@@ -117,15 +115,12 @@ export class ApiService {
 
       const url = `https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`;
 
-      console.log('Uploading image to ImgBB...');
-
       const response = await fetch(url, {
         method: 'POST',
         body: formData
       });
 
       const data = await response.json();
-      console.log('ImgBB upload response:', data);
 
       if (!data.success) {
         throw new Error('ImgBB upload failed');
