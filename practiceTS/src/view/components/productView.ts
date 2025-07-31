@@ -18,7 +18,9 @@ export class ProductView {
     brandName: "brandName",
     brandImagePreview: "brandImagePreview",
     productImageLarge: "productImageLarge",
-    goBackButton: "goBack"
+    goBackButton: "goBack",
+    uploadBranchImg: "uploadBranchImg",
+    uploadProductImg: "uploadProductImg",
   };
 
   constructor() {
@@ -207,5 +209,168 @@ export class ProductView {
     backButton?.addEventListener("click", () => {
       window.location.href = "./home";
     });
+  }
+
+  /**
+   * Attach save button click event
+   */
+  public attachSaveButtonHandler(cb: () => Promise<void>): void {
+    const saveBtn = document.getElementById('saveInfo');
+    if (saveBtn) {
+      saveBtn.onclick = cb;
+    }
+  }
+
+  /**
+   * Get updated product data from form fields
+   */
+  public getProductFormData(): Partial<import("../../models/productModel").ProductData> {
+    const getValue = (id: string) => (document.getElementById(id) as HTMLInputElement | HTMLSelectElement)?.value;
+    // For image input, get file or value
+    const getImageValue = (id: string, fallback: string = ""): string => {
+      const input = document.getElementById(id) as HTMLInputElement | null;
+      if (input && input.type === "file" && input.files && input.files[0]) {
+        // For simplicity, use a URL.createObjectURL or you may want to upload and get a URL/base64
+        return URL.createObjectURL(input.files[0]);
+      }
+      // In case img tag having src attribute
+      if (input instanceof HTMLImageElement) {
+        return input.getAttribute('src') || fallback;
+      }
+      return input?.value || fallback;
+    };
+    return {
+      name: getValue(this.selectors.productName) || '',
+      quantity: Number(getValue(this.selectors.productQuantity)),
+      price: Number(getValue(this.selectors.productPrice)),
+      status: getValue(this.selectors.productStatus) as ProductStatus,
+      type: getValue(this.selectors.productType) as import("../../models/productModel").ProductType,
+      brand: getValue(this.selectors.brandName) || '',
+      productImage: getImageValue(this.selectors.productImageLarge),
+      brandImage: getImageValue(this.selectors.brandImagePreview),
+    };
+  }
+
+  //======================================================
+  /**
+   * Initialize image upload functionality
+   */
+  initializeImageUpload(): void {
+    this.attachImageUploadHandlers();
+  }
+
+  /**
+   * Attach event handlers for image upload
+   */
+  private attachImageUploadHandlers(): void {
+    // Brand image upload
+    const brandUploadBtn = document.getElementById(this.selectors.uploadBranchImg) as HTMLButtonElement;
+    if (brandUploadBtn) {
+      brandUploadBtn.addEventListener('click', () => this.handleImageUpload('brand'));
+    }
+
+    // Product image upload area
+    const uploadArea = document.getElementById(this.selectors.uploadProductImg) as HTMLElement;
+    if (uploadArea) {
+      uploadArea.addEventListener('click', () => this.handleImageUpload('product'));
+      uploadArea.addEventListener('dragover', this.handleDragOver.bind(this));
+      uploadArea.addEventListener('drop', this.handleDrop.bind(this));
+    }
+  }
+
+  /**
+   * Handle image upload for both brand and product images
+   */
+  private handleImageUpload(type: 'brand' | 'product'): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.style.display = 'none';
+
+    input.addEventListener('change', (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        this.processImageFile(file, type);
+      }
+    });
+
+    document.body.appendChild(input);
+    input.click();
+    document.body.removeChild(input);
+  }
+
+  /**
+   * Handle drag over event for drag and drop
+   */
+  private handleDragOver(event: DragEvent): void {
+    event.preventDefault();
+    event.dataTransfer!.dropEffect = 'copy';
+  }
+
+  /**
+   * Handle drop event for drag and drop
+   */
+  private handleDrop(event: DragEvent): void {
+    event.preventDefault();
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      if (file.type.startsWith('image/')) {
+        this.processImageFile(file, 'product');
+      }
+    }
+  }
+
+  /**
+   * Process the selected image file
+   */
+  private processImageFile(file: File, type: 'brand' | 'product'): void {
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file.');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      alert('Image file size must be less than 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const imageUrl = event.target?.result as string;
+      this.updateImagePreview(imageUrl, type);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  /**
+   * Update image preview
+   */
+  private updateImagePreview(imageUrl: string, type: 'brand' | 'product'): void {
+    if (type === 'brand') {
+      const brandImagePreview = document.getElementById(this.selectors.brandImagePreview) as HTMLImageElement;
+      if (brandImagePreview) {
+        brandImagePreview.src = imageUrl;
+      }
+    } else if (type === 'product') {
+      const productImageLarge = document.getElementById(this.selectors.productImageLarge) as HTMLImageElement;
+      if (productImageLarge) {
+        productImageLarge.src = imageUrl;
+      }
+    }
+  }
+
+  /**
+   * Get the current image data as base64 string
+   */
+  getImageData(type: 'brand' | 'product'): string | null {
+    if (type === 'brand') {
+      const brandImagePreview = document.getElementById(this.selectors.brandImagePreview) as HTMLImageElement;
+      return brandImagePreview?.src || null;
+    } else if (type === 'product') {
+      const productImageLarge = document.getElementById(this.selectors.productImageLarge) as HTMLImageElement;
+      return productImageLarge?.src || null;
+    }
+    return null;
   }
 }

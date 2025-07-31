@@ -3,6 +3,45 @@ export interface ApiConfig {
   endpoints: Record<string, string>;
 }
 
+export interface ImgBBResponse {
+  data: {
+    id: string;
+    title: string;
+    url_viewer: string;
+    url: string;
+    display_url: string;
+    width: string;
+    height: string;
+    size: string;
+    time: string;
+    expiration: string;
+    image: {
+      filename: string;
+      name: string;
+      mime: string;
+      extension: string;
+      url: string;
+    };
+    thumb: {
+      filename: string;
+      name: string;
+      mime: string;
+      extension: string;
+      url: string;
+    };
+    medium: {
+      filename: string;
+      name: string;
+      mime: string;
+      extension: string;
+      url: string;
+    };
+    delete_url: string;
+  };
+  success: boolean;
+  status: number;
+}
+
 /**
  * Default API configuration
  */
@@ -53,5 +92,49 @@ export class ApiService {
   public async get<T>(endpoint: string, id?: number): Promise<T> {
     const path = id ? `/${id}` : '';
     return this.fetch<T>(endpoint + path, { method: 'GET' });
+  }
+
+  public async put<T, U = T>(endpoint: string, data: U): Promise<T> {
+    return this.fetch<T>(endpoint, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    });
+  }
+
+  /**
+   * Upload image to ImgBB
+   * @param imageData - Base64 encoded image data
+   * @param apiKey - ImgBB API key
+   * @returns Promise with ImgBB response
+   */
+  public async uploadToImgBB(imageData: string, apiKey: string): Promise<ImgBBResponse> {
+    try {
+      // Remove data URL prefix if present
+      const base64Data = imageData.replace(/^data:image\/[a-z]+;base64,/, '');
+
+      const formData = new FormData();
+      formData.append('image', base64Data);
+
+      const url = `https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`;
+
+      console.log('Uploading image to ImgBB...');
+
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+      console.log('ImgBB upload response:', data);
+
+      if (!data.success) {
+        throw new Error('ImgBB upload failed');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('ImgBB upload error:', error);
+      throw error;
+    }
   }
 }

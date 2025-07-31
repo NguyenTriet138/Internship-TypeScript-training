@@ -108,14 +108,34 @@ export class ProductController {
         throw new Error("Product data is empty");
       }
 
-      // Render the product details
+      // Render the product details and attach Save button
       console.log('Rendering product:', product);
       this.view.renderProductDetail(product);
+      this.view.attachSaveButtonHandler(async () => {
+        await this.handleSaveProduct(product.id);
+      });
+      this.view.initializeImageUpload();
       console.log('Product details rendered successfully');
-
     } catch (error) {
       console.error('Detailed error in loadProductDetail:', error);
       this.handleError('Failed to load product details', error);
+    }
+  }
+
+  private async handleSaveProduct(productId: number): Promise<void> {
+    try {
+      const updatedData = this.view.getProductFormData();
+
+      const productImageUpload = await this.model.uploadImageToImgBB(updatedData.productImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+      const brandImageUpload = await this.model.uploadImageToImgBB(updatedData.brandImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+
+      updatedData.productImage = productImageUpload;
+      updatedData.brandImage = brandImageUpload;
+
+      await this.model.updateProduct(productId, updatedData);
+      alert('Product updated successfully!');
+    } catch (error) {
+      this.handleError('Failed to save product', error);
     }
   }
 }

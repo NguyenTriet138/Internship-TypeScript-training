@@ -13,7 +13,7 @@ export enum ProductType {
   Premium = "Premium"
 }
 
-interface ProductData {
+export interface ProductData {
   id: number;
   name: string;
   quantity: number;
@@ -91,6 +91,40 @@ export class ProductModel {
     } catch (error) {
       console.error(`Error fetching product ${id}:`, error);
       throw new Error('Product not found');
+    }
+  }
+
+  /**
+   * Update product info into db.json
+   */
+  async updateProduct(id: number, updatedData: Partial<ProductData>): Promise<Product> {
+    try {
+      // Fetch current product data
+      const current = await this.apiService.get<ProductData>(API_CONFIG.endpoints.products, id);
+      // Merge with updated fields
+      const merged: ProductData = { ...current, ...updatedData };
+      const data = await this.apiService.put<ProductData>(`${API_CONFIG.endpoints.products}/${id}`, merged);
+      return Product.fromJSON(data);
+    } catch (error) {
+      console.error(`Error updating product ${id}:`, error);
+      throw new Error('Failed to update product');
+    }
+  }
+
+  /**
+   * Upload image to ImgBB and get display URL
+   */
+  async uploadImageToImgBB(imageData: string, apiKey: string): Promise<string> {
+    try {
+      console.log('Uploading image to ImgBB...');
+
+      const response = await this.apiService.uploadToImgBB(imageData, apiKey);
+
+      console.log('Image uploaded successfully, display URL:', response.data.display_url);
+      return response.data.display_url;
+    } catch (error) {
+      console.error('Error uploading image to ImgBB:', error);
+      throw new Error('Failed to upload image');
     }
   }
 }
