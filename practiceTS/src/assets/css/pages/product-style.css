@@ -90,7 +90,7 @@
   gap: 12px;
 }
 
-.brand-avatar {
+.brand-avatar-detail {
   width: 35px;
   height: 35px;
   border-radius: 50%;
@@ -177,60 +177,6 @@
 .action-buttons {
   display: flex;
   gap: 16px;
-}
-
-.btn-secondary {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
-}
-
-.btn-secondary:hover {
-  background: #e5e7eb;
-}
-
-.status-badge {
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  display: inline-block;
-  width: fit-content;
-}
-
-.status-available {
-  background: #dcfce7;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-}
-
-.status-sold-out {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-}
-
-/* Product image gradients */
-.product-1 {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-.product-2 {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-}
-.product-3 {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-.product-4 {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-}
-.product-5 {
-  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-}
-.product-6 {
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-}
-.product-7 {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
 }
 
 @media (max-width: 768px) {
