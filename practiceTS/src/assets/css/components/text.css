@@ -12,3 +12,8 @@
   font-weight: var(--fw-semi-bold);
   line-height: 24px;
 }
+
+.text-title-lg {
+  font-weight: var(--fw-bold);
+  line-height: 20px;
+}

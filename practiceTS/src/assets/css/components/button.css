@@ -1,30 +1,40 @@
 .button {
   padding: 10px 18px;
-  font-size: var(--fs-md);
-  background: #0066CC;
-  color: var(--clr-bg);
-  border: none;
-  border-radius: 5px;
-  font-weight: var(--fw-semi-bold);
-  cursor: pointer;
-  line-height: 24px;
-}
-
-.button:hover {
-  background: #0052a4;
-}
-
-.button.add-btn {
-  margin-top: 45px;
   font-size: var(--fs-lg);
   background: transparent;
   color: var(--clr-btn);
+  border-radius: 8px;
   border: 1px solid var(--clr-btn);
   font-weight: var(--fw-normal);
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05)
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
 }
 
-.button.add-btn:hover {
+.button:hover {
   background: var(--clr-btn);
+  color: var(--clr-bg);
+}
+
+.button.primary-btn {
+  margin-top: 45px;
+  background: var(--clr-btn);
+  color: var(--clr-bg);
+  width: 100%;
+}
+
+.button.primary-btn:hover {
+  background: transparent;
+  color: var(--clr-btn);
+}
+
+.button.secondary-btn {
+  margin-top: 45px;
+  background: transparent;
+  color: var(--clr-text-dark);
+  border: 1px solid var(--clr-text-light);
+  width: 100%;
+}
+
+.button.secondary-btn:hover {
+  background: var(--clr-text-light);
   color: var(--clr-bg);
 }

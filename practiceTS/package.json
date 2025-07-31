@@ -2,11 +2,10 @@
   "name": "practicets",
   "version": "1.0.0",
   "description": "This project is a frontend exercise to rebuild a web browser UI using **HTML, CSS and TypeScript**, based on a design from Figma. The goal is to create a website that has basic user interaction capabilities based on the DOM properties of TS.",
-  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "start": "parcel ./src/view/pages/login.html",
+    "build": "parcel build \"src/view/pages/**/index.html\" --dist-dir dist",
+    "start": "parcel src/view/pages/login/index.html src/view/pages/home/index.html src/view/pages/productDetail/index.html --host 127.0.0.1 --port 5000",
     "dev": "ts-node src/index.ts",
     "server": "json-server --watch db.json",
     "lint": "eslint src/**/*.ts"
