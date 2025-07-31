@@ -10,3 +10,5 @@
 @import './components/text.css';
 
 /* 5. Layout */
+@import './pages/home-style.css';
+@import './pages/product-style.css';
