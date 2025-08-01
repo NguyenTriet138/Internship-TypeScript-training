@@ -100,6 +100,19 @@ export class ApiService {
   }
 
   /**
+   * Create a new resource
+   * @param endpoint - API endpoint
+   * @param data - Data to create
+   * @returns Promise with the created resource
+   */
+  public async post<T, U = T>(endpoint: string, data: U): Promise<T> {
+    return this.fetch<T>(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+  }
+
+  /**
    * Upload image to ImgBB
    * @param imageData - Base64 encoded image data
    * @param apiKey - ImgBB API key

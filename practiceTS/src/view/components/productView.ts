@@ -1,5 +1,5 @@
 // src/view/product-view.ts
-import { Product, ProductStatus } from "../../models/productModel.js";
+import { Product, ProductStatus, ProductType, ProductData } from "../../models/productModel.js";
 
 interface ElementSelectors {
   [key: string]: string;
@@ -21,10 +21,83 @@ export class ProductView {
     goBackButton: "goBack",
     uploadBranchImg: "uploadBranchImg",
     uploadProductImg: "uploadProductImg",
+    addProductButton: "add-product-btn",
+    modalOverlay: "modal-overlay",
+    closeModalButton: "closeModal",
+    cancelButton: "cancelBtn",
+    confirmButton: "saveInfo",
+    addProductForm: "addProductForm"
   };
 
   constructor() {
     this.tbody = document.querySelector(this.selectors.productDisplay);
+    this.initializeAddProductButton();
+    this.initializeModalCloseHandlers();
+  }
+
+  /**
+   * Initialize the Add Product button click handler
+   */
+  private initializeAddProductButton(): void {
+    const addButton = document.getElementById(this.selectors.addProductButton);
+    if (addButton) {
+      addButton.addEventListener('click', () => this.showAddProductModal());
+    }
+  }
+
+  /**
+   * Initialize modal close button handlers
+   */
+  private initializeModalCloseHandlers(): void {
+    // Close button handler
+    const closeButton = document.getElementById(this.selectors.closeModalButton);
+    if (closeButton) {
+      closeButton.addEventListener('click', () => this.hideAddProductModal());
+    }
+
+    // Cancel button handler
+    const cancelButton = document.getElementById(this.selectors.cancelButton);
+    if (cancelButton) {
+      cancelButton.addEventListener('click', () => this.hideAddProductModal());
+    }
+  }
+
+  /**
+   * Attach create product form submit handler
+   */
+  public attachCreateProductHandler(handler: () => Promise<void>): void {
+    const confirmButton = document.getElementById(this.selectors.confirmButton);
+    if (confirmButton) {
+      const form = document.getElementById(this.selectors.addProductForm) as HTMLFormElement;
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+      });
+      confirmButton.onclick = handler;
+    }
+  }
+
+  /**
+   * Show the Add Product modal overlay
+   */
+  private showAddProductModal(): void {
+    const modalOverlay = document.querySelector(`.${this.selectors.modalOverlay}`) as HTMLElement;
+    if (modalOverlay) {
+      modalOverlay.classList.add('active');
+
+      // test...
+      this.initializeImageUpload();
+    }
+  }
+
+  /**
+   * Hide the Add Product modal overlay
+   */
+  public hideAddProductModal(): void {
+    const modalOverlay = document.querySelector(`.${this.selectors.modalOverlay}`) as HTMLElement;
+    if (modalOverlay) {
+      modalOverlay.classList.remove('active');
+    }
   }
 
   /**
@@ -222,7 +295,7 @@ export class ProductView {
   /**
    * Get updated product data from form fields
    */
-  public getProductFormData(): Partial<import("../../models/productModel").ProductData> {
+  public getProductFormData(): Partial<ProductData> {
     const getValue = (id: string) => (document.getElementById(id) as HTMLInputElement | HTMLSelectElement)?.value;
     // For image input, get file or value
     const getImageValue = (id: string, fallback: string = ""): string => {
@@ -242,7 +315,7 @@ export class ProductView {
       quantity: Number(getValue(this.selectors.productQuantity)),
       price: Number(getValue(this.selectors.productPrice)),
       status: getValue(this.selectors.productStatus) as ProductStatus,
-      type: getValue(this.selectors.productType) as import("../../models/productModel").ProductType,
+      type: getValue(this.selectors.productType) as ProductType,
       brand: getValue(this.selectors.brandName) || '',
       productImage: getImageValue(this.selectors.productImageLarge),
       brandImage: getImageValue(this.selectors.brandImagePreview),

@@ -1,5 +1,5 @@
 // src/controller/product-controller.ts
-import { ProductModel } from "../models/productModel.js";
+import { ProductModel, ProductData } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 
 interface PageHandler {
@@ -18,7 +18,10 @@ export class ProductController {
     this.pageHandlers = [
       {
         check: () => this.isIndexPage(),
-        handle: () => this.loadProducts()
+        handle: async () => {
+          await this.loadProducts();
+          this.view.attachCreateProductHandler(async () => {await this.handleCreateProduct()});
+        }
       },
       {
         check: () => this.isDetailPage(),
@@ -64,6 +67,36 @@ export class ProductController {
     console.error(message, error);
     alert(message);
     this.navigate("./home");
+  }
+
+  /**
+   * Handle creating a new product
+   */
+  private async handleCreateProduct(): Promise<void> {
+    try {
+      const productData = this.view.getProductFormData();
+
+      // Upload image
+      const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+      const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+
+      productData.productImage = productImageUpload;
+      productData.brandImage = brandImageUpload;
+      // Create the new product
+      await this.model.createProduct(productData as Omit<ProductData, 'id'>);
+
+
+      // Reset form and hide modal
+      // this.view.resetAddProductForm();
+      this.view.hideAddProductModal();
+
+      // Refresh the product list
+      await this.loadProducts();
+
+      alert('Product created successfully!');
+    } catch (error) {
+      this.handleError('Failed to create product', error);
+    }
   }
 
   /**

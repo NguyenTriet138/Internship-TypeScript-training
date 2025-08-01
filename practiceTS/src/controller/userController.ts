@@ -1,4 +1,4 @@
-import { UserModel, User } from '../models/userClass.js';
+import { UserModel, User } from '../models/userModel';
 import { LoginView } from '../view/components/loginView.js';
 
 export class UserController {
