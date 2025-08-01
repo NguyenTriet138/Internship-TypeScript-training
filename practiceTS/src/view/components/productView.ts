@@ -299,30 +299,96 @@ export class ProductView {
    * Get updated product data from form fields
    */
   public getProductFormData(): Partial<ProductData> {
-    const getValue = (id: string) => (document.getElementById(id) as HTMLInputElement | HTMLSelectElement)?.value;
-    // For image input, get file or value
-    const getImageValue = (id: string, fallback: string = ""): string => {
-      const input = document.getElementById(id) as HTMLInputElement | null;
-      if (input && input.type === "file" && input.files && input.files[0]) {
-        // For simplicity, use a URL.createObjectURL or you may want to upload and get a URL/base64
-        return URL.createObjectURL(input.files[0]);
-      }
-      // In case img tag having src attribute
-      if (input instanceof HTMLImageElement) {
-        return input.getAttribute('src') || fallback;
-      }
-      return input?.value || fallback;
-    };
+    this.clearValidationErrors();
+
+    const name = this.getValueAndValidate(this.selectors.productName, "Please enter product name!");
+    const brand = this.getValueAndValidate(this.selectors.brandName, "Please enter brand name!");
+
+    const quantity = this.getNumberAndValidate(this.selectors.productQuantity,"Quantity must be a number greater than 0!");
+
+    if (!Number.isInteger(quantity)) {
+      this.showValidationError(this.selectors.productQuantity,"Quantity must be an integer");
+      throw new Error("VALIDATION:Quantity must be an integer");
+    }
+
+    const price = this.getNumberAndValidate(this.selectors.productPrice,"Price must be a number greater than 0!");
+
+    const status = this.getValue(this.selectors.productStatus) as ProductStatus;
+    const type = this.getValue(this.selectors.productType) as ProductType;
+
+    const productImage = this.getImageAndValidate(this.selectors.productImageLarge,"Please upload a product image!");
+
+    const brandImage = this.getImageAndValidate(this.selectors.brandImagePreview,"Please upload a brand image!");
+
     return {
-      name: getValue(this.selectors.productName) || '',
-      quantity: Number(getValue(this.selectors.productQuantity)),
-      price: Number(getValue(this.selectors.productPrice)),
-      status: getValue(this.selectors.productStatus) as ProductStatus,
-      type: getValue(this.selectors.productType) as ProductType,
-      brand: getValue(this.selectors.brandName) || '',
-      productImage: getImageValue(this.selectors.productImageLarge),
-      brandImage: getImageValue(this.selectors.brandImagePreview),
+      name,
+      brand,
+      quantity,
+      price,
+      status,
+      type,
+      productImage,
+      brandImage,
     };
+  }
+
+  private getValue(id: string): string {
+    const el = document.getElementById(id) as HTMLInputElement | HTMLSelectElement | null;
+    return el ? el.value.trim() : "";
+  }
+
+  private getValueAndValidate(id: string, errorMsg: string): string {
+    const value = this.getValue(id);
+    if (!value) {
+      this.showValidationError(id, errorMsg);
+      throw new Error("VALIDATION:" + errorMsg);
+    }
+    return value;
+  }
+
+  private getNumberAndValidate(id: string, errorMsg: string): number {
+    const value = Number(this.getValue(id));
+    if (isNaN(value) || value <= 0) {
+      this.showValidationError(id, errorMsg);
+      throw new Error("VALIDATION:" + errorMsg);
+    }
+    return value;
+  }
+
+  private getImageAndValidate(id: string, errorMsg: string): string {
+    const el = document.getElementById(id);
+    let value = "";
+
+    if (el instanceof HTMLInputElement && el.type === "file" && el.files?.[0]) {
+      value = URL.createObjectURL(el.files[0]);
+    } else if (el instanceof HTMLImageElement) {
+      value = el.getAttribute("src") || "";
+    }
+
+    if (!value || value.includes("image-display.png")) {
+      this.showValidationError(id, errorMsg);
+      throw new Error("VALIDATION:" + errorMsg);
+    }
+    return value;
+  }
+
+  private showValidationError(id: string, message: string): void {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    el.classList.add("input-error");
+
+    if (!el.nextElementSibling || !el.nextElementSibling.classList.contains("error-message")) {
+      const errorEl = document.createElement("div");
+      errorEl.className = "error-message";
+      errorEl.innerText = message;
+      el.insertAdjacentElement("afterend", errorEl);
+    }
+  }
+
+  private clearValidationErrors(): void {
+    document.querySelectorAll(".input-error").forEach((el) => el.classList.remove("input-error"));
+    document.querySelectorAll(".error-message").forEach((el) => el.remove());
   }
 
   //======================================================

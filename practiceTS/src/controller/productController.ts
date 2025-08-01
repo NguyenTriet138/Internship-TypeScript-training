@@ -97,7 +97,11 @@ export class ProductController {
 
       alert('Product created successfully!');
     } catch (error) {
-      this.handleError('Failed to create product', error);
+      if (error instanceof Error && error.message.startsWith("VALIDATION:")) {
+        return;
+      }
+
+      this.handleError("Failed to create product", error);
     }
   }
 
