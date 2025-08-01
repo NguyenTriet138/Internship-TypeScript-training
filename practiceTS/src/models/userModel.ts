@@ -48,8 +48,7 @@ export class UserModel {
     try {
       const userStr = localStorage.getItem('currentUser');
       return userStr ? User.fromJSON(userStr) : null;
-    } catch (error) {
-      console.error('Error getting current user:', error);
+    } catch {
       return null;
     }
   }

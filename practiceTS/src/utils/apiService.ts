@@ -81,9 +81,8 @@ export class ApiService {
 
       const data = await response.json();
       return data;
-    } catch (error) {
-      console.error('Fetch error:', error);
-      throw error;
+    } catch {
+      throw new Error('Failed to fetch...');
     }
   }
 
@@ -140,9 +139,8 @@ export class ApiService {
       }
 
       return data;
-    } catch (error) {
-      console.error('ImgBB upload error:', error);
-      throw error;
+    } catch {
+      throw new Error('Failed to upload product image');
     }
   }
 }

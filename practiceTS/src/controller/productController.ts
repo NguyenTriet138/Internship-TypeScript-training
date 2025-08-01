@@ -63,9 +63,11 @@ export class ProductController {
   /**
    * Handle errors: show alert when got error
    */
-  private handleError(message: string, error: unknown): void {
-    console.error(message, error);
+  public handleError(message: string, error: unknown): void {
     alert(message);
+    if (process.env.NODE_ENV === "development") {
+      console.error(message, error);
+    }
     this.navigate("./home");
   }
 
@@ -146,7 +148,6 @@ export class ProductController {
       });
       this.view.initializeImageUpload();
     } catch (error) {
-      console.error('Detailed error in loadProductDetail:', error);
       this.handleError('Failed to load product details', error);
     }
   }

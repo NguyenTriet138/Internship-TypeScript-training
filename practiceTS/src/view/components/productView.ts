@@ -1,5 +1,6 @@
 // src/view/product-view.ts
 import { Product, ProductStatus, ProductType, ProductData } from "../../models/productModel.js";
+import { ProductController } from "../../controller/productController.js";
 
 interface ElementSelectors {
   [key: string]: string;
@@ -29,7 +30,9 @@ export class ProductView {
     addProductForm: "addProductForm"
   };
 
-  constructor() {
+  constructor(
+    private readonly controller: ProductController,
+  ) {
     this.tbody = document.querySelector(this.selectors.productDisplay);
     this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
@@ -223,7 +226,7 @@ export class ProductView {
       this.updateProductDetailFields(product);
       this.attachBackButtonHandler();
     } catch (error) {
-      console.error("Error rendering product details:", error);
+      this.controller.handleError("Error rendering product details:", error);
     }
   }
 

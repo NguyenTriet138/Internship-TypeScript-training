@@ -36,8 +36,7 @@ export class UserController {
         this.view.showMessage('Invalid username or password');
       }
 
-    } catch (error) {
-      console.error('Login error:', error);
+    } catch {
       this.view.showMessage('Login failed. Try again later.');
     } finally {
       this.view.setLoading(false);

@@ -78,8 +78,7 @@ export class ProductModel {
     try {
       const data = await this.apiService.get<ProductData[]>(API_CONFIG.endpoints.products);
       return data.map(Product.fromJSON);
-    } catch (error) {
-      console.error('Error fetching products:', error);
+    } catch {
       throw new Error('Failed to fetch products');
     }
   }
@@ -88,8 +87,7 @@ export class ProductModel {
     try {
       const data = await this.apiService.get<ProductData>(API_CONFIG.endpoints.products, id);
       return Product.fromJSON(data);
-    } catch (error) {
-      console.error(`Error fetching product ${id}:`, error);
+    } catch {
       throw new Error('Product not found');
     }
   }
@@ -105,8 +103,7 @@ export class ProductModel {
       const merged: ProductData = { ...current, ...updatedData };
       const data = await this.apiService.put<ProductData>(`${API_CONFIG.endpoints.products}/${id}`, merged);
       return Product.fromJSON(data);
-    } catch (error) {
-      console.error(`Error updating product ${id}:`, error);
+    } catch {
       throw new Error('Failed to update product');
     }
   }
@@ -118,8 +115,7 @@ export class ProductModel {
     try {
       const response = await this.apiService.uploadToImgBB(imageData, apiKey);
       return response.data.display_url;
-    } catch (error) {
-      console.error('Error uploading image to ImgBB:', error);
+    } catch {
       throw new Error('Failed to upload image');
     }
   }
@@ -141,8 +137,7 @@ export class ProductModel {
 
       const data = await this.apiService.post<ProductData>(API_CONFIG.endpoints.products, newProductData);
       return Product.fromJSON(data);
-    } catch (error) {
-      console.error('Error creating product:', error);
+    } catch {
       throw new Error('Failed to create product');
     }
   }
