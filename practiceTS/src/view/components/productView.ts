@@ -88,7 +88,6 @@ export class ProductView {
     if (modalOverlay) {
       modalOverlay.classList.add('active');
 
-      // test...
       this.initializeImageUpload();
     }
   }

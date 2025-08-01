@@ -87,9 +87,6 @@ export class ProductController {
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
 
-
-      // Reset form and hide modal
-      // this.view.resetAddProductForm();
       this.view.hideAddProductModal();
 
       // Refresh the product list
