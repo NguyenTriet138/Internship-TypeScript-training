@@ -1,5 +1,6 @@
 // src/model/product-model.ts
-import { ApiService, API_CONFIG } from '../utils/apiService.js';
+import { ApiService } from '../utils/apiService.js';
+import { API_CONFIG } from '../config/env.js'
 
 export enum ProductStatus {
   Available = "Available",

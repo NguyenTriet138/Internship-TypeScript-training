@@ -1,6 +1,7 @@
 // src/controller/product-controller.ts
 import { ProductModel, ProductData } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
+import { ENV } from "../config/env";
 
 interface PageHandler {
   check: () => boolean;
@@ -79,8 +80,8 @@ export class ProductController {
       const productData = this.view.getProductFormData();
 
       // Upload image
-      const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
-      const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+      const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage!, ENV.IMGBB_API_KEY);
+      const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage!, ENV.IMGBB_API_KEY);
 
       productData.productImage = productImageUpload;
       productData.brandImage = brandImageUpload;
@@ -157,8 +158,8 @@ export class ProductController {
     try {
       const updatedData = this.view.getProductFormData();
 
-      const productImageUpload = await this.model.uploadImageToImgBB(updatedData.productImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
-      const brandImageUpload = await this.model.uploadImageToImgBB(updatedData.brandImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+      const productImageUpload = await this.model.uploadImageToImgBB(updatedData.productImage!, ENV.IMGBB_API_KEY);
+      const brandImageUpload = await this.model.uploadImageToImgBB(updatedData.brandImage!, ENV.IMGBB_API_KEY);
 
       updatedData.productImage = productImageUpload;
       updatedData.brandImage = brandImageUpload;

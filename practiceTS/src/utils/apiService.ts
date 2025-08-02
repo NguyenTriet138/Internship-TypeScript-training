@@ -1,7 +1,4 @@
-export interface ApiConfig {
-  baseUrl: string;
-  endpoints: Record<string, string>;
-}
+import { ApiConfig } from "../config/env";
 
 export interface ImgBBResponse {
   data: {
@@ -41,16 +38,6 @@ export interface ImgBBResponse {
   success: boolean;
   status: number;
 }
-
-/**
- * Default API configuration
- */
-export const API_CONFIG: ApiConfig = {
-  baseUrl: 'http://localhost:3000',
-  endpoints: {
-    products: '/products'
-  }
-} as const;
 
 export class ApiService {
   private readonly baseUrl: string;
