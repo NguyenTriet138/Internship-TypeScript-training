@@ -77,14 +77,9 @@ export class ProductController {
    */
   private async handleCreateProduct(): Promise<void> {
     try {
-      const productData = this.view.getProductFormData();
+      let productData = this.view.getProductFormData();
 
-      // Upload image
-      const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage!, ENV.IMGBB_API_KEY);
-      const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage!, ENV.IMGBB_API_KEY);
-
-      productData.productImage = productImageUpload;
-      productData.brandImage = brandImageUpload;
+      productData = await this.uploadProductImages(productData);
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
 
@@ -129,7 +124,6 @@ export class ProductController {
   private async loadProductDetail(): Promise<void> {
     try {
       // Get product ID
-      // const productId = this.getStoredProductId();
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get("id");
 
@@ -156,18 +150,65 @@ export class ProductController {
 
   private async handleSaveProduct(productId: number): Promise<void> {
     try {
-      const updatedData = this.view.getProductFormData();
+      let updatedData = this.view.getProductFormData();
 
-      const productImageUpload = await this.model.uploadImageToImgBB(updatedData.productImage!, ENV.IMGBB_API_KEY);
-      const brandImageUpload = await this.model.uploadImageToImgBB(updatedData.brandImage!, ENV.IMGBB_API_KEY);
-
-      updatedData.productImage = productImageUpload;
-      updatedData.brandImage = brandImageUpload;
+      updatedData = await this.uploadProductImages(updatedData);
 
       await this.model.updateProduct(productId, updatedData);
       alert('Product updated successfully!');
     } catch (error) {
       this.handleError('Failed to save product', error);
     }
+  }
+
+  public async handleEditProduct(productId: number): Promise<void> {
+    try {
+      // Get the product data
+      const product = await this.model.getProductById(productId);
+
+      // Populate the modal with product data
+      this.view.populateEditModal(product);
+
+      // Attach the save handler for editing
+      this.view.attachCreateProductHandler(async () => {
+        await this.handleUpdateProduct(productId);
+      });
+
+    } catch (error) {
+      this.handleError('Failed to load product for editing', error);
+    }
+  }
+
+  private async handleUpdateProduct(productId: number): Promise<void> {
+    try {
+      let updatedData = this.view.getProductFormData();
+
+      updatedData = await this.uploadProductImages(updatedData);
+
+      await this.model.updateProduct(productId, updatedData);
+
+      this.view.hideAddProductModal();
+
+      // Refresh the product list
+      await this.loadProducts();
+
+      alert('Product updated successfully!');
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith("VALIDATION:")) {
+        return;
+      }
+      this.handleError('Failed to update product', error);
+    }
+  }
+
+  private async uploadProductImages(productData: Partial<ProductData>): Promise<Partial<ProductData>> {
+    const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage!, ENV.IMGBB_API_KEY);
+    const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage!, ENV.IMGBB_API_KEY);
+
+    return {
+      ...productData,
+      productImage: productImageUpload,
+      brandImage: brandImageUpload,
+    };
   }
 }

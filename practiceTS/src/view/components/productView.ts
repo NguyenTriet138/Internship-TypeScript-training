@@ -27,15 +27,24 @@ export class ProductView {
     closeModalButton: "closeModal",
     cancelButton: "cancelBtn",
     confirmButton: "saveInfo",
-    addProductForm: "addProductForm"
+    addProductForm: "addProductForm",
+    editProductButton: "edit-product-btn",
+    deleteProductButton: "delete-product-btn"
   };
 
   constructor(
-    private readonly controller: ProductController,
+    private controller?: ProductController,
   ) {
     this.tbody = document.querySelector(this.selectors.productDisplay);
     this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
+  }
+
+  /**
+   * Set the controller reference after initialization
+   */
+  public setController(controller: ProductController): void {
+    this.controller = controller;
   }
 
   /**
@@ -44,7 +53,12 @@ export class ProductView {
   private initializeAddProductButton(): void {
     const addButton = document.getElementById(this.selectors.addProductButton);
     if (addButton) {
-      addButton.addEventListener('click', () => this.showAddProductModal());
+      addButton.addEventListener('click', () => {
+        const addModelTitle = document.querySelector(".modal-title") as HTMLElement;
+        addModelTitle.textContent = "Add new product";
+        this.clearModalFields(); // Clear form for new product
+        this.showProductModal();
+      });
     }
   }
 
@@ -83,10 +97,17 @@ export class ProductView {
   /**
    * Show the Add Product modal overlay
    */
-  private showAddProductModal(): void {
+  private showProductModal(): void {
     const modalOverlay = document.querySelector(`.${this.selectors.modalOverlay}`) as HTMLElement;
     if (modalOverlay) {
       modalOverlay.classList.add('active');
+
+      // Check if this is for adding a new product (not editing)
+      const modalTitle = document.querySelector(".modal-title") as HTMLElement;
+      if (modalTitle && modalTitle.textContent === "Add new product") {
+        // Clear form fields for new product
+        this.clearModalFields();
+      }
 
       this.initializeImageUpload();
     }
@@ -118,6 +139,138 @@ export class ProductView {
     if (!this.tbody) return;
     this.tbody.querySelectorAll("tr").forEach(row => {
       row.addEventListener("click", () => this.handleRowClick(row));
+    });
+
+    this.tbody.querySelectorAll(".action-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        this.handleActionButtonClick(btn as HTMLButtonElement);
+      });
+    });
+
+    this.tbody.querySelectorAll(".dropdown-item").forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const action = (e.currentTarget as HTMLElement).dataset.action;
+        const id = (e.currentTarget as HTMLElement).dataset.id;
+        if (action && id) {
+          this.handleActionMenuItem(action, id);
+        }
+      });
+    });
+  }
+
+  private handleActionButtonClick(btn: HTMLButtonElement): void {
+    const menu = btn.nextElementSibling as HTMLElement;
+    menu?.classList.toggle("show");
+  }
+
+  private handleActionMenuItem(action: string, productId: string): void {
+    if (action === "edit") {
+      console.log("Edit product:", productId);
+      // Call the controller to handle edit
+      this.controller?.handleEditProduct(parseInt(productId));
+    } else if (action === "delete") {
+      console.log("Delete product:", productId);
+      // Gọi hàm delete ở đây
+    }
+  }
+
+  /**
+   * Populate modal with product data for editing
+   */
+  public populateEditModal(product: Product): void {
+    const addModelTitle = document.querySelector(".modal-title") as HTMLElement;
+    addModelTitle.textContent = "Products Information";
+
+    // Update form fields with product data
+    this.updateModalFields(product);
+
+    // Show the modal
+    this.showProductModal();
+  }
+
+  /**
+   * Update modal form fields with product data
+   */
+  private updateModalFields(product: Product): void {
+    const setElementValue = (id: string, value: string, setter: (el: HTMLElement, value: string) => void): void => {
+      const element = document.getElementById(id);
+      if (element) {
+        setter(element, value);
+      }
+    };
+
+    // Update input values
+    const inputIds = [
+      { id: this.selectors.productName, value: product.name },
+      { id: this.selectors.productQuantity, value: product.quantity.toString() },
+      { id: this.selectors.productPrice, value: product.price.toString() },
+      { id: this.selectors.brandName, value: product.brand }
+    ];
+    inputIds.forEach(({ id, value }) => {
+      setElementValue(id, value, (el, val) => { (el as HTMLInputElement).value = val; });
+    });
+
+    // Update select values
+    const selectIds = [
+      { id: this.selectors.productStatus, value: product.status },
+      { id: this.selectors.productType, value: product.type }
+    ];
+    selectIds.forEach(({ id, value }) => {
+      setElementValue(id, value, (el, val) => { (el as HTMLSelectElement).value = val; });
+    });
+
+    // Update image sources
+    const imageIds = [
+      { id: this.selectors.brandImagePreview, value: product.brandImage },
+      { id: this.selectors.productImageLarge, value: product.productImage }
+    ];
+    imageIds.forEach(({ id, value }) => {
+      setElementValue(id, value, (el, val) => { (el as HTMLImageElement).src = val; });
+    });
+  }
+
+  /**
+   * Clear modal form fields
+   */
+  public clearModalFields(): void {
+    const inputIds = [
+      this.selectors.productName,
+      this.selectors.productQuantity,
+      this.selectors.productPrice,
+      this.selectors.brandName
+    ];
+    inputIds.forEach(id => {
+      const element = document.getElementById(id) as HTMLInputElement;
+      if (element) {
+        element.value = '';
+      }
+    });
+
+    // Reset select elements to first option
+    const selectIds = [
+      this.selectors.productStatus,
+      this.selectors.productType
+    ];
+    selectIds.forEach(id => {
+      const element = document.getElementById(id) as HTMLSelectElement;
+      if (element) {
+        element.selectedIndex = 0;
+      }
+    });
+
+    // Reset images to default
+    const defaultImage = 'https://i.ibb.co/LXgvW3hj/image-display.png';
+    const imageIds = [
+      this.selectors.brandImagePreview,
+      this.selectors.productImageLarge
+    ];
+    imageIds.forEach(id => {
+      const element = document.getElementById(id) as HTMLImageElement;
+      if (element) {
+        element.src = defaultImage;
+      }
     });
   }
 
@@ -204,8 +357,8 @@ export class ProductView {
         <div class="action-menu">
           <button class="action-btn" data-action="menu" aria-label="Product actions">⋯</button>
           <nav class="dropdown-menu">
-            <button class="dropdown-item" data-action="edit" data-id="${product.id}">Edit</button>
-            <button class="dropdown-item delete" data-action="delete" data-id="${product.id}">Delete</button>
+            <button class="dropdown-item" id="edit-product-btn" data-action="edit" data-id="${product.id}">Edit</button>
+            <button class="dropdown-item delete" id="delete-product-btn" data-action="delete" data-id="${product.id}">Delete</button>
           </nav>
         </div>
       </td>
@@ -225,7 +378,7 @@ export class ProductView {
       this.updateProductDetailFields(product);
       this.attachBackButtonHandler();
     } catch (error) {
-      this.controller.handleError("Error rendering product details:", error);
+      this.controller?.handleError("Error rendering product details:", error);
     }
   }
 
