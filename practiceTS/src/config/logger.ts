@@ -1,4 +1,3 @@
-// config.ts
 import { LoggerService } from "../services/loggerService";
 
 export const logger = new LoggerService(

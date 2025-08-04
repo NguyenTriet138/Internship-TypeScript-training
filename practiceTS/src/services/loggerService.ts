@@ -1,4 +1,3 @@
-// src/services/loggerService.ts
 export type LogLevel = "debug" | "info" | "warn" | "error" | "silent";
 
 export class LoggerService {
