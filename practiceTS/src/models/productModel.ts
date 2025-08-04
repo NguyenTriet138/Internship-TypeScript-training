@@ -138,11 +138,26 @@ export class ProductModel {
     try {
       // Get all products to determine the next ID
       const products = await this.getAllProducts();
-      const nextId = Math.max(...products.map(p => p.id), 0) + 1;
+      // const nextId = Math.max(...products.map(p => p.id), 0) + 1;
+
+      const existingIds = new Set(products.map(p => p.id));
+
+      // Generate unique 4-digit ID
+      let newId: number;
+      const maxAttempts = 10000;
+      let attempts = 0;
+
+      do {
+        newId = Math.floor(Math.random() * 9000) + 1000; // 1000 - 9999
+        attempts++;
+        if (attempts > maxAttempts) {
+          throw new Error('Failed to generate unique product ID after many attempts');
+        }
+      } while (existingIds.has(newId));
 
       // Create new product with the next available ID
       const newProductData: ProductData = {
-        id: nextId,
+        id: newId,
         ...productData
       };
 

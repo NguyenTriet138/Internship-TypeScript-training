@@ -328,7 +328,6 @@ export class ProductView {
    * Navigate to product detail page
    */
   private navigateToProductDetail(productId: string): void {
-    // localStorage.setItem("selectedProductId", productId);
     window.location.href = `./productDetail?id=${productId}`;
   }
 
