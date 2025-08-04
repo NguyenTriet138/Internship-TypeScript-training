@@ -225,7 +225,8 @@
 }
 
 /* Modal Styles */
-.modal-overlay {
+.modal-overlay,
+.modal-overlay-confirm {
   position: fixed;
   top: 0;
   left: 0;
@@ -238,7 +239,8 @@
   z-index: 1000;
 }
 
-.modal-overlay.active {
+.modal-overlay.active,
+.modal-overlay-confirm.active {
   display: flex;
 }
 
@@ -321,14 +323,14 @@
 }
 
 /* Delete button */
-.delete {
-  background: #e53935;
+.delete-product {
+  background-color: #e53935;
   color: #fff;
   border: none;
   width: 100%;
 }
 
-.delete:hover {
+.delete-product:hover {
   background: transparent;
   color: #e53935;
   border: 1px solid #e53935;

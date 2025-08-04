@@ -82,7 +82,7 @@ export class ProductController {
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
 
-      this.view.hideAddProductModal();
+      this.view.hideProductModal();
 
       // Refresh the product list
       await this.loadProducts();
@@ -178,7 +178,7 @@ export class ProductController {
 
       await this.model.updateProduct(productId, updatedData);
 
-      this.view.hideAddProductModal();
+      this.view.hideProductModal();
 
       // Refresh the product list
       await this.loadProducts();

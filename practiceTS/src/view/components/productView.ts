@@ -28,7 +28,8 @@ export class ProductView {
     confirmButton: "saveInfo",
     addProductForm: "addProductForm",
     editProductButton: "edit-product-btn",
-    deleteProductButton: "delete-product-btn"
+    deleteProductButton: "delete-product-btn",
+    confirmModal: "modal-overlay-confirm"
   };
 
   constructor(
@@ -37,6 +38,7 @@ export class ProductView {
     this.tbody = document.querySelector(this.selectors.productDisplay);
     this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
+    this.initializeDeleteModalHandlers();
   }
 
   /**
@@ -68,13 +70,34 @@ export class ProductView {
     // Close button handler
     const closeButton = document.getElementById(this.selectors.closeModalButton);
     if (closeButton) {
-      closeButton.addEventListener('click', () => this.hideAddProductModal());
+      closeButton.addEventListener('click', () => this.hideProductModal());
     }
 
     // Cancel button handler
     const cancelButton = document.getElementById(this.selectors.cancelButton);
     if (cancelButton) {
-      cancelButton.addEventListener('click', () => this.hideAddProductModal());
+      cancelButton.addEventListener('click', () => this.hideProductModal());
+    }
+  }
+
+  public initializeDeleteModalHandlers(): void {
+    const confirmModal = document.querySelector('.modal-overlay-confirm') as HTMLElement;
+    if (!confirmModal) return;
+
+    // Close button
+    const closeBtn = confirmModal.querySelector('.close-modal-confirm') as HTMLElement;
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => {
+        confirmModal.classList.remove('active');
+      });
+    }
+
+    // Cancel button
+    const cancelBtn = confirmModal.querySelector('.cancel-modal-confirm') as HTMLElement;
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', () => {
+        confirmModal.classList.remove('active');
+      });
     }
   }
 
@@ -113,9 +136,9 @@ export class ProductView {
   }
 
   /**
-   * Hide the Add Product modal overlay
+   * Hide the Product modal overlay
    */
-  public hideAddProductModal(): void {
+  public hideProductModal(): void {
     const modalOverlay = document.querySelector(`.${this.selectors.modalOverlay}`) as HTMLElement;
     if (modalOverlay) {
       modalOverlay.classList.remove('active');
@@ -172,6 +195,10 @@ export class ProductView {
     } else if (action === "delete") {
       console.log("Delete product:", productId);
       // Gọi hàm delete ở đây
+      const confirmModal = document.querySelector(`.${this.selectors.confirmModal}`) as HTMLElement;
+      if (confirmModal) {
+        confirmModal.classList.add('active');
+      }
     }
   }
 
@@ -517,7 +544,7 @@ export class ProductView {
     }
 
     if (!value || value.includes("image-display.png")) {
-      this.showValidationError(id, errorMsg);
+      this.controller?.handleError("Pls input Product or Brand Image", "");
       throw new Error("VALIDATION:" + errorMsg);
     }
     return value;
