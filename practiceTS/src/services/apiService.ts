@@ -1,7 +1,4 @@
-export interface ApiConfig {
-  baseUrl: string;
-  endpoints: Record<string, string>;
-}
+import { ApiConfig } from "../config/env";
 
 export interface ImgBBResponse {
   data: {
@@ -42,16 +39,6 @@ export interface ImgBBResponse {
   status: number;
 }
 
-/**
- * Default API configuration
- */
-export const API_CONFIG: ApiConfig = {
-  baseUrl: 'http://localhost:3000',
-  endpoints: {
-    products: '/products'
-  }
-} as const;
-
 export class ApiService {
   private readonly baseUrl: string;
 
@@ -81,9 +68,8 @@ export class ApiService {
 
       const data = await response.json();
       return data;
-    } catch (error) {
-      console.error('Fetch error:', error);
-      throw error;
+    } catch {
+      throw new Error('Failed to fetch...');
     }
   }
 
@@ -95,6 +81,19 @@ export class ApiService {
   public async put<T, U = T>(endpoint: string, data: U): Promise<T> {
     return this.fetch<T>(endpoint, {
       method: 'PUT',
+      body: JSON.stringify(data)
+    });
+  }
+
+  /**
+   * Create a new resource
+   * @param endpoint - API endpoint
+   * @param data - Data to create
+   * @returns Promise with the created resource
+   */
+  public async post<T, U = T>(endpoint: string, data: U): Promise<T> {
+    return this.fetch<T>(endpoint, {
+      method: 'POST',
       body: JSON.stringify(data)
     });
   }
@@ -127,9 +126,8 @@ export class ApiService {
       }
 
       return data;
-    } catch (error) {
-      console.error('ImgBB upload error:', error);
-      throw error;
+    } catch {
+      throw new Error('Failed to upload product image');
     }
   }
 }

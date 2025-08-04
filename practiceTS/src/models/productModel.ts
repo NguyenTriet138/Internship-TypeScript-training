@@ -1,5 +1,5 @@
-// src/model/product-model.ts
-import { ApiService, API_CONFIG } from '../utils/apiService.js';
+import { ApiService } from '../services/apiService.js';
+import { API_CONFIG } from '../config/env.js'
 
 export enum ProductStatus {
   Available = "Available",
@@ -15,6 +15,17 @@ export enum ProductType {
 
 export interface ProductData {
   id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  status: ProductStatus;
+  type: ProductType;
+  brand: string;
+  productImage: string;
+  brandImage: string;
+}
+
+export interface SaveProductDataRequest {
   name: string;
   quantity: number;
   price: number;
@@ -78,8 +89,7 @@ export class ProductModel {
     try {
       const data = await this.apiService.get<ProductData[]>(API_CONFIG.endpoints.products);
       return data.map(Product.fromJSON);
-    } catch (error) {
-      console.error('Error fetching products:', error);
+    } catch {
       throw new Error('Failed to fetch products');
     }
   }
@@ -88,8 +98,7 @@ export class ProductModel {
     try {
       const data = await this.apiService.get<ProductData>(API_CONFIG.endpoints.products, id);
       return Product.fromJSON(data);
-    } catch (error) {
-      console.error(`Error fetching product ${id}:`, error);
+    } catch {
       throw new Error('Product not found');
     }
   }
@@ -105,8 +114,7 @@ export class ProductModel {
       const merged: ProductData = { ...current, ...updatedData };
       const data = await this.apiService.put<ProductData>(`${API_CONFIG.endpoints.products}/${id}`, merged);
       return Product.fromJSON(data);
-    } catch (error) {
-      console.error(`Error updating product ${id}:`, error);
+    } catch {
       throw new Error('Failed to update product');
     }
   }
@@ -116,13 +124,32 @@ export class ProductModel {
    */
   async uploadImageToImgBB(imageData: string, apiKey: string): Promise<string> {
     try {
-
       const response = await this.apiService.uploadToImgBB(imageData, apiKey);
-
       return response.data.display_url;
-    } catch (error) {
-      console.error('Error uploading image to ImgBB:', error);
+    } catch {
       throw new Error('Failed to upload image');
+    }
+  }
+
+  /**
+   * Create a new product and get the next available ID
+   */
+  async createProduct(productData: Omit<ProductData, 'id'>): Promise<Product> {
+    try {
+      // Get all products to determine the next ID
+      const products = await this.getAllProducts();
+      const nextId = Math.max(...products.map(p => p.id), 0) + 1;
+
+      // Create new product with the next available ID
+      const newProductData: ProductData = {
+        id: nextId,
+        ...productData
+      };
+
+      const data = await this.apiService.post<ProductData>(API_CONFIG.endpoints.products, newProductData);
+      return Product.fromJSON(data);
+    } catch {
+      throw new Error('Failed to create product');
     }
   }
 }

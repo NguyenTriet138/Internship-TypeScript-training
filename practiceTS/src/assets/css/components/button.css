@@ -15,10 +15,8 @@
 }
 
 .button.primary-btn {
-  margin-top: 45px;
   background: var(--clr-btn);
   color: var(--clr-bg);
-  width: 100%;
 }
 
 .button.primary-btn:hover {
@@ -27,14 +25,17 @@
 }
 
 .button.secondary-btn {
-  margin-top: 45px;
   background: transparent;
   color: var(--clr-text-dark);
   border: 1px solid var(--clr-text-light);
-  width: 100%;
 }
 
 .button.secondary-btn:hover {
   background: var(--clr-text-light);
   color: var(--clr-bg);
+}
+
+.button.primary-btn,
+.button.secondary-btn {
+  width: 100%;
 }

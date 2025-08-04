@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000';
+import { API_CONFIG } from "config/env";
 
 export class User {
   id: number;
@@ -26,11 +26,9 @@ export class User {
 }
 
 export class UserModel {
-  private apiUrl = API_BASE_URL + '/users';
-
   async login(username: string, password: string): Promise<User | null> {
     try {
-      const res = await fetch(`${this.apiUrl}?username=${username}&password=${password}`);
+      const res = await fetch(`${API_CONFIG.baseUrl}${API_CONFIG.endpoints.users}?username=${username}&password=${password}`);
       const users = await res.json();
 
       if (users.length === 1) {
@@ -48,8 +46,7 @@ export class UserModel {
     try {
       const userStr = localStorage.getItem('currentUser');
       return userStr ? User.fromJSON(userStr) : null;
-    } catch (error) {
-      console.error('Error getting current user:', error);
+    } catch {
       return null;
     }
   }

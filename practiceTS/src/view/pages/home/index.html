@@ -9,8 +9,11 @@
     <meta name="description" content="Free Web tutorial for Product Management." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <link rel="stylesheet" href="../../../assets/css/main.css" />
-    <link rel="stylesheet" href="../../../assets/css/pages/home-style.css" />
     <link rel="icon" href="https://i.ibb.co/238dhDkG/product-Logo.png" type="image/jpg" sizes="20x20" />
   </head>
   <body>
@@ -105,6 +108,85 @@
         </table>
       </div>
     </main>
+
+    <!-- Add New Product Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-header">
+          <h2 class="modal-title">Add new product</h2>
+          <button class="close-btn" id="closeModal">&times;</button>
+        </div>
+
+        <form class="input-form" id="addProductForm">
+          <div class="product-upload">
+            <img class="product-img-modal" id="productImageLarge" src="../../../assets/image-display.png" alt="" />
+            <div class="upload-area" id="uploadProductImg">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <div class="upload-text">Click to upload</div>
+            </div>
+            <!-- <input type="file" class="hidden-input" id="productImageInput" accept="image/*" /> -->
+          </div>
+
+          <fieldset class="form-group">
+            <label class="text text-title-lg" for="productName">Name</label>
+            <input type="text" id="productName" class="form-input" placeholder="Enter name..." required />
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label class="text text-title-lg" for="productQuantity">Quantity</label>
+            <input type="number" class="form-input" id="productQuantity" placeholder="0" required />
+          </fieldset>
+
+          <fieldset class="form-group">
+            <label class="text text-title-lg" for="productPrice">Price</label>
+            <input type="number" class="form-input" id="productPrice" placeholder="0" step="0.01" required />
+          </fieldset>
+
+          <div class="form-row">
+            <fieldset class="form-group">
+              <label class="text text-title-lg" for="productStatus">Status</label>
+              <select class="form-select" id="productStatus" required>
+                <option value="Available">Available</option>
+                <option value="Sold out">Sold out</option>
+              </select>
+            </fieldset>
+            <fieldset class="form-group">
+              <label class="text text-title-lg" for="productType">Types</label>
+              <select class="form-select" id="productType" required>
+                <option value="Bravo">Bravo</option>
+                <option value="Alfa">Alfa</option>
+                <option value="Gold">Gold</option>
+                <option value="Premium">Premium</option>
+              </select>
+            </fieldset>
+          </div>
+
+          <div class="form-row">
+            <fieldset class="form-group">
+              <label class="text text-title-lg" for="brandName">Brand</label>
+              <input type="text" class="form-input" id="brandName" placeholder="Enter Brand..." required />
+            </fieldset>
+            <fieldset class="form-group">
+              <label class="text text-title-lg">Brand Image</label>
+              <div class="upload-section">
+                <img src="../../../assets/image-display.png" alt="" class="brand-avatar-detail" id="brandImagePreview" />
+                <button type="button" class="upload-btn text text-info" id="uploadBranchImg">
+                  <!-- 📷 Upload photo -->
+                   <i class="fa-solid fa-cloud-arrow-up"></i>
+                  Upload photo
+                </button>
+              </div>
+              <!-- <input type="file" class="hidden-input" id="brandImageInput" accept="image/*" /> -->
+            </fieldset>
+          </div>
+
+          <div class="action-buttons modal-active">
+            <button type="button" class="button secondary-btn" id="cancelBtn">Cancel</button>
+            <button type="submit" class="button primary-btn" id="saveInfo">Confirm</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script type="module" src="../../../index.ts" defer></script>
   </body>

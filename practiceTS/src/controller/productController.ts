@@ -1,6 +1,7 @@
-// src/controller/product-controller.ts
-import { ProductModel } from "../models/productModel.js";
+import { ProductModel, ProductData, SaveProductDataRequest } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
+import { ENV } from "../config/env";
+import { logger } from "../config/logger.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -18,7 +19,10 @@ export class ProductController {
     this.pageHandlers = [
       {
         check: () => this.isIndexPage(),
-        handle: () => this.loadProducts()
+        handle: async () => {
+          await this.loadProducts();
+          this.view.attachCreateProductHandler(async () => {await this.handleCreateProduct()});
+        }
       },
       {
         check: () => this.isDetailPage(),
@@ -60,18 +64,40 @@ export class ProductController {
   /**
    * Handle errors: show alert when got error
    */
-  private handleError(message: string, error: unknown): void {
-    console.error(message, error);
+  public handleError(message: string, error: unknown): void {
     alert(message);
+    logger.error(message, error);
     this.navigate("./home");
   }
 
   /**
-   * Get product ID from localStorage
+   * Handle creating a new product
    */
-  private getStoredProductId(): number | null {
-    const id = localStorage.getItem("selectedProductId");
-    return id ? Number(id) : null;
+  private async handleCreateProduct(): Promise<void> {
+    try {
+      const productData = this.view.getProductFormData();
+
+      const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
+      const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+
+      productData.productImage = productImageUpload;
+      productData.brandImage = brandImageUpload;
+      // Create the new product
+      await this.model.createProduct(productData as Omit<ProductData, 'id'>);
+
+      this.view.hideAddProductModal();
+
+      // Refresh the product list
+      await this.loadProducts();
+
+      alert('Product created successfully!');
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith("VALIDATION:")) {
+        return;
+      }
+
+      this.handleError("Failed to create product", error);
+    }
   }
 
   /**
@@ -92,7 +118,6 @@ export class ProductController {
   private async loadProductDetail(): Promise<void> {
     try {
       // Get product ID
-      // const productId = this.getStoredProductId();
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get("id");
 
@@ -109,21 +134,19 @@ export class ProductController {
       // Render the product details and attach Save button
       this.view.renderProductDetail(product);
       this.view.attachSaveButtonHandler(async () => {
-        await this.handleSaveProduct(product.id);
+        await this.handleUpdateProductDetail(product.id);
       });
       this.view.initializeImageUpload();
     } catch (error) {
-      console.error('Detailed error in loadProductDetail:', error);
       this.handleError('Failed to load product details', error);
     }
   }
 
-  private async handleSaveProduct(productId: number): Promise<void> {
+  private async handleUpdateProductDetail(productId: number): Promise<void> {
     try {
-      const updatedData = this.view.getProductFormData();
-
-      const productImageUpload = await this.model.uploadImageToImgBB(updatedData.productImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
-      const brandImageUpload = await this.model.uploadImageToImgBB(updatedData.brandImage!, "80a30c7f1caf502fb8a3e61aeb968fb2");
+      const updatedData : SaveProductDataRequest = this.view.getProductFormData();
+      const productImageUpload = await this.model.uploadImageToImgBB(updatedData.productImage, ENV.IMGBB_API_KEY);
+      const brandImageUpload = await this.model.uploadImageToImgBB(updatedData.brandImage, ENV.IMGBB_API_KEY);
 
       updatedData.productImage = productImageUpload;
       updatedData.brandImage = brandImageUpload;

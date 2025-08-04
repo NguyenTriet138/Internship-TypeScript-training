@@ -223,3 +223,99 @@
 .action-menu:hover .dropdown-menu {
   display: block;
 }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 95vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-title {
+  font-size: var(--fs-xl);
+  line-height: 28px;
+  font-weight: var(--fw-semi-bold);
+  color: #1e293b;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: #667085;
+}
+
+.close-btn:hover {
+  color: #374151;
+}
+
+.product-upload {
+  display: flex;
+  gap: 20px;
+}
+
+.product-img-modal {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+}
+
+.input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.action-buttons.modal-active {
+  padding-top: 16px;
+  max-width: 100%;
+  justify-content: flex-end;
+}
+
+.action-buttons.modal-active .button.primary-btn,
+.action-buttons.modal-active .button.secondary-btn {
+  width: auto;
+  min-width: 100px;
+}
+
+.form-input.error,
+.form-select.error {
+  border: 1px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: var(--fs-xs);
+  margin-top: 4px;
+}
