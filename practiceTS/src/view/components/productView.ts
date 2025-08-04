@@ -7,6 +7,7 @@ interface ElementSelectors {
 
 export class ProductView {
   private tbody: HTMLElement | null;
+  private productIdToDelete: number | null = null;
   private readonly selectors: ElementSelectors = {
     productDisplay: ".product-display",
     productTitle: "productTitle",
@@ -97,6 +98,21 @@ export class ProductView {
     if (cancelBtn) {
       cancelBtn.addEventListener('click', () => {
         confirmModal.classList.remove('active');
+      });
+    }
+
+    // Delete button
+    const deleteBtn = document.querySelector('.delete-product') as HTMLElement;
+    if (deleteBtn) {
+      deleteBtn.addEventListener('click', async () => {
+        if (this.productIdToDelete !== null) {
+          await this.controller?.handleDeleteProduct(this.productIdToDelete);
+          this.productIdToDelete = null;
+          const confirmModal = document.querySelector('.modal-overlay-confirm') as HTMLElement;
+          if (confirmModal) {
+            confirmModal.classList.remove('active');
+          }
+        }
       });
     }
   }
@@ -190,12 +206,10 @@ export class ProductView {
   private handleActionMenuItem(action: string, productId: string): void {
     if (action === "edit") {
       console.log("Edit product:", productId);
-      // Call the controller to handle edit
       this.controller?.handleEditProduct(parseInt(productId));
     } else if (action === "delete") {
-      console.log("Delete product:", productId);
-      // Gọi hàm delete ở đây
-      const confirmModal = document.querySelector(`.${this.selectors.confirmModal}`) as HTMLElement;
+      this.productIdToDelete = parseInt(productId); // Store for confirmation
+      const confirmModal = document.querySelector('.modal-overlay-confirm') as HTMLElement;
       if (confirmModal) {
         confirmModal.classList.add('active');
       }

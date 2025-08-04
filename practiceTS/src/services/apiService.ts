@@ -112,7 +112,7 @@ export class ApiService {
       const formData = new FormData();
       formData.append('image', base64Data);
 
-      const url = `https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`;
+      const url = `https://api.imgbb.com/1/upload?expiration=3600&key=${apiKey}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -128,6 +128,18 @@ export class ApiService {
       return data;
     } catch {
       throw new Error('Failed to upload product image');
+    }
+  }
+
+  public async delete(endpoint: string): Promise<void> {
+    try {
+      const url = this.getUrl(endpoint);
+      const response = await fetch(url, { method: 'DELETE' });
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+      }
+    } catch {
+      throw new Error('Failed to delete resource');
     }
   }
 }

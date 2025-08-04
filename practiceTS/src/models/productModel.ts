@@ -152,4 +152,15 @@ export class ProductModel {
       throw new Error('Failed to create product');
     }
   }
+
+  /**
+   * Delete a product
+   */
+  async deleteProduct(id: number): Promise<void> {
+    try {
+      await this.apiService.delete(`${API_CONFIG.endpoints.products}/${id}`);
+    } catch {
+      throw new Error('Failed to delete product');
+    }
+  }
 }

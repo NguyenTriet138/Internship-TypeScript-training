@@ -202,4 +202,13 @@ export class ProductController {
       brandImage: brandImageUpload,
     };
   }
+
+  public async handleDeleteProduct(productId: number): Promise<void> {
+    try {
+      await this.model.deleteProduct(productId);
+      await this.loadProducts();
+    } catch (error) {
+      this.handleError('Failed to delete product', error);
+    }
+  }
 }
