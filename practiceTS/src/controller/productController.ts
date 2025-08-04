@@ -2,6 +2,7 @@
 import { ProductModel, ProductData } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { ENV } from "../config/env";
+import { logger } from "../config/logger.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -66,9 +67,7 @@ export class ProductController {
    */
   public handleError(message: string, error: unknown): void {
     alert(message);
-    if (process.env.NODE_ENV === "development") {
-      console.error(message, error);
-    }
+    logger.error(message, error);
     this.navigate("./home");
   }
 
