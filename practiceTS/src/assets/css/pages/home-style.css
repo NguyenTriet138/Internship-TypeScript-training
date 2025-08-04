@@ -330,3 +330,16 @@
 .delete:hover {
   background: #c22323;
 }
+
+.modal-icon {
+  padding: 8px;
+  background-color: #FEE4E2;
+  border-radius: 50%;
+  border: 5px solid #FEF3F2;
+  color: #D92D20;
+  font-size: 20px;
+}
+
+.modal.confirm {
+  max-width: 400px;
+}
