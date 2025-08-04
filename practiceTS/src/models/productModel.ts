@@ -1,5 +1,4 @@
-// src/model/product-model.ts
-import { ApiService } from '../utils/apiService.js';
+import { ApiService } from '../services/apiService.js';
 import { API_CONFIG } from '../config/env.js'
 
 export enum ProductStatus {
@@ -16,6 +15,17 @@ export enum ProductType {
 
 export interface ProductData {
   id: number;
+  name: string;
+  quantity: number;
+  price: number;
+  status: ProductStatus;
+  type: ProductType;
+  brand: string;
+  productImage: string;
+  brandImage: string;
+}
+
+export interface SaveProductDataRequest {
   name: string;
   quantity: number;
   price: number;

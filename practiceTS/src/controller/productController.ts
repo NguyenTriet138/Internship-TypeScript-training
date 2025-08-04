@@ -1,7 +1,7 @@
-// src/controller/product-controller.ts
-import { ProductModel, ProductData } from "../models/productModel.js";
+import { ProductModel, ProductData, SaveProductDataRequest } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { ENV } from "../config/env";
+import { logger } from "../config/logger.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -66,9 +66,7 @@ export class ProductController {
    */
   public handleError(message: string, error: unknown): void {
     alert(message);
-    if (process.env.NODE_ENV === "development") {
-      console.error(message, error);
-    }
+    logger.error(message, error);
     this.navigate("./home");
   }
 
@@ -80,6 +78,7 @@ export class ProductController {
       let productData = this.view.getProductFormData();
 
       productData = await this.uploadProductImages(productData);
+
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
 
@@ -96,14 +95,6 @@ export class ProductController {
 
       this.handleError("Failed to create product", error);
     }
-  }
-
-  /**
-   * Get product ID from localStorage
-   */
-  private getStoredProductId(): number | null {
-    const id = localStorage.getItem("selectedProductId");
-    return id ? Number(id) : null;
   }
 
   /**
@@ -140,7 +131,7 @@ export class ProductController {
       // Render the product details and attach Save button
       this.view.renderProductDetail(product);
       this.view.attachSaveButtonHandler(async () => {
-        await this.handleSaveProduct(product.id);
+        await this.handleUpdateProductDetail(product.id);
       });
       this.view.initializeImageUpload();
     } catch (error) {
@@ -148,7 +139,7 @@ export class ProductController {
     }
   }
 
-  private async handleSaveProduct(productId: number): Promise<void> {
+  private async handleUpdateProductDetail(productId: number): Promise<void> {
     try {
       let updatedData = this.view.getProductFormData();
 
@@ -201,9 +192,9 @@ export class ProductController {
     }
   }
 
-  private async uploadProductImages(productData: Partial<ProductData>): Promise<Partial<ProductData>> {
-    const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage!, ENV.IMGBB_API_KEY);
-    const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage!, ENV.IMGBB_API_KEY);
+  private async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
+    const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
+    const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
 
     return {
       ...productData,

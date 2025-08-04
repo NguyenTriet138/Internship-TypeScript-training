@@ -14,14 +14,14 @@
   "products": [
     {
       "id": "1",
-      "name": "Louis Vuitton",
-      "quantity": 9177,
+      "name": "Louis Vuitton4231",
+      "quantity": 917788,
       "price": 452.85,
-      "status": "Available",
+      "status": "Sold out",
       "type": "Bravo",
       "brand": "Evan Flores",
-      "productImage": "https://i.ibb.co/CsQFh2nq/Louis-Vuitton.jpg",
-      "brandImage": "https://i.ibb.co/RGVggnWk/Evan-Flores.jpg"
+      "productImage": "https://i.ibb.co/nqmjZnvR/bd40a0991f8a.png",
+      "brandImage": "https://i.ibb.co/nqmjZnvR/bd40a0991f8a.png"
     },
     {
       "id": "2",
@@ -64,8 +64,8 @@
       "status": "Available",
       "type": "Bravo",
       "brand": "Jorge Black",
-      "productImage": "https://i.ibb.co/Dgz36J2R/Mitsubishi.jpg",
-      "brandImage": "https://i.ibb.co/tPk5CvCx/Jorge-Black.jpg"
+      "productImage": "https://i.ibb.co/RkgFyXYT/Mitsubishi.jpg",
+      "brandImage": "https://i.ibb.co/nqmjZnvR/bd40a0991f8a.png"
     },
     {
       "id": "6",
@@ -88,6 +88,17 @@
       "type": "Gold",
       "productImage": "https://i.ibb.co/zTwSYgtZ/17d3ef04816a.png",
       "brandImage": "https://i.ibb.co/HTkvRcdC/432f9feebc6e.png"
+    },
+    {
+      "id": "8",
+      "name": "poppp",
+      "brand": "ooiii",
+      "quantity": 26595,
+      "price": 15.66,
+      "status": "Available",
+      "type": "Premium",
+      "productImage": "https://i.ibb.co/chJ4p9Gf/1b2e91031eac.png",
+      "brandImage": "https://i.ibb.co/BVq5rYzt/c4b414741ae0.png"
     }
   ]
 }

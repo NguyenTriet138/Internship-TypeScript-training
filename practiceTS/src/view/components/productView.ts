@@ -1,5 +1,4 @@
-// src/view/product-view.ts
-import { Product, ProductStatus, ProductType, ProductData } from "../../models/productModel.js";
+import { Product, ProductStatus, ProductType, SaveProductDataRequest } from "../../models/productModel.js";
 import { ProductController } from "../../controller/productController.js";
 
 interface ElementSelectors {
@@ -450,7 +449,7 @@ export class ProductView {
   /**
    * Get updated product data from form fields
    */
-  public getProductFormData(): Partial<ProductData> {
+  public getProductFormData(): SaveProductDataRequest {
     this.clearValidationErrors();
 
     const name = this.getValueAndValidate(this.selectors.productName, "Please enter product name!");
@@ -473,14 +472,14 @@ export class ProductView {
     const brandImage = this.getImageAndValidate(this.selectors.brandImagePreview,"Please upload a brand image!");
 
     return {
-      name,
-      brand,
-      quantity,
-      price,
-      status,
-      type,
-      productImage,
-      brandImage,
+      name : name,
+      brand : brand,
+      quantity : quantity,
+      price : price,
+      status : status,
+      type : type,
+      productImage : productImage,
+      brandImage : brandImage,
     };
   }
 
