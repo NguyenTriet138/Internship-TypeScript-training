@@ -319,3 +319,14 @@
   font-size: var(--fs-xs);
   margin-top: 4px;
 }
+
+/* Delete button */
+.delete {
+  background: #e53935;
+  color: #fff;
+  border: none;
+}
+
+.delete:hover {
+  background: #c22323;
+}
