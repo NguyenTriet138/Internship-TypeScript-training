@@ -36,6 +36,15 @@ export interface SaveProductDataRequest {
   brandImage: string;
 }
 
+export interface ProductFilter {
+  name?: string;
+  status?: ProductStatus | 'All';
+  type?: ProductType | 'All';
+  quantity?: string;
+  brand?: string;
+  price?: string;
+}
+
 export class Product {
   constructor(
     public id: string,
@@ -155,5 +164,92 @@ export class ProductModel {
     } catch {
       throw new Error('Failed to delete product');
     }
+  }
+
+  /**
+   * Filter products based on multiple criteria
+   */
+  async getFilteredProducts(filters: ProductFilter): Promise<Product[]> {
+    try {
+      const allProducts = await this.getAllProducts();
+      return this.applyFilters(allProducts, filters);
+    } catch {
+      throw new Error('Failed to fetch filtered products');
+    }
+  }
+
+  /**
+   * Apply filters to a list of products
+   */
+  private applyFilters(products: Product[], filters: ProductFilter): Product[] {
+    return products.filter(product => {
+      // Filter by name (case-insensitive partial match)
+      if (filters.name && filters.name.trim() !== '') {
+        const productName = product.name.toLowerCase();
+        const filterName = filters.name.toLowerCase();
+        if (!productName.includes(filterName)) {
+          return false;
+        }
+      }
+
+      // Filter by status
+      if (filters.status && filters.status !== 'All') {
+        if (product.status !== filters.status) {
+          return false;
+        }
+      }
+
+      // Filter by type
+      if (filters.type && filters.type !== 'All') {
+        if (product.type !== filters.type) {
+          return false;
+        }
+      }
+
+      // Filter by quantity (exact match or range)
+      if (filters.quantity && filters.quantity.trim() !== '') {
+        const filterQuantity = parseInt(filters.quantity);
+        if (isNaN(filterQuantity)) {
+          // If not a number, try to match as string
+          const productQuantity = product.quantity.toString();
+          if (!productQuantity.includes(filters.quantity)) {
+            return false;
+          }
+        } else {
+          // Exact number match
+          if (product.quantity !== filterQuantity) {
+            return false;
+          }
+        }
+      }
+
+      // Filter by brand (case-insensitive partial match)
+      if (filters.brand && filters.brand.trim() !== '') {
+        const productBrand = product.brand.toLowerCase();
+        const filterBrand = filters.brand.toLowerCase();
+        if (!productBrand.includes(filterBrand)) {
+          return false;
+        }
+      }
+
+      // Filter by price (exact match or range)
+      if (filters.price && filters.price.trim() !== '') {
+        const filterPrice = parseFloat(filters.price);
+        if (isNaN(filterPrice)) {
+          // If not a number, try to match as string
+          const productPrice = product.price.toString();
+          if (!productPrice.includes(filters.price)) {
+            return false;
+          }
+        } else {
+          // Exact number match
+          if (product.price !== filterPrice) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    });
   }
 }
