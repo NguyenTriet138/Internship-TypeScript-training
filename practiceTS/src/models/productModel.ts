@@ -9,8 +9,7 @@ export enum ProductStatus {
 export enum ProductType {
   Bravo = "Bravo",
   Alfa = "Alfa",
-  Gold = "Gold",
-  Premium = "Premium"
+  Gold = "Gold"
 }
 
 export interface ProductData {

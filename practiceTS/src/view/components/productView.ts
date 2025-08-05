@@ -46,7 +46,7 @@ export class ProductView {
     this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
     this.initializeDeleteModalHandlers();
-    // this.initializeFilterHandlers();
+    this.initializeFilterHandlers();
   }
 
   /**
@@ -732,7 +732,133 @@ export class ProductView {
     resultsCountElement.textContent = `Showing ${count} product${count !== 1 ? 's' : ''}`;
   }
 
+  /**
+   * Initialize filter event handlers
+   */
+  private initializeFilterHandlers(): void {
+    // Input filters with debouncing
+    const inputFilters = [
+      this.selectors.productSearch,
+      this.selectors.quantitySearch,
+      this.selectors.brandSearch,
+      this.selectors.priceSearch
+    ];
 
+    inputFilters.forEach(filterId => {
+      const filterElement = document.getElementById(filterId) as HTMLInputElement;
+      if (filterElement) {
+        filterElement.addEventListener('input', () => {
+          this.debounceFilter();
+        });
+      }
+    });
+
+    // Select filters (immediate filtering)
+    const selectFilters = [
+      this.selectors.statusFilter,
+      this.selectors.typeFilter
+    ];
+
+    selectFilters.forEach(filterId => {
+      const filterElement = document.getElementById(filterId) as HTMLSelectElement;
+      if (filterElement) {
+        filterElement.addEventListener('change', () => {
+          this.applyFilters();
+        });
+      }
+    });
+  }
+
+  /**
+   * Debounce filter to avoid too many API calls
+   */
+  private debounceFilter(): void {
+    if (this.filterTimeout) {
+      clearTimeout(this.filterTimeout);
+    }
+
+    this.filterTimeout = setTimeout(() => {
+      this.applyFilters();
+    }, 300);
+  }
+
+  /**
+   * Apply all current filters
+   */
+  private applyFilters(): void {
+    const filters = this.getFilterValues();
+    this.highlightActiveFilters(filters);
+    this.onHandleProductFilter?.(filters);
+  }
+
+  /**
+   * Highlight active filter fields
+   */
+  private highlightActiveFilters(filters: ProductFilter): void {
+    // Input filters
+    const inputFilters = [
+      { id: this.selectors.productSearch, value: filters.name },
+      { id: this.selectors.quantitySearch, value: filters.quantity },
+      { id: this.selectors.brandSearch, value: filters.brand },
+      { id: this.selectors.priceSearch, value: filters.price }
+    ];
+
+    inputFilters.forEach(({ id, value }) => {
+      const element = document.getElementById(id) as HTMLInputElement;
+      if (element) {
+        if (value && value.trim() !== '') {
+          element.style.backgroundColor = '#f0f8ff';
+          element.style.borderColor = '#3b82f6';
+        } else {
+          element.style.backgroundColor = '';
+          element.style.borderColor = '';
+        }
+      }
+    });
+
+    // Select filters
+    const selectFilters = [
+      { id: this.selectors.statusFilter, value: filters.status },
+      { id: this.selectors.typeFilter, value: filters.type }
+    ];
+
+    selectFilters.forEach(({ id, value }) => {
+      const element = document.getElementById(id) as HTMLSelectElement;
+      if (element) {
+        if (value && value !== 'All') {
+          element.style.backgroundColor = '#f0f8ff';
+          element.style.borderColor = '#3b82f6';
+        } else {
+          element.style.backgroundColor = '';
+          element.style.borderColor = '';
+        }
+      }
+    });
+  }
+
+  /**
+   * Get current filter values from the DOM
+   */
+  private getFilterValues(): ProductFilter {
+    const getInputValue = (id: string): string => {
+      const element = document.getElementById(id) as HTMLInputElement;
+      return element ? element.value.trim() : '';
+    };
+
+    const getSelectValue = (id: string): string => {
+      const element = document.getElementById(id) as HTMLSelectElement;
+      return element ? element.value : 'All';
+    };
+
+    return {
+      name: getInputValue(this.selectors.productSearch),
+      status: getSelectValue(this.selectors.statusFilter) as ProductStatus | 'All',
+      type: getSelectValue(this.selectors.typeFilter) as ProductType | 'All',
+      quantity: getInputValue(this.selectors.quantitySearch),
+      brand: getInputValue(this.selectors.brandSearch),
+      price: getInputValue(this.selectors.priceSearch)
+    };
+  }
 
   public showSuccessMessage(message: string): void {
     alert(message);
