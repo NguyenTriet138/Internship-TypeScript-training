@@ -1,4 +1,4 @@
-import { ApiConfig } from "../config/env";
+import { ApiConfig, ENV } from "../config/env";
 
 export interface ImgBBResponse {
   data: {
@@ -112,7 +112,7 @@ export class ApiService {
       const formData = new FormData();
       formData.append('image', base64Data);
 
-      const url = `https://api.imgbb.com/1/upload?expiration=3600&key=${apiKey}`;
+      const url = `${ENV.IMGBB_BASE_URL}?expiration=${ENV.IMGBB_EXPIRATION}&key=${apiKey}`;
 
       const response = await fetch(url, {
         method: 'POST',

@@ -704,4 +704,8 @@ export class ProductView {
     }
     return null;
   }
+
+  public showSuccessMessage(message: string): void {
+    alert(message);
+  }
 }

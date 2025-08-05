@@ -183,7 +183,7 @@ export class ProductController {
       // Refresh the product list
       await this.loadProducts();
 
-      alert('Product updated successfully!');
+      this.view.showSuccessMessage('Product updated successfully!');
     } catch (error) {
       if (error instanceof Error && error.message.startsWith("VALIDATION:")) {
         return;

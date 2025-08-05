@@ -1,5 +1,7 @@
 export const ENV = {
   IMGBB_API_KEY: process.env.IMGBB_API_KEY as string,
+  IMGBB_EXPIRATION: 3600,
+  IMGBB_BASE_URL: 'https://api.imgbb.com/1/upload',
 };
 
 export interface ApiConfig {
