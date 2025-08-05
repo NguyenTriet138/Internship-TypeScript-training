@@ -1,4 +1,4 @@
-import { Product, ProductStatus, ProductType, SaveProductDataRequest } from "../../models/productModel.js";
+import { Product, ProductStatus, ProductType, SaveProductDataRequest, ProductFilter } from "../../models/productModel.js";
 
 interface ElementSelectors {
   [key: string]: string;
@@ -7,6 +7,7 @@ interface ElementSelectors {
 export class ProductView {
   private tbody: HTMLElement | null;
   private productIdToDelete: string | null = null;
+  private filterTimeout: NodeJS.Timeout | null = null;
   private readonly selectors: ElementSelectors = {
     productDisplay: ".product-display",
     productTitle: "productTitle",
@@ -29,7 +30,15 @@ export class ProductView {
     addProductForm: "addProductForm",
     editProductButton: "edit-product-btn",
     deleteProductButton: "delete-product-btn",
-    confirmModal: "modal-overlay-confirm"
+    confirmModal: "modal-overlay-confirm",
+    // Filter selectors
+    productSearch: "product-search",
+    statusFilter: "status-filter",
+    typeFilter: "type-filter",
+    quantitySearch: "quantity-search",
+    brandSearch: "brand-search",
+    priceSearch: "price-search",
+    clearFiltersButton: "clear-filters-btn"
   };
 
   constructor() {
@@ -37,6 +46,7 @@ export class ProductView {
     this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
     this.initializeDeleteModalHandlers();
+    // this.initializeFilterHandlers();
   }
 
   /**
@@ -158,6 +168,7 @@ export class ProductView {
     if (!this.tbody) return;
     this.tbody.innerHTML = products.map((p) => this.renderRow(p)).join("");
     this.attachRowClickHandlers();
+    this.updateResultsCount(products.length);
   }
 
   /**
@@ -693,8 +704,43 @@ export class ProductView {
     return null;
   }
 
+  /**
+   * Update the results count display
+   */
+  private updateResultsCount(count: number): void {
+    let resultsCountElement = document.getElementById('results-count');
+    // Define products count after filtered
+    if (!resultsCountElement) {
+      resultsCountElement = document.createElement('div');
+      resultsCountElement.id = 'results-count';
+      resultsCountElement.className = 'results-count';
+      resultsCountElement.style.cssText = `
+        text-align: center;
+        padding: 10px;
+        color: var(--clr-text-dark);
+        font-size: var(--fs-md);
+        margin-top: 10px;
+      `;
+
+      // Insert below the table
+      const tableContainer = document.querySelector('.product-table-container');
+      if (tableContainer) {
+        tableContainer.appendChild(resultsCountElement);
+      }
+    }
+
+    resultsCountElement.textContent = `Showing ${count} product${count !== 1 ? 's' : ''}`;
+  }
+
+
+
   public showSuccessMessage(message: string): void {
     alert(message);
+  }
+
+  private onHandleProductFilter?:(filters: ProductFilter) => void;
+  public onProductFilter(cb: (filters: ProductFilter) => void): void {
+    this.onHandleProductFilter = cb;
   }
 
   private onDeleteProductHandler?: (id: string) => void;
