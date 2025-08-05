@@ -28,7 +28,7 @@ export class ProductController {
           });
 
           this.view.onEditProduct(async (id: string) => {
-            await this.handleEditProduct(id);
+            await this.handleLoadEditProduct(id);
           });
 
           this.view.onError((msg, error) => {
@@ -143,7 +143,7 @@ export class ProductController {
       // Render the product details and attach Save button
       this.view.renderProductDetail(product);
       this.view.attachSaveButtonHandler(async () => {
-        await this.handleUpdateProductDetail(product.id);
+        await this.bindGetProduct(product.id);
       });
       this.view.initializeImageUpload();
     } catch (error) {
@@ -151,20 +151,7 @@ export class ProductController {
     }
   }
 
-  private async handleUpdateProductDetail(productId: string): Promise<void> {
-    try {
-      let updatedData = this.view.getProductFormData();
-
-      updatedData = await this.uploadProductImages(updatedData);
-
-      await this.model.updateProduct(productId, updatedData);
-      alert('Product updated successfully!');
-    } catch (error) {
-      this.handleError('Failed to save product', error);
-    }
-  }
-
-  public async handleEditProduct(productId: string): Promise<void> {
+  public async handleLoadEditProduct(productId: string): Promise<void> {
     try {
       // Get the product data
       const product = await this.model.getProductById(productId);
@@ -174,7 +161,8 @@ export class ProductController {
 
       // Attach the update product info for editing
       this.view.attachUpdateProductHandler(async () => {
-        await this.handleUpdateProduct(productId);
+        await this.bindGetProduct(productId);
+        this.view.hideProductModal();
       });
 
     } catch (error) {
@@ -182,15 +170,13 @@ export class ProductController {
     }
   }
 
-  private async handleUpdateProduct(productId: string): Promise<void> {
+  private async bindGetProduct(productId: string): Promise<void> {
     try {
       let updatedData = this.view.getProductFormData();
 
       updatedData = await this.uploadProductImages(updatedData);
 
       await this.model.updateProduct(productId, updatedData);
-
-      this.view.hideProductModal();
 
       // Refresh the product list
       await this.loadProducts();
