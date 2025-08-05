@@ -6,8 +6,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const model = new ProductModel();
   const view = new ProductView();
   const controller = new ProductController(model, view);
-  // Set the controller reference in the view
-  view.setController(controller);
 
   await controller.init();
 });

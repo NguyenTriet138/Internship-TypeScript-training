@@ -1,5 +1,4 @@
 import { Product, ProductStatus, ProductType, SaveProductDataRequest } from "../../models/productModel.js";
-import { ProductController } from "../../controller/productController.js";
 
 interface ElementSelectors {
   [key: string]: string;
@@ -33,20 +32,11 @@ export class ProductView {
     confirmModal: "modal-overlay-confirm"
   };
 
-  constructor(
-    private controller?: ProductController,
-  ) {
+  constructor() {
     this.tbody = document.querySelector(this.selectors.productDisplay);
     this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
     this.initializeDeleteModalHandlers();
-  }
-
-  /**
-   * Set the controller reference after initialization
-   */
-  public setController(controller: ProductController): void {
-    this.controller = controller;
   }
 
   /**
@@ -106,7 +96,7 @@ export class ProductView {
     if (deleteBtn) {
       deleteBtn.addEventListener('click', async () => {
         if (this.productIdToDelete !== null) {
-          await this.controller?.handleDeleteProduct(this.productIdToDelete);
+          await this.onDeleteProductHandler?.(this.productIdToDelete);
           this.productIdToDelete = null;
           const confirmModal = document.querySelector('.modal-overlay-confirm') as HTMLElement;
           if (confirmModal) {
@@ -205,8 +195,7 @@ export class ProductView {
 
   private handleActionMenuItem(action: string, productId: string): void {
     if (action === "edit") {
-      console.log("Edit product:", productId);
-      this.controller?.handleEditProduct(productId);
+      this.onEditProductHandler?.(productId);
     } else if (action === "delete") {
       this.productIdToDelete = productId; // Store for confirmation
       const confirmModal = document.querySelector('.modal-overlay-confirm') as HTMLElement;
@@ -417,7 +406,7 @@ export class ProductView {
       this.updateProductDetailFields(product);
       this.attachBackButtonHandler();
     } catch (error) {
-      this.controller?.handleError("Error rendering product details:", error);
+      this.onErrorHandler?.("Error rendering product details:", error);
     }
   }
 
@@ -557,7 +546,7 @@ export class ProductView {
     }
 
     if (!value || value.includes("image-display.png")) {
-      this.controller?.handleError("Pls input Product or Brand Image", "");
+      this.onErrorHandler?.("Pls input Product or Brand Image", "");
       throw new Error("VALIDATION:" + errorMsg);
     }
     return value;
@@ -582,7 +571,6 @@ export class ProductView {
     document.querySelectorAll(".error-message").forEach((el) => el.remove());
   }
 
-  //======================================================
   /**
    * Initialize image upload functionality
    */
@@ -707,5 +695,21 @@ export class ProductView {
 
   public showSuccessMessage(message: string): void {
     alert(message);
+  }
+
+  private onDeleteProductHandler?: (id: string) => void;
+  private onEditProductHandler?: (id: string) => void;
+  private onErrorHandler?: (message: string, error: unknown) => void;
+
+  public onDeleteProduct(cb: (id: string) => void): void {
+    this.onDeleteProductHandler = cb;
+  }
+
+  public onEditProduct(cb: (id: string) => void): void {
+    this.onEditProductHandler = cb;
+  }
+
+  public onError(cb: (message: string, error: unknown) => void): void {
+    this.onErrorHandler = cb;
   }
 }

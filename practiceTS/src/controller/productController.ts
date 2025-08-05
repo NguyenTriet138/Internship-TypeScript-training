@@ -22,6 +22,18 @@ export class ProductController {
         handle: async () => {
           await this.loadProducts();
           this.view.attachUpdateProductHandler(async () => {await this.handleCreateProduct()});
+
+          this.view.onDeleteProduct(async (id: string) => {
+            await this.handleDeleteProduct(id);
+          });
+
+          this.view.onEditProduct(async (id: string) => {
+            await this.handleEditProduct(id);
+          });
+
+          this.view.onError((msg, error) => {
+            this.handleError(msg, error);
+          });
         }
       },
       {
