@@ -21,7 +21,7 @@ export class ProductController {
         check: () => this.isIndexPage(),
         handle: async () => {
           await this.loadProducts();
-          this.view.attachCreateProductHandler(async () => {await this.handleCreateProduct()});
+          this.view.attachUpdateProductHandler(async () => {await this.handleCreateProduct()});
         }
       },
       {
@@ -122,7 +122,7 @@ export class ProductController {
         throw new Error("No product selected");
       }
 
-      const product = await this.model.getProductById(+productId);
+      const product = await this.model.getProductById(productId);
 
       if (!product) {
         throw new Error("Product data is empty");
@@ -139,7 +139,7 @@ export class ProductController {
     }
   }
 
-  private async handleUpdateProductDetail(productId: number): Promise<void> {
+  private async handleUpdateProductDetail(productId: string): Promise<void> {
     try {
       let updatedData = this.view.getProductFormData();
 
@@ -152,7 +152,7 @@ export class ProductController {
     }
   }
 
-  public async handleEditProduct(productId: number): Promise<void> {
+  public async handleEditProduct(productId: string): Promise<void> {
     try {
       // Get the product data
       const product = await this.model.getProductById(productId);
@@ -160,8 +160,8 @@ export class ProductController {
       // Populate the modal with product data
       this.view.populateEditModal(product);
 
-      // Attach the save handler for editing
-      this.view.attachCreateProductHandler(async () => {
+      // Attach the update product info for editing
+      this.view.attachUpdateProductHandler(async () => {
         await this.handleUpdateProduct(productId);
       });
 
@@ -170,7 +170,7 @@ export class ProductController {
     }
   }
 
-  private async handleUpdateProduct(productId: number): Promise<void> {
+  private async handleUpdateProduct(productId: string): Promise<void> {
     try {
       let updatedData = this.view.getProductFormData();
 
@@ -203,7 +203,7 @@ export class ProductController {
     };
   }
 
-  public async handleDeleteProduct(productId: number): Promise<void> {
+  public async handleDeleteProduct(productId: string): Promise<void> {
     try {
       await this.model.deleteProduct(productId);
       await this.loadProducts();

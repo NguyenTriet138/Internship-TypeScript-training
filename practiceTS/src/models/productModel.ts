@@ -14,7 +14,7 @@ export enum ProductType {
 }
 
 export interface ProductData {
-  id: number;
+  id: string;
   name: string;
   quantity: number;
   price: number;
@@ -38,7 +38,7 @@ export interface SaveProductDataRequest {
 
 export class Product {
   constructor(
-    public id: number,
+    public id: string,
     public name: string,
     public quantity: number,
     public price: number,
@@ -94,7 +94,7 @@ export class ProductModel {
     }
   }
 
-  async getProductById(id: number): Promise<Product> {
+  async getProductById(id: string): Promise<Product> {
     try {
       const data = await this.apiService.get<ProductData>(API_CONFIG.endpoints.products, id);
       return Product.fromJSON(data);
@@ -106,7 +106,7 @@ export class ProductModel {
   /**
    * Update product info into db.json
    */
-  async updateProduct(id: number, updatedData: Partial<ProductData>): Promise<Product> {
+  async updateProduct(id: string, updatedData: Partial<ProductData>): Promise<Product> {
     try {
       // Fetch current product data
       const current = await this.apiService.get<ProductData>(API_CONFIG.endpoints.products, id);
@@ -136,32 +136,10 @@ export class ProductModel {
    */
   async createProduct(productData: Omit<ProductData, 'id'>): Promise<Product> {
     try {
-      // Get all products to determine the next ID
-      const products = await this.getAllProducts();
-      // const nextId = Math.max(...products.map(p => p.id), 0) + 1;
-
-      const existingIds = new Set(products.map(p => p.id));
-
-      // Generate unique 4-digit ID
-      let newId: number;
-      const maxAttempts = 10000;
-      let attempts = 0;
-
-      do {
-        newId = Math.floor(Math.random() * 9000) + 1000; // 1000 - 9999
-        attempts++;
-        if (attempts > maxAttempts) {
-          throw new Error('Failed to generate unique product ID after many attempts');
-        }
-      } while (existingIds.has(newId));
-
-      // Create new product with the next available ID
-      const newProductData: ProductData = {
-        id: newId,
-        ...productData
-      };
-
-      const data = await this.apiService.post<ProductData>(API_CONFIG.endpoints.products, newProductData);
+      const data = await this.apiService.post<ProductData, Omit<ProductData, 'id'>>(
+        API_CONFIG.endpoints.products,
+        productData
+      );
       return Product.fromJSON(data);
     } catch {
       throw new Error('Failed to create product');
@@ -171,7 +149,7 @@ export class ProductModel {
   /**
    * Delete a product
    */
-  async deleteProduct(id: number): Promise<void> {
+  async deleteProduct(id: string): Promise<void> {
     try {
       await this.apiService.delete(`${API_CONFIG.endpoints.products}/${id}`);
     } catch {

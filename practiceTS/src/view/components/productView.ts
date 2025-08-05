@@ -7,7 +7,7 @@ interface ElementSelectors {
 
 export class ProductView {
   private tbody: HTMLElement | null;
-  private productIdToDelete: number | null = null;
+  private productIdToDelete: string | null = null;
   private readonly selectors: ElementSelectors = {
     productDisplay: ".product-display",
     productTitle: "productTitle",
@@ -118,9 +118,9 @@ export class ProductView {
   }
 
   /**
-   * Attach create product form submit handler
+   * Attach update product for submit handler
    */
-  public attachCreateProductHandler(handler: () => Promise<void>): void {
+  public attachUpdateProductHandler(handler: () => Promise<void>): void {
     const confirmButton = document.getElementById(this.selectors.confirmButton);
     if (confirmButton) {
       const form = document.getElementById(this.selectors.addProductForm) as HTMLFormElement;
@@ -206,9 +206,9 @@ export class ProductView {
   private handleActionMenuItem(action: string, productId: string): void {
     if (action === "edit") {
       console.log("Edit product:", productId);
-      this.controller?.handleEditProduct(parseInt(productId));
+      this.controller?.handleEditProduct(productId);
     } else if (action === "delete") {
-      this.productIdToDelete = parseInt(productId); // Store for confirmation
+      this.productIdToDelete = productId; // Store for confirmation
       const confirmModal = document.querySelector('.modal-overlay-confirm') as HTMLElement;
       if (confirmModal) {
         confirmModal.classList.add('active');

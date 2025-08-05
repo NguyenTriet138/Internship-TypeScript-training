@@ -73,7 +73,7 @@ export class ApiService {
     }
   }
 
-  public async get<T>(endpoint: string, id?: number): Promise<T> {
+  public async get<T>(endpoint: string, id?: string): Promise<T> {
     const path = id ? `/${id}` : '';
     return this.fetch<T>(endpoint + path, { method: 'GET' });
   }
