@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "username": "admin",
       "password": "123456"
     },
     {
-      "id": "2",
+      "id": 2,
       "username": "user1",
       "password": "123456"
     }
@@ -38,7 +38,7 @@
       "id": "3",
       "name": "Starbucks",
       "quantity": 9195,
-      "price": 641.2,
+      "price": 641.20,
       "status": "Available",
       "type": "Bravo",
       "brand": "Jennie Cooper",
@@ -49,7 +49,7 @@
       "id": "4",
       "name": "The Walt Disney",
       "quantity": 3128,
-      "price": 510.3,
+      "price": 510.30,
       "status": "Sold out",
       "type": "Alfa",
       "brand": "Philip Steward",
@@ -60,7 +60,7 @@
       "id": "5",
       "name": "Mitsubishi",
       "quantity": 9892,
-      "price": 828.9,
+      "price": 828.90,
       "status": "Available",
       "type": "Bravo",
       "brand": "Jorge Black",
@@ -69,7 +69,7 @@
     },
     {
       "id": "6",
-      "name": "IBMtrrtrtrtrtrtr",
+      "name": "IBM",
       "quantity": 9011,
       "price": 845.59,
       "status": "Sold out",
@@ -77,17 +77,6 @@
       "brand": "Gladys Jones",
       "productImage": "https://i.ibb.co/RGstJf17/IBM.jpg",
       "brandImage": "https://i.ibb.co/C5ZrK7dq/Gladys-Jones.jpg"
-    },
-    {
-      "id": "292a",
-      "name": "jim6644",
-      "brand": "66666rr",
-      "quantity": 45322,
-      "price": 5433,
-      "status": "Sold out",
-      "type": "Bravo",
-      "productImage": "https://i.ibb.co/Gv3tNbhT/b39b088abf7c.png",
-      "brandImage": "https://i.ibb.co/Gv3tNbhT/b39b088abf7c.png"
     }
   ]
 }
