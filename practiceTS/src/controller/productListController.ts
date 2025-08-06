@@ -19,7 +19,6 @@ export class ProductListController {
   async init(): Promise<void> {
     try {
       this.view.initializeAddProductButton(async () => {await this.handleCreateProduct()});
-      this.view.initializeDeleteModalHandlers();
       await this.loadProducts();
 
       this.view.onProductFilter((filters: ProductFilter) => {
