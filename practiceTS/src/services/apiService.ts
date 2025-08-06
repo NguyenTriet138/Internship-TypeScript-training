@@ -1,4 +1,4 @@
-import { ApiConfig } from "../config/env";
+import { ApiConfig, ENV } from "../config/env";
 
 export interface ImgBBResponse {
   data: {
@@ -73,7 +73,7 @@ export class ApiService {
     }
   }
 
-  public async get<T>(endpoint: string, id?: number): Promise<T> {
+  public async get<T>(endpoint: string, id?: string): Promise<T> {
     const path = id ? `/${id}` : '';
     return this.fetch<T>(endpoint + path, { method: 'GET' });
   }
@@ -112,7 +112,7 @@ export class ApiService {
       const formData = new FormData();
       formData.append('image', base64Data);
 
-      const url = `https://api.imgbb.com/1/upload?expiration=600&key=${apiKey}`;
+      const url = `${ENV.IMGBB_BASE_URL}?expiration=${ENV.IMGBB_EXPIRATION}&key=${apiKey}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -128,6 +128,18 @@ export class ApiService {
       return data;
     } catch {
       throw new Error('Failed to upload product image');
+    }
+  }
+
+  public async delete(endpoint: string): Promise<void> {
+    try {
+      const url = this.getUrl(endpoint);
+      const response = await fetch(url, { method: 'DELETE' });
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} - ${response.statusText}`);
+      }
+    } catch {
+      throw new Error('Failed to delete resource');
     }
   }
 }

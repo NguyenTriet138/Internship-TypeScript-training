@@ -225,7 +225,8 @@
 }
 
 /* Modal Styles */
-.modal-overlay {
+.modal-overlay,
+.modal-overlay-confirm {
   position: fixed;
   top: 0;
   left: 0;
@@ -238,7 +239,8 @@
   z-index: 1000;
 }
 
-.modal-overlay.active {
+.modal-overlay.active,
+.modal-overlay-confirm.active {
   display: flex;
 }
 
@@ -265,7 +267,7 @@
   font-size: var(--fs-xl);
   line-height: 28px;
   font-weight: var(--fw-semi-bold);
-  color: #1e293b;
+  color: var(--clr-text-dark);
 }
 
 .close-btn {
@@ -318,4 +320,42 @@
   color: red;
   font-size: var(--fs-xs);
   margin-top: 4px;
+}
+
+/* Delete button */
+.delete-product {
+  background-color: #e53935;
+  color: #fff;
+  border: none;
+  width: 100%;
+}
+
+.delete-product:hover {
+  background: transparent;
+  color: #e53935;
+  border: 1px solid #e53935;
+}
+
+.modal-icon {
+  padding: 8px;
+  background-color: #FEE4E2;
+  border-radius: 50%;
+  border: 7px solid #FEF3F2;
+  color: #D92D20;
+  font-size: 20px;
+}
+
+.modal.confirm {
+  max-width: 400px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.text-description {
+  margin-top: 5px;
 }
