@@ -1,8 +1,8 @@
 import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { UploadImgService } from "../services/uploadImgService.js";
-import { logger } from "../config/logger.js";
 import { bindGetProduct } from "../services/bindGetProduct.js";
+import { handleError } from "../services/errorHandler.js";
 
 export class ProductListController {
   private currentProducts: Product[] = [];
@@ -34,27 +34,11 @@ export class ProductListController {
       });
 
       this.view.onError((msg: string, error: unknown) => {
-        this.handleError(msg, error);
+        handleError(msg, error);
       });
     } catch (error) {
-      this.handleError('Initialization failed', error);
+      handleError('Initialization failed', error);
     }
-  }
-
-  /**
-   * Navigate to a page
-   */
-  private navigate(page: string): void {
-    window.location.href = page;
-  }
-
-  /**
-   * Handle errors: show alert when got error
-   */
-  public handleError(message: string, error: unknown): void {
-    alert(message);
-    logger.error(message, error);
-    this.navigate("./home");
   }
 
   /**
@@ -80,7 +64,7 @@ export class ProductListController {
         return;
       }
 
-      this.handleError("Failed to create product", error);
+      handleError("Failed to create product", error);
     }
   }
 
@@ -92,7 +76,7 @@ export class ProductListController {
       const products = await this.model.getAllProducts();
       this.view.renderProducts(products);
     } catch (error) {
-      this.handleError('Failed to load products', error);
+      handleError('Failed to load products', error);
     }
   }
 
@@ -117,7 +101,7 @@ export class ProductListController {
       });
 
     } catch (error) {
-      this.handleError('Failed to load product for editing', error);
+      handleError('Failed to load product for editing', error);
     }
   }
 
@@ -126,7 +110,7 @@ export class ProductListController {
       await this.model.deleteProduct(productId);
       await this.loadProducts();
     } catch (error) {
-      this.handleError('Failed to delete product', error);
+      handleError('Failed to delete product', error);
     }
   }
 
@@ -136,7 +120,7 @@ export class ProductListController {
       this.currentProducts = filteredProducts;
       this.view.renderProducts(filteredProducts);
     } catch (error) {
-      this.handleError('Failed to filter products', error);
+      handleError('Failed to filter products', error);
     }
   }
 }

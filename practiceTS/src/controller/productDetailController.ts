@@ -1,8 +1,8 @@
 import { ProductModel } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { UploadImgService } from "../services/uploadImgService.js";
-import { logger } from "../config/logger.js";
 import { bindGetProduct } from "../services/bindGetProduct.js";
+import { handleError } from "../services/errorHandler.js";
 
 export class ProductDetailController {
   constructor(
@@ -18,24 +18,8 @@ export class ProductDetailController {
     try {
       await this.loadProductDetail();
     } catch (error) {
-      this.handleError('Initialization failed', error);
+      handleError('Initialization failed', error);
     }
-  }
-
-  /**
-   * Navigate to a page
-   */
-  private navigate(page: string): void {
-    window.location.href = page;
-  }
-
-  /**
-   * Handle errors: show alert when got error
-   */
-  public handleError(message: string, error: unknown): void {
-    alert(message);
-    logger.error(message, error);
-    this.navigate("./home");
   }
 
   /**
@@ -69,7 +53,7 @@ export class ProductDetailController {
       });
       this.view.initializeImageUpload();
     } catch (error) {
-      this.handleError('Failed to load product details', error);
+      handleError('Failed to load product details', error);
     }
   }
 }
