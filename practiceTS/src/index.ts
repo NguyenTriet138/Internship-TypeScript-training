@@ -2,6 +2,7 @@ import { ProductModel } from "./models/productModel.js";
 import { UploadImgService } from "./services/uploadImgService.js";
 import { ProductView } from "./view/components/productView.js";
 import { ProductListController } from "./controller/productListController.js";
+import { ProductDetailController } from "./controller/productDetailController.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -21,15 +22,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         const controller = new ProductListController(model, view, uploadService);
         await controller.init();
       }
+    },
+    {
+      check: () => isDetailPage(),
+      handle: async () => {
+        const controller = new ProductDetailController(model, view, uploadService);
+        await controller.init();
+      }
     }
-    // },
-    // {
-    //   check: () => isDetailPage(),
-    //   handle: async () => {
-    //     const controller = new ProductController(model, view, uploadService);
-    //     await controller.init();
-    //   }
-    // }
   ];
 
   // Initialize based on current page
@@ -48,6 +48,6 @@ function isIndexPage(): boolean {
   return path.endsWith("home") || path.endsWith("/");
 }
 
-// function isDetailPage(): boolean {
-//   return window.location.pathname.endsWith("productDetail");
-// }
+function isDetailPage(): boolean {
+  return window.location.pathname.endsWith("productDetail");
+}

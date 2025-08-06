@@ -2,6 +2,7 @@ import { ProductModel, ProductData, ProductFilter, Product } from "../models/pro
 import { ProductView } from "../view/components/productView.js";
 import { UploadImgService } from "../services/uploadImgService.js";
 import { logger } from "../config/logger.js";
+import { bindGetProduct } from "../services/bindGetProduct.js";
 
 export class ProductListController {
   private currentProducts: Product[] = [];
@@ -106,32 +107,18 @@ export class ProductListController {
 
       // Attach the update product info for editing
       this.view.attachUpdateProductHandler(async () => {
-        await this.bindGetProduct(productId);
+        await bindGetProduct({
+          productId,
+          model: this.model,
+          view: this.view,
+          uploadService: this.uploadService,
+        });
+        await this.loadProducts();
         this.view.hideProductModal();
       });
 
     } catch (error) {
       this.handleError('Failed to load product for editing', error);
-    }
-  }
-
-  private async bindGetProduct(productId: string): Promise<void> {
-    try {
-      let updatedData = this.view.getProductFormData();
-
-      updatedData = await this.uploadService.uploadProductImages(updatedData);
-
-      await this.model.updateProduct(productId, updatedData);
-
-      // Refresh the product list
-      await this.loadProducts();
-
-      this.view.showSuccessMessage('Product updated successfully!');
-    } catch (error) {
-      if (error instanceof Error && error.message.startsWith("VALIDATION:")) {
-        return;
-      }
-      this.handleError('Failed to update product', error);
     }
   }
 

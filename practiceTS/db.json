@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "username": "admin",
       "password": "123456"
     },
     {
-      "id": 2,
+      "id": "2",
       "username": "user1",
       "password": "123456"
     }
@@ -20,25 +20,14 @@
       "status": "Available",
       "type": "Bravo",
       "brand": "Evan Flores",
-      "productImage": "https://i.ibb.co/CsQFh2nq/Louis-Vuitton.jpg",
+      "productImage": "https://i.ibb.co/hF5MdZMW/4d530bf2c561.png",
       "brandImage": "https://i.ibb.co/RGVggnWk/Evan-Flores.jpg"
-    },
-    {
-      "id": "2",
-      "name": "Johnson & Johnson",
-      "quantity": 3064,
-      "price": 901.31,
-      "status": "Sold out",
-      "type": "Alfa",
-      "brand": "Arlene Wilson",
-      "productImage": "https://i.ibb.co/7xYVypNg/Johnson-Johnson.jpg",
-      "brandImage": "https://i.ibb.co/SwKd1RPz/Arlene-Wilson.jpg"
     },
     {
       "id": "3",
       "name": "Starbucks",
       "quantity": 9195,
-      "price": 641.20,
+      "price": 641.2,
       "status": "Available",
       "type": "Bravo",
       "brand": "Jennie Cooper",
@@ -48,19 +37,19 @@
     {
       "id": "4",
       "name": "The Walt Disney",
-      "quantity": 3128,
-      "price": 510.30,
-      "status": "Sold out",
+      "quantity": 312888888,
+      "price": 510.3,
+      "status": "Available",
       "type": "Alfa",
       "brand": "Philip Steward",
-      "productImage": "https://i.ibb.co/Pz5jQ8F5/The-Walt-Disney.jpg",
+      "productImage": "https://i.ibb.co/qLGpYkJN/b947af42103e.png",
       "brandImage": "https://i.ibb.co/V0BZLVtk/Philip-Steward.jpg"
     },
     {
       "id": "5",
       "name": "Mitsubishi",
       "quantity": 9892,
-      "price": 828.90,
+      "price": 828.9,
       "status": "Available",
       "type": "Bravo",
       "brand": "Jorge Black",
@@ -77,6 +66,17 @@
       "brand": "Gladys Jones",
       "productImage": "https://i.ibb.co/RGstJf17/IBM.jpg",
       "brandImage": "https://i.ibb.co/C5ZrK7dq/Gladys-Jones.jpg"
+    },
+    {
+      "id": "4103",
+      "name": "titit",
+      "brand": "7867oooo",
+      "quantity": 589,
+      "price": 9209,
+      "status": "Sold out",
+      "type": "Alfa",
+      "productImage": "https://i.ibb.co/d45TWHQD/cd71eeeb4068.png",
+      "brandImage": "https://i.ibb.co/hF5MdZMW/4d530bf2c561.png"
     }
   ]
 }
