@@ -35,9 +35,7 @@ export class ProductView {
     productSearch: "product-search",
     statusFilter: "status-filter",
     typeFilter: "type-filter",
-    quantitySearch: "quantity-search",
     brandSearch: "brand-search",
-    priceSearch: "price-search",
     clearFiltersButton: "clear-filters-btn"
   };
 
@@ -739,9 +737,7 @@ export class ProductView {
     // Input filters with debouncing
     const inputFilters = [
       this.selectors.productSearch,
-      this.selectors.quantitySearch,
-      this.selectors.brandSearch,
-      this.selectors.priceSearch
+      this.selectors.brandSearch
     ];
 
     inputFilters.forEach(filterId => {
@@ -798,9 +794,7 @@ export class ProductView {
     // Input filters
     const inputFilters = [
       { id: this.selectors.productSearch, value: filters.name },
-      { id: this.selectors.quantitySearch, value: filters.quantity },
-      { id: this.selectors.brandSearch, value: filters.brand },
-      { id: this.selectors.priceSearch, value: filters.price }
+      { id: this.selectors.brandSearch, value: filters.brand }
     ];
 
     inputFilters.forEach(({ id, value }) => {
@@ -854,9 +848,7 @@ export class ProductView {
       name: getInputValue(this.selectors.productSearch),
       status: getSelectValue(this.selectors.statusFilter) as ProductStatus | 'All',
       type: getSelectValue(this.selectors.typeFilter) as ProductType | 'All',
-      quantity: getInputValue(this.selectors.quantitySearch),
-      brand: getInputValue(this.selectors.brandSearch),
-      price: getInputValue(this.selectors.priceSearch)
+      brand: getInputValue(this.selectors.brandSearch)
     };
   }
 

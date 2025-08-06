@@ -39,9 +39,7 @@ export interface ProductFilter {
   name?: string;
   status?: ProductStatus | 'All';
   type?: ProductType | 'All';
-  quantity?: string;
   brand?: string;
-  price?: string;
 }
 
 export class Product {
@@ -205,46 +203,12 @@ export class ProductModel {
         }
       }
 
-      // Filter by quantity (exact match or range)
-      if (filters.quantity && filters.quantity.trim() !== '') {
-        const filterQuantity = parseInt(filters.quantity);
-        if (isNaN(filterQuantity)) {
-          // If not a number, try to match as string
-          const productQuantity = product.quantity.toString();
-          if (!productQuantity.includes(filters.quantity)) {
-            return false;
-          }
-        } else {
-          // Exact number match
-          if (product.quantity !== filterQuantity) {
-            return false;
-          }
-        }
-      }
-
       // Filter by brand (case-insensitive partial match)
       if (filters.brand && filters.brand.trim() !== '') {
         const productBrand = product.brand.toLowerCase();
         const filterBrand = filters.brand.toLowerCase();
         if (!productBrand.includes(filterBrand)) {
           return false;
-        }
-      }
-
-      // Filter by price (exact match or range)
-      if (filters.price && filters.price.trim() !== '') {
-        const filterPrice = parseFloat(filters.price);
-        if (isNaN(filterPrice)) {
-          // If not a number, try to match as string
-          const productPrice = product.price.toString();
-          if (!productPrice.includes(filters.price)) {
-            return false;
-          }
-        } else {
-          // Exact number match
-          if (product.price !== filterPrice) {
-            return false;
-          }
         }
       }
 
