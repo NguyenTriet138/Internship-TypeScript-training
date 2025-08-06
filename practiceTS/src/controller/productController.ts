@@ -21,8 +21,8 @@ export class ProductController {
       {
         check: () => this.isIndexPage(),
         handle: async () => {
+          this.view.initializeAddProductButton(async () => {await this.handleCreateProduct()});
           await this.loadProducts();
-          this.view.attachUpdateProductHandler(async () => {await this.handleCreateProduct()});
 
           this.view.onProductFilter((filters: ProductFilter) => {
             this.handleProductFilter(filters);
@@ -196,8 +196,16 @@ export class ProductController {
   }
 
   private async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
-    const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
-    const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+    let brandImageUpload = productData.brandImage;
+    let productImageUpload = productData.productImage;
+
+    if (!productData.brandImage.startsWith("https://")) {
+      brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+    };
+
+    if (!productData.productImage.startsWith("https://")) {
+      productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
+    };
 
     return {
       ...productData,

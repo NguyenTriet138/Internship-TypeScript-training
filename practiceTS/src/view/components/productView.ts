@@ -43,7 +43,6 @@ export class ProductView {
 
   constructor() {
     this.tbody = document.querySelector(this.selectors.productDisplay);
-    this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
     this.initializeDeleteModalHandlers();
     this.initializeFilterHandlers();
@@ -52,7 +51,7 @@ export class ProductView {
   /**
    * Initialize the Add Product button click handler
    */
-  private initializeAddProductButton(): void {
+  public initializeAddProductButton(handler: () => Promise<void>): void {
     const addButton = document.getElementById(this.selectors.addProductButton);
     if (addButton) {
       addButton.addEventListener('click', () => {
@@ -60,6 +59,7 @@ export class ProductView {
         addModelTitle.textContent = "Add new product";
         this.clearModalFields(); // Clear form for new product
         this.showProductModal();
+        this.attachUpdateProductHandler(handler);
       });
     }
   }
@@ -556,7 +556,7 @@ export class ProductView {
       value = el.getAttribute("src") || "";
     }
 
-    if (!value || value.includes("image-display.png")) {
+    if (!value || value.includes("https://i.ibb.co/LXgvW3hj/image-display.png")) {
       this.onErrorHandler?.("Pls input Product or Brand Image", "");
       throw new Error("VALIDATION:" + errorMsg);
     }
