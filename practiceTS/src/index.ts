@@ -3,6 +3,7 @@ import { UploadImgService } from "./services/uploadImgService.js";
 import { ProductView } from "./view/components/productView.js";
 import { ProductListController } from "./controller/productListController.js";
 import { ProductDetailController } from "./controller/productDetailController.js";
+import { handleError } from "./services/errorHandler.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -39,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       await handler.handle();
     }
   } catch (error) {
-    console.error('Initialization failed:', error);
+    handleError('Initialization failed:', error);
   }
 });
 
