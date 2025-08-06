@@ -1,4 +1,4 @@
-import { ProductModel, ProductData, SaveProductDataRequest } from "../models/productModel.js";
+import { ProductModel, ProductData, SaveProductDataRequest, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { ENV } from "../config/env";
 import { logger } from "../config/logger.js";
@@ -10,6 +10,7 @@ interface PageHandler {
 
 export class ProductController {
   private readonly pageHandlers: PageHandler[];
+  private currentProducts: Product[] = [];
 
   constructor(
     private readonly model: ProductModel,
@@ -20,8 +21,12 @@ export class ProductController {
       {
         check: () => this.isIndexPage(),
         handle: async () => {
+          this.view.initializeAddProductButton(async () => {await this.handleCreateProduct()});
           await this.loadProducts();
-          this.view.attachUpdateProductHandler(async () => {await this.handleCreateProduct()});
+
+          this.view.onProductFilter((filters: ProductFilter) => {
+            this.handleProductFilter(filters);
+          });
 
           this.view.onDeleteProduct(async (id: string) => {
             await this.handleDeleteProduct(id);
@@ -191,8 +196,16 @@ export class ProductController {
   }
 
   private async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
-    const productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
-    const brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+    let brandImageUpload = productData.brandImage;
+    let productImageUpload = productData.productImage;
+
+    if (!productData.brandImage.startsWith("https://")) {
+      brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+    };
+
+    if (!productData.productImage.startsWith("https://")) {
+      productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
+    };
 
     return {
       ...productData,
@@ -207,6 +220,16 @@ export class ProductController {
       await this.loadProducts();
     } catch (error) {
       this.handleError('Failed to delete product', error);
+    }
+  }
+
+  public async handleProductFilter(filters: ProductFilter): Promise<void> {
+    try {
+      const filteredProducts = await this.model.getFilteredProducts(filters);
+      this.currentProducts = filteredProducts;
+      this.view.renderProducts(filteredProducts);
+    } catch (error) {
+      this.handleError('Failed to filter products', error);
     }
   }
 }

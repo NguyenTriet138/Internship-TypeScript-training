@@ -1,4 +1,4 @@
-import { Product, ProductStatus, ProductType, SaveProductDataRequest } from "../../models/productModel.js";
+import { Product, ProductStatus, ProductType, SaveProductDataRequest, ProductFilter } from "../../models/productModel.js";
 
 interface ElementSelectors {
   [key: string]: string;
@@ -7,6 +7,7 @@ interface ElementSelectors {
 export class ProductView {
   private tbody: HTMLElement | null;
   private productIdToDelete: string | null = null;
+  private filterTimeout: NodeJS.Timeout | null = null;
   private readonly selectors: ElementSelectors = {
     productDisplay: ".product-display",
     productTitle: "productTitle",
@@ -29,20 +30,26 @@ export class ProductView {
     addProductForm: "addProductForm",
     editProductButton: "edit-product-btn",
     deleteProductButton: "delete-product-btn",
-    confirmModal: "modal-overlay-confirm"
+    confirmModal: "modal-overlay-confirm",
+    // Filter selectors
+    productSearch: "product-search",
+    statusFilter: "status-filter",
+    typeFilter: "type-filter",
+    brandSearch: "brand-search",
+    clearFiltersButton: "clear-filters-btn"
   };
 
   constructor() {
     this.tbody = document.querySelector(this.selectors.productDisplay);
-    this.initializeAddProductButton();
     this.initializeModalCloseHandlers();
     this.initializeDeleteModalHandlers();
+    this.initializeFilterHandlers();
   }
 
   /**
    * Initialize the Add Product button click handler
    */
-  private initializeAddProductButton(): void {
+  public initializeAddProductButton(handler: () => Promise<void>): void {
     const addButton = document.getElementById(this.selectors.addProductButton);
     if (addButton) {
       addButton.addEventListener('click', () => {
@@ -50,6 +57,7 @@ export class ProductView {
         addModelTitle.textContent = "Add new product";
         this.clearModalFields(); // Clear form for new product
         this.showProductModal();
+        this.attachUpdateProductHandler(handler);
       });
     }
   }
@@ -158,6 +166,7 @@ export class ProductView {
     if (!this.tbody) return;
     this.tbody.innerHTML = products.map((p) => this.renderRow(p)).join("");
     this.attachRowClickHandlers();
+    this.updateResultsCount(products.length);
   }
 
   /**
@@ -545,7 +554,7 @@ export class ProductView {
       value = el.getAttribute("src") || "";
     }
 
-    if (!value || value.includes("image-display.png")) {
+    if (!value || value.includes("https://i.ibb.co/LXgvW3hj/image-display.png")) {
       this.onErrorHandler?.("Pls input Product or Brand Image", "");
       throw new Error("VALIDATION:" + errorMsg);
     }
@@ -693,8 +702,163 @@ export class ProductView {
     return null;
   }
 
+  /**
+   * Update the results count display
+   */
+  private updateResultsCount(count: number): void {
+    let resultsCountElement = document.getElementById('results-count');
+    // Define products count after filtered
+    if (!resultsCountElement) {
+      resultsCountElement = document.createElement('div');
+      resultsCountElement.id = 'results-count';
+      resultsCountElement.className = 'results-count';
+      resultsCountElement.style.cssText = `
+        text-align: center;
+        padding: 10px;
+        color: var(--clr-text-dark);
+        font-size: var(--fs-md);
+        margin-top: 10px;
+      `;
+
+      // Insert below the table
+      const tableContainer = document.querySelector('.product-table-container');
+      if (tableContainer) {
+        tableContainer.appendChild(resultsCountElement);
+      }
+    }
+
+    resultsCountElement.textContent = `Showing ${count} product${count !== 1 ? 's' : ''}`;
+  }
+
+  /**
+   * Initialize filter event handlers
+   */
+  private initializeFilterHandlers(): void {
+    // Input filters with debouncing
+    const inputFilters = [
+      this.selectors.productSearch,
+      this.selectors.brandSearch
+    ];
+
+    inputFilters.forEach(filterId => {
+      const filterElement = document.getElementById(filterId) as HTMLInputElement;
+      if (filterElement) {
+        filterElement.addEventListener('input', () => {
+          this.debounceFilter();
+        });
+      }
+    });
+
+    // Select filters (immediate filtering)
+    const selectFilters = [
+      this.selectors.statusFilter,
+      this.selectors.typeFilter
+    ];
+
+    selectFilters.forEach(filterId => {
+      const filterElement = document.getElementById(filterId) as HTMLSelectElement;
+      if (filterElement) {
+        filterElement.addEventListener('change', () => {
+          this.applyFilters();
+        });
+      }
+    });
+  }
+
+  /**
+   * Debounce filter to avoid too many API calls
+   */
+  private debounceFilter(): void {
+    if (this.filterTimeout) {
+      clearTimeout(this.filterTimeout);
+    }
+
+    this.filterTimeout = setTimeout(() => {
+      this.applyFilters();
+    }, 300);
+  }
+
+  /**
+   * Apply all current filters
+   */
+  private applyFilters(): void {
+    const filters = this.getFilterValues();
+    this.highlightActiveFilters(filters);
+    this.onHandleProductFilter?.(filters);
+  }
+
+  /**
+   * Highlight active filter fields
+   */
+  private highlightActiveFilters(filters: ProductFilter): void {
+    // Input filters
+    const inputFilters = [
+      { id: this.selectors.productSearch, value: filters.name },
+      { id: this.selectors.brandSearch, value: filters.brand }
+    ];
+
+    inputFilters.forEach(({ id, value }) => {
+      const element = document.getElementById(id) as HTMLInputElement;
+      if (element) {
+        if (value && value.trim() !== '') {
+          element.style.backgroundColor = '#f0f8ff';
+          element.style.borderColor = '#3b82f6';
+        } else {
+          element.style.backgroundColor = '';
+          element.style.borderColor = '';
+        }
+      }
+    });
+
+    // Select filters
+    const selectFilters = [
+      { id: this.selectors.statusFilter, value: filters.status },
+      { id: this.selectors.typeFilter, value: filters.type }
+    ];
+
+    selectFilters.forEach(({ id, value }) => {
+      const element = document.getElementById(id) as HTMLSelectElement;
+      if (element) {
+        if (value && value !== 'All') {
+          element.style.backgroundColor = '#f0f8ff';
+          element.style.borderColor = '#3b82f6';
+        } else {
+          element.style.backgroundColor = '';
+          element.style.borderColor = '';
+        }
+      }
+    });
+  }
+
+  /**
+   * Get current filter values from the DOM
+   */
+  private getFilterValues(): ProductFilter {
+    const getInputValue = (id: string): string => {
+      const element = document.getElementById(id) as HTMLInputElement;
+      return element ? element.value.trim() : '';
+    };
+
+    const getSelectValue = (id: string): string => {
+      const element = document.getElementById(id) as HTMLSelectElement;
+      return element ? element.value : 'All';
+    };
+
+    return {
+      name: getInputValue(this.selectors.productSearch),
+      status: getSelectValue(this.selectors.statusFilter) as ProductStatus | 'All',
+      type: getSelectValue(this.selectors.typeFilter) as ProductType | 'All',
+      brand: getInputValue(this.selectors.brandSearch)
+    };
+  }
+
   public showSuccessMessage(message: string): void {
     alert(message);
+  }
+
+  private onHandleProductFilter?:(filters: ProductFilter) => void;
+  public onProductFilter(cb: (filters: ProductFilter) => void): void {
+    this.onHandleProductFilter = cb;
   }
 
   private onDeleteProductHandler?: (id: string) => void;
