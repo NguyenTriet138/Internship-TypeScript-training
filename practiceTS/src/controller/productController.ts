@@ -2,6 +2,7 @@ import { ProductModel, ProductData, SaveProductDataRequest, ProductFilter, Produ
 import { ProductView } from "../view/components/productView.js";
 import { ENV } from "../config/env";
 import { logger } from "../config/logger.js";
+import { UploadImgService } from "../services/uploadImgService.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -14,7 +15,8 @@ export class ProductController {
 
   constructor(
     private readonly model: ProductModel,
-    private readonly view: ProductView
+    private readonly view: ProductView,
+    private readonly uploadService: UploadImgService
   ) {
     /** pageHandlers is using for check url path and load page. */
     this.pageHandlers = [
@@ -200,11 +202,11 @@ export class ProductController {
     let productImageUpload = productData.productImage;
 
     if (!productData.brandImage.startsWith("https://")) {
-      brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+      brandImageUpload = await this.uploadService.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
     };
 
     if (!productData.productImage.startsWith("https://")) {
-      productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
+      productImageUpload = await this.uploadService.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
     };
 
     return {
