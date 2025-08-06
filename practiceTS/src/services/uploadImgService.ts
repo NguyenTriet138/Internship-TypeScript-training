@@ -22,7 +22,7 @@ export class UploadImgService {
     }
   }
 
-  private async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
+  public async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
     let brandImageUpload = productData.brandImage;
     let productImageUpload = productData.productImage;
 
