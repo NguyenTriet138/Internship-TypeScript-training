@@ -1,44 +1,5 @@
 import { ApiConfig } from "../config/env";
 
-export interface ImgBBResponse {
-  data: {
-    id: string;
-    title: string;
-    url_viewer: string;
-    url: string;
-    display_url: string;
-    width: string;
-    height: string;
-    size: string;
-    time: string;
-    expiration: string;
-    image: {
-      filename: string;
-      name: string;
-      mime: string;
-      extension: string;
-      url: string;
-    };
-    thumb: {
-      filename: string;
-      name: string;
-      mime: string;
-      extension: string;
-      url: string;
-    };
-    medium: {
-      filename: string;
-      name: string;
-      mime: string;
-      extension: string;
-      url: string;
-    };
-    delete_url: string;
-  };
-  success: boolean;
-  status: number;
-}
-
 export class ApiService {
   private readonly baseUrl: string;
 
@@ -47,6 +8,9 @@ export class ApiService {
   }
 
   private getUrl(endpoint: string, path: string = ''): string {
+    if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+      return `${endpoint}${path}`;
+    }
     return `${this.baseUrl}${endpoint}${path}`;
   }
 
@@ -85,30 +49,52 @@ export class ApiService {
     });
   }
 
-  /**
-   * Create a new resource
-   * @param endpoint - API endpoint
-   * @param data - Data to create
-   * @returns Promise with the created resource
-   */
-  public async post<T, U = T>(endpoint: string, data: U): Promise<T> {
-    return this.fetch<T>(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
-  }
-
-  public async postFormData(url: string, formData: FormData): Promise<ImgBBResponse> {
+  public async post<responseType>(
+    endpoint: string,
+    body: BodyInit,
+    responseType: 'json' | 'text' | 'blob' | 'formData' | 'arrayBuffer' = 'json'
+  ): Promise<responseType> {
     try {
+      const url = this.getUrl(endpoint);
+
       const response = await fetch(url, {
         method: 'POST',
-        body: formData
+        headers: body instanceof FormData ? {} : {
+          'Content-Type': 'application/json'
+        },
+        body,
       });
 
-      const data = await response.json();
-      return data;
-    } catch {
-      throw new Error('Failed to upload form data');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      let data: object | string | Blob | FormData | ArrayBuffer;
+      switch (responseType) {
+        case 'json':
+          data = await response.json();
+          break;
+        case 'text':
+          data = await response.text();
+          break;
+        case 'blob':
+          data = await response.blob();
+          break;
+        case 'formData':
+          data = await response.formData();
+          break;
+        case 'arrayBuffer':
+          data = await response.arrayBuffer();
+          break;
+        default:
+          throw new Error('Unsupported response type');
+      }
+
+      return data as responseType;
+    } catch (error) {
+      throw new Error(
+        `Failed to post data: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 
