@@ -1,5 +1,5 @@
 import { ProductModel } from "./models/productModel.js";
-import { UploadImgService } from "./services/uploadImgService.js";
+import { UploadImgService } from "./services/imageService.js";
 import { ProductView } from "./view/components/productView.js";
 import { ProductController } from "./controller/productController.js";
 

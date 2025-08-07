@@ -1,4 +1,4 @@
-import { ApiConfig, ENV } from "../config/env";
+import { ApiConfig } from "../config/env";
 
 export interface ImgBBResponse {
   data: {
@@ -98,36 +98,17 @@ export class ApiService {
     });
   }
 
-  /**
-   * Upload image to ImgBB
-   * @param imageData - Base64 encoded image data
-   * @param apiKey - ImgBB API key
-   * @returns Promise with ImgBB response
-   */
-  public async uploadToImgBB(imageData: string, apiKey: string): Promise<ImgBBResponse> {
+  public async postFormData(url: string, formData: FormData): Promise<ImgBBResponse> {
     try {
-      // Remove data URL prefix if present
-      const base64Data = imageData.replace(/^data:image\/[a-z]+;base64,/, '');
-
-      const formData = new FormData();
-      formData.append('image', base64Data);
-
-      const url = `${ENV.IMGBB_BASE_URL}?expiration=${ENV.IMGBB_EXPIRATION}&key=${apiKey}`;
-
       const response = await fetch(url, {
         method: 'POST',
         body: formData
       });
 
       const data = await response.json();
-
-      if (!data.success) {
-        throw new Error('ImgBB upload failed');
-      }
-
       return data;
     } catch {
-      throw new Error('Failed to upload product image');
+      throw new Error('Failed to upload form data');
     }
   }
 

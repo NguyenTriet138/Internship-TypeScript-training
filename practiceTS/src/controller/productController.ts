@@ -1,7 +1,7 @@
 import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { logger } from "../config/logger.js";
-import { UploadImgService } from "../services/uploadImgService.js";
+import { UploadImgService } from "../services/imageService.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -95,7 +95,7 @@ export class ProductController {
     try {
       const productData = this.view.getProductFormData();
 
-      const uploadedImages = await this.uploadService.uploadProductImages({
+      const uploadedImages = await this.uploadService.uploadImages({
         productImage: productData.productImage,
         brandImage: productData.brandImage
       });
@@ -186,7 +186,7 @@ export class ProductController {
     try {
       const updatedData = this.view.getProductFormData();
 
-      const uploadedImages = await this.uploadService.uploadProductImages({
+      const uploadedImages = await this.uploadService.uploadImages({
         productImage: updatedData.productImage,
         brandImage: updatedData.brandImage
       });
