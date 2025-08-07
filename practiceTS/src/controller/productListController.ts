@@ -46,9 +46,15 @@ export class ProductListController {
    */
   private async handleCreateProduct(): Promise<void> {
     try {
-      let productData = this.view.getProductFormData();
+      const productData = this.view.getProductFormData();
 
-      productData = await this.uploadService.uploadProductImages(productData);
+      const uploadedImages = await this.uploadService.uploadProductImages({
+        productImage: productData.productImage,
+        brandImage: productData.brandImage
+      });
+
+      productData.productImage = uploadedImages.productImage;
+      productData.brandImage = uploadedImages.brandImage;
 
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);

@@ -1,7 +1,6 @@
 import { ProductModel, ProductData } from '../models/productModel.js';
 import { UploadImgService } from './uploadImgService.js';
 import { logger } from '../config/logger.js';
-import { SaveProductDataRequest } from '../models/productModel.js';
 
 interface ProductUpdateDependencies {
   productId: string;
@@ -20,9 +19,20 @@ export async function bindGetProduct({
   uploadService,
 }: ProductUpdateDependencies): Promise<void> {
   try {
-    let updatedData = view.getProductFormData();
+    const updatedData = view.getProductFormData();
 
-    updatedData = await uploadService.uploadProductImages(updatedData as SaveProductDataRequest);
+    if (!updatedData.productImage || !updatedData.brandImage) {
+      throw new Error("Missing image data: productImage or brandImage is undefined");
+    }
+
+    // updatedData = await uploadService.uploadProductImages(updatedData as SaveProductDataRequest);
+    const uploadedImages = await uploadService.uploadProductImages({
+      productImage: updatedData.productImage,
+      brandImage: updatedData.brandImage
+    });
+
+    updatedData.productImage = uploadedImages.productImage;
+    updatedData.brandImage = uploadedImages.brandImage;
 
     await model.updateProduct(productId, updatedData);
 
