@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": 1,
       "username": "admin",
       "password": "123456"
     },
     {
-      "id": "2",
+      "id": 2,
       "username": "user1",
       "password": "123456"
     }
@@ -14,42 +14,42 @@
   "products": [
     {
       "id": "1",
-      "name": "Louis Vuitton 4345",
+      "name": "Louis Vuitton",
       "quantity": 9177,
       "price": 452.85,
       "status": "Available",
       "type": "Bravo",
       "brand": "Evan Flores",
-      "productImage": "https://i.ibb.co/G4RwFSb8/254be2aa9cb5.png",
+      "productImage": "https://i.ibb.co/CsQFh2nq/Louis-Vuitton.jpg",
       "brandImage": "https://i.ibb.co/RGVggnWk/Evan-Flores.jpg"
     },
     {
       "id": "2",
-      "name": "Johnson a nxjznclz",
-      "quantity": 306423,
+      "name": "Johnson & Johnson",
+      "quantity": 3064,
       "price": 901.31,
       "status": "Sold out",
       "type": "Alfa",
-      "brand": "Arlene Wilson 6",
-      "productImage": "https://i.ibb.co/pr4K7gCx/f65fa82a6982.png",
-      "brandImage": "https://i.ibb.co/rR0ksRvC/36f482579869.jpg"
+      "brand": "Arlene Wilson",
+      "productImage": "https://i.ibb.co/7xYVypNg/Johnson-Johnson.jpg",
+      "brandImage": "https://i.ibb.co/SwKd1RPz/Arlene-Wilson.jpg"
     },
     {
       "id": "3",
       "name": "Starbucks",
       "quantity": 9195,
-      "price": 641.2,
+      "price": 641.20,
       "status": "Available",
       "type": "Bravo",
       "brand": "Jennie Cooper",
-      "productImage": "https://i.ibb.co/tp12sCHj/a70d9131c2dd.png",
+      "productImage": "https://i.ibb.co/93CPr57r/Starbucks.jpg",
       "brandImage": "https://i.ibb.co/xq3JcxWM/Jennie-Cooper.jpg"
     },
     {
       "id": "4",
       "name": "The Walt Disney",
       "quantity": 3128,
-      "price": 510.3,
+      "price": 510.30,
       "status": "Sold out",
       "type": "Alfa",
       "brand": "Philip Steward",
@@ -57,48 +57,26 @@
       "brandImage": "https://i.ibb.co/V0BZLVtk/Philip-Steward.jpg"
     },
     {
-      "id": "da54",
-      "name": "cxcv  xcvbc x",
-      "brand": "yty",
-      "quantity": 57,
-      "price": 85,
+      "id": "5",
+      "name": "Mitsubishi",
+      "quantity": 9892,
+      "price": 828.90,
       "status": "Available",
       "type": "Bravo",
-      "productImage": "https://i.ibb.co/pr4K7gCx/f65fa82a6982.png",
-      "brandImage": "https://i.ibb.co/rfTpvt4x/6906314f19c8.png"
+      "brand": "Jorge Black",
+      "productImage": "https://i.ibb.co/Dgz36J2R/Mitsubishi.jpg",
+      "brandImage": "https://i.ibb.co/tPk5CvCx/Jorge-Black.jpg"
     },
     {
-      "id": "3c7a",
-      "name": "IBM44",
-      "brand": "Gladys Jones",
+      "id": "6",
+      "name": "IBM",
       "quantity": 9011,
       "price": 845.59,
       "status": "Sold out",
       "type": "Gold",
+      "brand": "Gladys Jones",
       "productImage": "https://i.ibb.co/RGstJf17/IBM.jpg",
       "brandImage": "https://i.ibb.co/C5ZrK7dq/Gladys-Jones.jpg"
-    },
-    {
-      "id": "fcf5",
-      "name": "tyy",
-      "brand": "cxc",
-      "quantity": 73,
-      "price": 23,
-      "status": "Available",
-      "type": "Bravo",
-      "productImage": "https://i.ibb.co/pjYbKdJq/c598050865ea.png",
-      "brandImage": "https://i.ibb.co/4wJXRSz9/566149b4c96b.png"
-    },
-    {
-      "id": "3f09",
-      "name": "xcvb",
-      "brand": "vn",
-      "quantity": 6574,
-      "price": 4,
-      "status": "Available",
-      "type": "Bravo",
-      "productImage": "https://i.ibb.co/pjYbKdJq/c598050865ea.png",
-      "brandImage": "https://i.ibb.co/Jj8n45y6/95770ceb01b4.png"
     }
   ]
 }

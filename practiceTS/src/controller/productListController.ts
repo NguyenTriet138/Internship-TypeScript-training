@@ -20,12 +20,9 @@ export class ProductListController {
     try {
       this.view.initializeAddProductButton(async () => {
         this.view.setAddMode();
-        this.view.bindFormSubmit(async (data, mode) => {
-          if (mode === 'add') {
-            await this.handleCreateProduct(data);
-          }
-        });
       });
+
+      this.view.bindFormSubmit(this.handleFormSubmit);
       await this.loadProducts();
 
       this.view.onProductFilter((filters: ProductFilter) => {
@@ -37,7 +34,7 @@ export class ProductListController {
       });
 
       this.view.onEditProduct(async (id: string) => {
-        await this.handleEditProduct(id);
+        this.prepareEditMode(id)
       });
 
       this.view.onError((msg: string, error: unknown) => {
@@ -45,34 +42,6 @@ export class ProductListController {
       });
     } catch (error) {
       handleError('Initialization failed', error);
-    }
-  }
-
-  /**
-   * Handle creating a new product
-   */
-  private async handleCreateProduct(productData: SaveProductDataRequest): Promise<void> {
-    try {
-      const [productImage, brandImage] = await this.imgService.uploadImages([productData.productImage, productData.brandImage]);
-
-      productData.productImage = productImage;
-      productData.brandImage = brandImage;
-
-      // Create the new product
-      await this.model.createProduct(productData as Omit<ProductData, 'id'>);
-
-      this.view.hideProductModal();
-
-      // Refresh the product list
-      await this.loadProducts();
-
-      alert('Product created successfully!');
-    } catch (error) {
-      if (error instanceof Error && error.message.startsWith("VALIDATION:")) {
-        return;
-      }
-
-      handleError("Failed to create product", error);
     }
   }
 
@@ -88,25 +57,14 @@ export class ProductListController {
     }
   }
 
-  public async handleEditProduct(productId: string): Promise<void> {
+  public async handleEditProduct(data: SaveProductDataRequest, productId: string): Promise<void> {
     try {
-      const product = await this.model.getProductById(productId);
-    this.view.populateEditModal(product);
-    this.view.setEditMode(productId);
-
-    this.view.bindFormSubmit(async (data, mode, editingId) => {
-      if (mode === 'edit' && editingId === productId) {
-        await bindGetProduct({
-          productId,
-          model: this.model,
-          view: this.view,
-          imgService: this.imgService,
-        });
-        await this.loadProducts();
-        this.view.hideProductModal();
-      }
-    });
-
+      await bindGetProduct({
+        productId,
+        model: this.model,
+        view: this.view,
+        imgService: this.imgService,
+      });
     } catch (error) {
       handleError('Failed to load product for editing', error);
     }
@@ -130,4 +88,43 @@ export class ProductListController {
       handleError('Failed to filter products', error);
     }
   }
+
+  private prepareEditMode = async (productId: string): Promise<void> => {
+    try {
+      const product = await this.model.getProductById(productId);
+      this.view.populateEditModal(product);
+      this.view.setEditMode(productId);
+    } catch (error) {
+      handleError('Failed to load product for editing', error);
+    }
+  };
+
+  private async handleAddProduct(data: SaveProductDataRequest): Promise<void> {
+    await this.model.createProduct(data as Omit<ProductData, 'id'>);
+    alert('Product created successfully!');
+  }
+
+  private handleFormSubmit = async (
+    data: SaveProductDataRequest,
+    mode: 'add' | 'edit',
+    editingId: string | null
+  ): Promise<void> => {
+    try {
+      const [productImage, brandImage] = await this.imgService.uploadImages([data.productImage, data.brandImage]);
+      data.productImage = productImage;
+      data.brandImage = brandImage;
+
+      if (mode === 'add') {
+        await this.handleAddProduct(data);
+      } else if (mode === 'edit' && editingId) {
+        await this.handleEditProduct(data, editingId);
+      }
+
+      await this.loadProducts();
+      this.view.hideProductModal();
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith("VALIDATION:")) return;
+      handleError("Failed to save product", error);
+    }
+  };
 }
