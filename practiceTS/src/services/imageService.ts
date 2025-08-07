@@ -1,13 +1,7 @@
 import { ApiService } from './apiService.js';
-import { API_CONFIG } from '../config/env.js';
-import { ENV } from '../config/env.js';
+import { API_CONFIG, ENV } from '../config/env.js';
 
-export interface UploadImgServiceInterface {
-  productImage: string;
-  brandImage: string;
-}
-
-export class UploadImgService {
+export class ImgService {
   private readonly apiService: ApiService;
 
   constructor() {
@@ -15,7 +9,7 @@ export class UploadImgService {
   }
 
   /**
-   * Upload image to ImgBB and get display URL
+   * Upload image to ImgBB
    */
   public async uploadImg(imageData: string, apiKey: string): Promise<string> {
     try {
@@ -39,17 +33,18 @@ export class UploadImgService {
     }
   }
 
-  public async uploadImages(images: UploadImgServiceInterface): Promise<UploadImgServiceInterface> {
-    let { productImage, brandImage } = images;
+  public async uploadImages(images: string[]): Promise<string[]> {
+    const results: string[] = [];
 
-    if (!brandImage.startsWith("https://")) {
-      brandImage = await this.uploadImg(brandImage, ENV.IMGBB_API_KEY);
-    };
+    for (const img of images) {
+      if (img.startsWith("https://")) {
+        results.push(img);
+      } else {
+        const uploaded = await this.uploadImg(img, ENV.IMGBB_API_KEY);
+        results.push(uploaded);
+      }
+    }
 
-    if (!productImage.startsWith("https://")) {
-      productImage = await this.uploadImg(productImage, ENV.IMGBB_API_KEY);
-    };
-
-    return { productImage, brandImage };
+    return results;
   }
 }
