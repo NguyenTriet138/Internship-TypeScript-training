@@ -1,6 +1,5 @@
-import { ProductModel, ProductData, SaveProductDataRequest, ProductFilter, Product } from "../models/productModel.js";
+import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
-import { ENV } from "../config/env";
 import { logger } from "../config/logger.js";
 import { UploadImgService } from "../services/uploadImgService.js";
 
@@ -94,9 +93,15 @@ export class ProductController {
    */
   private async handleCreateProduct(): Promise<void> {
     try {
-      let productData = this.view.getProductFormData();
+      const productData = this.view.getProductFormData();
 
-      productData = await this.uploadProductImages(productData);
+      const uploadedImages = await this.uploadService.uploadProductImages({
+        productImage: productData.productImage,
+        brandImage: productData.brandImage
+      });
+
+      productData.productImage = uploadedImages.productImage;
+      productData.brandImage = uploadedImages.brandImage;
 
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
@@ -179,9 +184,15 @@ export class ProductController {
 
   private async bindGetProduct(productId: string): Promise<void> {
     try {
-      let updatedData = this.view.getProductFormData();
+      const updatedData = this.view.getProductFormData();
 
-      updatedData = await this.uploadProductImages(updatedData);
+      const uploadedImages = await this.uploadService.uploadProductImages({
+        productImage: updatedData.productImage,
+        brandImage: updatedData.brandImage
+      });
+
+      updatedData.productImage = uploadedImages.productImage;
+      updatedData.brandImage = uploadedImages.brandImage;
 
       await this.model.updateProduct(productId, updatedData);
 
@@ -195,25 +206,6 @@ export class ProductController {
       }
       this.handleError('Failed to update product', error);
     }
-  }
-
-  private async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
-    let brandImageUpload = productData.brandImage;
-    let productImageUpload = productData.productImage;
-
-    if (!productData.brandImage.startsWith("https://")) {
-      brandImageUpload = await this.uploadService.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
-    };
-
-    if (!productData.productImage.startsWith("https://")) {
-      productImageUpload = await this.uploadService.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
-    };
-
-    return {
-      ...productData,
-      productImage: productImageUpload,
-      brandImage: brandImageUpload,
-    };
   }
 
   public async handleDeleteProduct(productId: string): Promise<void> {
