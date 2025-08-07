@@ -1,7 +1,11 @@
 import { ApiService } from './apiService.js';
 import { API_CONFIG } from '../config/env.js';
 import { ENV } from '../config/env.js';
-import { SaveProductDataRequest } from '../models/productModel.js';
+
+export interface UploadImgServiceInterface {
+  productImage: string;
+  brandImage: string;
+}
 
 export class UploadImgService {
   private readonly apiService: ApiService;
@@ -22,22 +26,17 @@ export class UploadImgService {
     }
   }
 
-  public async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
-    let brandImageUpload = productData.brandImage;
-    let productImageUpload = productData.productImage;
+  public async uploadProductImages(images: UploadImgServiceInterface): Promise<UploadImgServiceInterface> {
+    let { productImage, brandImage } = images;
 
-    if (!productData.brandImage.startsWith("https://")) {
-      brandImageUpload = await this.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
+    if (!brandImage.startsWith("https://")) {
+      brandImage = await this.uploadImageToImgBB(brandImage, ENV.IMGBB_API_KEY);
     };
 
-    if (!productData.productImage.startsWith("https://")) {
-      productImageUpload = await this.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
+    if (!productImage.startsWith("https://")) {
+      productImage = await this.uploadImageToImgBB(productImage, ENV.IMGBB_API_KEY);
     };
 
-    return {
-      ...productData,
-      productImage: productImageUpload,
-      brandImage: brandImageUpload,
-    };
+    return { productImage, brandImage };
   }
 }
