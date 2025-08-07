@@ -1,6 +1,45 @@
 import { ApiService } from './apiService.js';
 import { API_CONFIG, ENV } from '../config/env.js';
 
+export interface ImgBBResponse {
+  data: {
+    id: string;
+    title: string;
+    url_viewer: string;
+    url: string;
+    display_url: string;
+    width: string;
+    height: string;
+    size: string;
+    time: string;
+    expiration: string;
+    image: {
+      filename: string;
+      name: string;
+      mime: string;
+      extension: string;
+      url: string;
+    };
+    thumb: {
+      filename: string;
+      name: string;
+      mime: string;
+      extension: string;
+      url: string;
+    };
+    medium: {
+      filename: string;
+      name: string;
+      mime: string;
+      extension: string;
+      url: string;
+    };
+    delete_url: string;
+  };
+  success: boolean;
+  status: number;
+}
+
 export class ImgService {
   private readonly apiService: ApiService;
 
@@ -8,9 +47,6 @@ export class ImgService {
     this.apiService = new ApiService(API_CONFIG);
   }
 
-  /**
-   * Upload image to ImgBB
-   */
   public async uploadImg(imageData: string, apiKey: string): Promise<string> {
     try {
       // Remove data:image/...;base64, prefix if needed
@@ -21,9 +57,9 @@ export class ImgService {
 
       const uploadUrl = `${ENV.IMGBB_BASE_URL}?expiration=${ENV.IMGBB_EXPIRATION}&key=${apiKey}`;
 
-      const response = await this.apiService.postFormData(uploadUrl, formData);
+      const response = await this.apiService.post<ImgBBResponse>(uploadUrl, formData, 'json');
 
-      if (!response.success) {
+      if (response != null && !response.success) {
         throw new Error('ImgBB upload failed');
       }
 

@@ -130,9 +130,9 @@ export class ProductModel {
    */
   async createProduct(productData: Omit<ProductData, 'id'>): Promise<Product> {
     try {
-      const data = await this.apiService.post<ProductData, Omit<ProductData, 'id'>>(
+      const data = await this.apiService.post<ProductData>(
         API_CONFIG.endpoints.products,
-        productData
+        JSON.stringify(productData)
       );
       return Product.fromJSON(data);
     } catch {
