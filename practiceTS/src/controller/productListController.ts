@@ -1,4 +1,4 @@
-import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
+import { ProductModel, ProductData, ProductFilter, Product, SaveProductDataRequest } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { ImgService } from "../services/imageService.js";
 import { bindGetProduct } from "../services/bindGetProduct.js";
@@ -18,7 +18,14 @@ export class ProductListController {
    */
   async init(): Promise<void> {
     try {
-      this.view.initializeAddProductButton(async () => {await this.handleCreateProduct()});
+      this.view.initializeAddProductButton(async () => {
+        this.view.setAddMode();
+        this.view.bindFormSubmit(async (data, mode) => {
+          if (mode === 'add') {
+            await this.handleCreateProduct(data);
+          }
+        });
+      });
       await this.loadProducts();
 
       this.view.onProductFilter((filters: ProductFilter) => {
@@ -30,7 +37,7 @@ export class ProductListController {
       });
 
       this.view.onEditProduct(async (id: string) => {
-        await this.handleLoadEditProduct(id);
+        await this.handleEditProduct(id);
       });
 
       this.view.onError((msg: string, error: unknown) => {
@@ -44,10 +51,8 @@ export class ProductListController {
   /**
    * Handle creating a new product
    */
-  private async handleCreateProduct(): Promise<void> {
+  private async handleCreateProduct(productData: SaveProductDataRequest): Promise<void> {
     try {
-      const productData = this.view.getProductFormData();
-
       const [productImage, brandImage] = await this.imgService.uploadImages([productData.productImage, productData.brandImage]);
 
       productData.productImage = productImage;
@@ -83,16 +88,14 @@ export class ProductListController {
     }
   }
 
-  public async handleLoadEditProduct(productId: string): Promise<void> {
+  public async handleEditProduct(productId: string): Promise<void> {
     try {
-      // Get the product data
       const product = await this.model.getProductById(productId);
+    this.view.populateEditModal(product);
+    this.view.setEditMode(productId);
 
-      // Populate the modal with product data
-      this.view.populateEditModal(product);
-
-      // Attach the update product info for editing
-      this.view.attachUpdateProductHandler(async () => {
+    this.view.bindFormSubmit(async (data, mode, editingId) => {
+      if (mode === 'edit' && editingId === productId) {
         await bindGetProduct({
           productId,
           model: this.model,
@@ -101,7 +104,8 @@ export class ProductListController {
         });
         await this.loadProducts();
         this.view.hideProductModal();
-      });
+      }
+    });
 
     } catch (error) {
       handleError('Failed to load product for editing', error);

@@ -57,7 +57,7 @@ export class ProductView {
         addModelTitle.textContent = "Add new product";
         this.clearModalFields(); // Clear form for new product
         this.showProductModal();
-        this.attachUpdateProductHandler(handler);
+        handler();
       });
     }
   }
@@ -115,19 +115,18 @@ export class ProductView {
     }
   }
 
-  /**
-   * Attach update product for submit handler
-   */
-  public attachUpdateProductHandler(handler: () => Promise<void>): void {
-    const confirmButton = document.getElementById(this.selectors.confirmButton);
-    if (confirmButton) {
-      const form = document.getElementById(this.selectors.addProductForm) as HTMLFormElement;
+  private currentSubmitHandler: ((e: Event) => void) | null = null;
+  private formMode: 'add' | 'edit' = 'add';
+  private editingProductId: string | null = null;
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-      });
-      confirmButton.onclick = handler;
-    }
+  public setEditMode(productId: string): void {
+    this.formMode = 'edit';
+    this.editingProductId = productId;
+  }
+
+  public setAddMode(): void {
+    this.formMode = 'add';
+    this.editingProductId = null;
   }
 
   /**
@@ -482,6 +481,32 @@ export class ProductView {
     if (saveBtn) {
       saveBtn.onclick = cb;
     }
+  }
+
+  public bindFormSubmit(handler: (
+    data: SaveProductDataRequest,
+    mode: 'add' | 'edit',
+    editingId: string | null
+  ) => void): void {
+    const form = document.getElementById(this.selectors.addProductForm) as HTMLFormElement;
+    if (!form) return;
+
+    if (this.currentSubmitHandler) {
+      form.removeEventListener('submit', this.currentSubmitHandler);
+    }
+
+    const submitHandler = (e: Event) => {
+      e.preventDefault();
+      try {
+        const data = this.getProductFormData();
+        handler(data, this.formMode, this.editingProductId);
+      } catch (error) {
+        this.onErrorHandler?.("Failed to get product form data", error);
+      }
+    };
+
+    form.addEventListener('submit', submitHandler);
+    this.currentSubmitHandler = submitHandler;
   }
 
   /**

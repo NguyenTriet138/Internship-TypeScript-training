@@ -169,10 +169,10 @@ export class ProductController {
       this.view.populateEditModal(product);
 
       // Attach the update product info for editing
-      this.view.attachUpdateProductHandler(async () => {
-        await this.bindGetProduct(productId);
-        this.view.hideProductModal();
-      });
+      // this.view.attachUpdateProductHandler(async () => {
+      //   await this.bindGetProduct(productId);
+      //   this.view.hideProductModal();
+      // });
 
     } catch (error) {
       this.handleError('Failed to load product for editing', error);
