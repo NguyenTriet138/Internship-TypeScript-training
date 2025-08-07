@@ -1,6 +1,6 @@
 import { ProductModel } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
-import { UploadImgService } from "../services/uploadImgService.js";
+import { ImgService } from "../services/imageService.js";
 import { bindGetProduct } from "../services/bindGetProduct.js";
 import { handleError } from "../services/errorHandler.js";
 
@@ -8,7 +8,7 @@ export class ProductDetailController {
   constructor(
     private readonly model: ProductModel,
     private readonly view: ProductView,
-    private readonly uploadService: UploadImgService,
+    private readonly imgService: ImgService,
   ) {}
 
   /**
@@ -48,7 +48,7 @@ export class ProductDetailController {
           productId: product.id,
           model: this.model,
           view: this.view,
-          uploadService: this.uploadService,
+          imgService: this.imgService,
         });
       });
       this.view.initializeImageUpload();

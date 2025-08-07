@@ -1,6 +1,6 @@
 import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
-import { UploadImgService } from "../services/uploadImgService.js";
+import { ImgService } from "../services/imageService.js";
 import { bindGetProduct } from "../services/bindGetProduct.js";
 import { handleError } from "../services/errorHandler.js";
 
@@ -10,7 +10,7 @@ export class ProductListController {
   constructor(
     private readonly model: ProductModel,
     private readonly view: ProductView,
-    private readonly uploadService: UploadImgService
+    private readonly imgService: ImgService
   ) {}
 
   /**
@@ -48,13 +48,10 @@ export class ProductListController {
     try {
       const productData = this.view.getProductFormData();
 
-      const uploadedImages = await this.uploadService.uploadProductImages({
-        productImage: productData.productImage,
-        brandImage: productData.brandImage
-      });
+      const [productImage, brandImage] = await this.imgService.uploadImages([productData.productImage, productData.brandImage]);
 
-      productData.productImage = uploadedImages.productImage;
-      productData.brandImage = uploadedImages.brandImage;
+      productData.productImage = productImage;
+      productData.brandImage = brandImage;
 
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
@@ -100,7 +97,7 @@ export class ProductListController {
           productId,
           model: this.model,
           view: this.view,
-          uploadService: this.uploadService,
+          imgService: this.imgService,
         });
         await this.loadProducts();
         this.view.hideProductModal();
