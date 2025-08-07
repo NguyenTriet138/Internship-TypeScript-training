@@ -1,7 +1,7 @@
 import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { logger } from "../config/logger.js";
-import { UploadImgService } from "../services/uploadImgService.js";
+import { ImgService } from "../services/imageService.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -15,7 +15,7 @@ export class ProductController {
   constructor(
     private readonly model: ProductModel,
     private readonly view: ProductView,
-    private readonly uploadService: UploadImgService
+    private readonly imgService: ImgService
   ) {
     /** pageHandlers is using for check url path and load page. */
     this.pageHandlers = [
@@ -95,13 +95,10 @@ export class ProductController {
     try {
       const productData = this.view.getProductFormData();
 
-      const uploadedImages = await this.uploadService.uploadProductImages({
-        productImage: productData.productImage,
-        brandImage: productData.brandImage
-      });
+      const [productImage, brandImage] = await this.imgService.uploadImages([productData.productImage, productData.brandImage]);
 
-      productData.productImage = uploadedImages.productImage;
-      productData.brandImage = uploadedImages.brandImage;
+      productData.productImage = productImage;
+      productData.brandImage = brandImage;
 
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
@@ -186,13 +183,10 @@ export class ProductController {
     try {
       const updatedData = this.view.getProductFormData();
 
-      const uploadedImages = await this.uploadService.uploadProductImages({
-        productImage: updatedData.productImage,
-        brandImage: updatedData.brandImage
-      });
+      const [productImage, brandImage] = await this.imgService.uploadImages([updatedData.productImage, updatedData.brandImage]);
 
-      updatedData.productImage = uploadedImages.productImage;
-      updatedData.brandImage = uploadedImages.brandImage;
+      updatedData.productImage = productImage;
+      updatedData.brandImage = brandImage;
 
       await this.model.updateProduct(productId, updatedData);
 

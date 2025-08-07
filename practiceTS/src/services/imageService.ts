@@ -1,0 +1,50 @@
+import { ApiService } from './apiService.js';
+import { API_CONFIG, ENV } from '../config/env.js';
+
+export class ImgService {
+  private readonly apiService: ApiService;
+
+  constructor() {
+    this.apiService = new ApiService(API_CONFIG);
+  }
+
+  /**
+   * Upload image to ImgBB
+   */
+  public async uploadImg(imageData: string, apiKey: string): Promise<string> {
+    try {
+      // Remove data:image/...;base64, prefix if needed
+      const base64Data = imageData.replace(/^data:image\/[a-z]+;base64,/, '');
+
+      const formData = new FormData();
+      formData.append('image', base64Data);
+
+      const uploadUrl = `${ENV.IMGBB_BASE_URL}?expiration=${ENV.IMGBB_EXPIRATION}&key=${apiKey}`;
+
+      const response = await this.apiService.postFormData(uploadUrl, formData);
+
+      if (!response.success) {
+        throw new Error('ImgBB upload failed');
+      }
+
+      return response.data.display_url;
+    } catch {
+      throw new Error('Failed to upload image');
+    }
+  }
+
+  public async uploadImages(images: string[]): Promise<string[]> {
+    const results: string[] = [];
+
+    for (const img of images) {
+      if (img.startsWith("https://")) {
+        results.push(img);
+      } else {
+        const uploaded = await this.uploadImg(img, ENV.IMGBB_API_KEY);
+        results.push(uploaded);
+      }
+    }
+
+    return results;
+  }
+}

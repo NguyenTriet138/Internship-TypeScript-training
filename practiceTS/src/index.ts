@@ -1,5 +1,5 @@
 import { ProductModel } from "./models/productModel.js";
-import { UploadImgService } from "./services/uploadImgService.js";
+import { ImgService } from "./services/imageService.js";
 import { ProductView } from "./view/components/productView.js";
 import { ProductListController } from "./controller/productListController.js";
 import { ProductDetailController } from "./controller/productDetailController.js";
@@ -13,7 +13,7 @@ interface PageHandler {
 document.addEventListener("DOMContentLoaded", async () => {
   const model = new ProductModel();
   const view = new ProductView();
-  const uploadService = new UploadImgService();
+  const uploadService = new ImgService();
 
   const pageHandlers: PageHandler[] = [
     {
