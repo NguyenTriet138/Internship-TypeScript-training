@@ -49,11 +49,11 @@ export class ApiService {
     });
   }
 
-  public async post<responseType>(
+  public async post<ResponseType>(
     endpoint: string,
     body: BodyInit,
     responseType: 'json' | 'text' | 'blob' | 'formData' | 'arrayBuffer' = 'json'
-  ): Promise<responseType> {
+  ): Promise<ResponseType> {
     try {
       const url = this.getUrl(endpoint);
 
@@ -90,7 +90,7 @@ export class ApiService {
           throw new Error('Unsupported response type');
       }
 
-      return data as responseType;
+      return data as ResponseType;
     } catch (error) {
       throw new Error(
         `Failed to post data: ${error instanceof Error ? error.message : 'Unknown error'}`
