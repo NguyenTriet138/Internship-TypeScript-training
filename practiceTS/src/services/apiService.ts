@@ -1,43 +1,4 @@
-import { ApiConfig, ENV } from "../config/env";
-
-export interface ImgBBResponse {
-  data: {
-    id: string;
-    title: string;
-    url_viewer: string;
-    url: string;
-    display_url: string;
-    width: string;
-    height: string;
-    size: string;
-    time: string;
-    expiration: string;
-    image: {
-      filename: string;
-      name: string;
-      mime: string;
-      extension: string;
-      url: string;
-    };
-    thumb: {
-      filename: string;
-      name: string;
-      mime: string;
-      extension: string;
-      url: string;
-    };
-    medium: {
-      filename: string;
-      name: string;
-      mime: string;
-      extension: string;
-      url: string;
-    };
-    delete_url: string;
-  };
-  success: boolean;
-  status: number;
-}
+import { ApiConfig } from "../config/env";
 
 export class ApiService {
   private readonly baseUrl: string;
@@ -47,6 +8,9 @@ export class ApiService {
   }
 
   private getUrl(endpoint: string, path: string = ''): string {
+    if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+      return `${endpoint}${path}`;
+    }
     return `${this.baseUrl}${endpoint}${path}`;
   }
 
@@ -85,49 +49,52 @@ export class ApiService {
     });
   }
 
-  /**
-   * Create a new resource
-   * @param endpoint - API endpoint
-   * @param data - Data to create
-   * @returns Promise with the created resource
-   */
-  public async post<T, U = T>(endpoint: string, data: U): Promise<T> {
-    return this.fetch<T>(endpoint, {
-      method: 'POST',
-      body: JSON.stringify(data)
-    });
-  }
-
-  /**
-   * Upload image to ImgBB
-   * @param imageData - Base64 encoded image data
-   * @param apiKey - ImgBB API key
-   * @returns Promise with ImgBB response
-   */
-  public async uploadToImgBB(imageData: string, apiKey: string): Promise<ImgBBResponse> {
+  public async post<ResponseType>(
+    endpoint: string,
+    body: BodyInit,
+    responseType: 'json' | 'text' | 'blob' | 'formData' | 'arrayBuffer' = 'json'
+  ): Promise<ResponseType> {
     try {
-      // Remove data URL prefix if present
-      const base64Data = imageData.replace(/^data:image\/[a-z]+;base64,/, '');
-
-      const formData = new FormData();
-      formData.append('image', base64Data);
-
-      const url = `${ENV.IMGBB_BASE_URL}?expiration=${ENV.IMGBB_EXPIRATION}&key=${apiKey}`;
+      const url = this.getUrl(endpoint);
 
       const response = await fetch(url, {
         method: 'POST',
-        body: formData
+        headers: body instanceof FormData ? {} : {
+          'Content-Type': 'application/json'
+        },
+        body,
       });
 
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error('ImgBB upload failed');
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      return data;
-    } catch {
-      throw new Error('Failed to upload product image');
+      let data: object | string | Blob | FormData | ArrayBuffer;
+      switch (responseType) {
+        case 'json':
+          data = await response.json();
+          break;
+        case 'text':
+          data = await response.text();
+          break;
+        case 'blob':
+          data = await response.blob();
+          break;
+        case 'formData':
+          data = await response.formData();
+          break;
+        case 'arrayBuffer':
+          data = await response.arrayBuffer();
+          break;
+        default:
+          throw new Error('Unsupported response type');
+      }
+
+      return data as ResponseType;
+    } catch (error) {
+      throw new Error(
+        `Failed to post data: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     }
   }
 

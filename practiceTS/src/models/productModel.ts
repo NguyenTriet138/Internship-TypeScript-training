@@ -126,25 +126,13 @@ export class ProductModel {
   }
 
   /**
-   * Upload image to ImgBB and get display URL
-   */
-  async uploadImageToImgBB(imageData: string, apiKey: string): Promise<string> {
-    try {
-      const response = await this.apiService.uploadToImgBB(imageData, apiKey);
-      return response.data.display_url;
-    } catch {
-      throw new Error('Failed to upload image');
-    }
-  }
-
-  /**
    * Create a new product and get the next available ID
    */
   async createProduct(productData: Omit<ProductData, 'id'>): Promise<Product> {
     try {
-      const data = await this.apiService.post<ProductData, Omit<ProductData, 'id'>>(
+      const data = await this.apiService.post<ProductData>(
         API_CONFIG.endpoints.products,
-        productData
+        JSON.stringify(productData)
       );
       return Product.fromJSON(data);
     } catch {

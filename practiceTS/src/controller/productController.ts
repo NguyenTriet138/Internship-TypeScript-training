@@ -1,7 +1,7 @@
-import { ProductModel, ProductData, SaveProductDataRequest, ProductFilter, Product } from "../models/productModel.js";
+import { ProductModel, ProductData, ProductFilter, Product } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
-import { ENV } from "../config/env";
 import { logger } from "../config/logger.js";
+import { ImgService } from "../services/imageService.js";
 
 interface PageHandler {
   check: () => boolean;
@@ -14,7 +14,8 @@ export class ProductController {
 
   constructor(
     private readonly model: ProductModel,
-    private readonly view: ProductView
+    private readonly view: ProductView,
+    private readonly imgService: ImgService
   ) {
     /** pageHandlers is using for check url path and load page. */
     this.pageHandlers = [
@@ -92,9 +93,12 @@ export class ProductController {
    */
   private async handleCreateProduct(): Promise<void> {
     try {
-      let productData = this.view.getProductFormData();
+      const productData = this.view.getProductFormData();
 
-      productData = await this.uploadProductImages(productData);
+      const [productImage, brandImage] = await this.imgService.uploadImages([productData.productImage, productData.brandImage]);
+
+      productData.productImage = productImage;
+      productData.brandImage = brandImage;
 
       // Create the new product
       await this.model.createProduct(productData as Omit<ProductData, 'id'>);
@@ -177,9 +181,12 @@ export class ProductController {
 
   private async bindGetProduct(productId: string): Promise<void> {
     try {
-      let updatedData = this.view.getProductFormData();
+      const updatedData = this.view.getProductFormData();
 
-      updatedData = await this.uploadProductImages(updatedData);
+      const [productImage, brandImage] = await this.imgService.uploadImages([updatedData.productImage, updatedData.brandImage]);
+
+      updatedData.productImage = productImage;
+      updatedData.brandImage = brandImage;
 
       await this.model.updateProduct(productId, updatedData);
 
@@ -193,25 +200,6 @@ export class ProductController {
       }
       this.handleError('Failed to update product', error);
     }
-  }
-
-  private async uploadProductImages(productData: SaveProductDataRequest): Promise<SaveProductDataRequest> {
-    let brandImageUpload = productData.brandImage;
-    let productImageUpload = productData.productImage;
-
-    if (!productData.brandImage.startsWith("https://")) {
-      brandImageUpload = await this.model.uploadImageToImgBB(productData.brandImage, ENV.IMGBB_API_KEY);
-    };
-
-    if (!productData.productImage.startsWith("https://")) {
-      productImageUpload = await this.model.uploadImageToImgBB(productData.productImage, ENV.IMGBB_API_KEY);
-    };
-
-    return {
-      ...productData,
-      productImage: productImageUpload,
-      brandImage: brandImageUpload,
-    };
   }
 
   public async handleDeleteProduct(productId: string): Promise<void> {
