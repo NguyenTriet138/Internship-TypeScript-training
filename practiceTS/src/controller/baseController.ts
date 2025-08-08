@@ -1,5 +1,5 @@
 import { ProductModel, ProductData } from '../models/productModel.js';
-import { ImgService } from './imageService.js';
+import { ImgService } from '../services/imageService.js';
 import { logger } from '../config/logger.js';
 
 interface ProductUpdateDependencies {
@@ -39,4 +39,14 @@ export async function bindGetProduct({
     }
     logger.error('Failed to update product', error);
   }
+}
+
+export function handleError(message: string, error: unknown, redirectUrl = './home'): void {
+  alert(message);
+  logger.error(message, error);
+  navigateTo(redirectUrl);
+}
+
+export function navigateTo(page: string): void {
+  window.location.href = page;
 }

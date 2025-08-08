@@ -3,7 +3,7 @@ import { ImgService } from "./services/imageService.js";
 import { ProductView } from "./view/components/productView.js";
 import { ProductListController } from "./controller/productListController.js";
 import { ProductDetailController } from "./controller/productDetailController.js";
-import { handleError } from "./services/errorHandler.js";
+import { handleError } from "./controller/baseController.js";
 
 interface PageHandler {
   check: () => boolean;

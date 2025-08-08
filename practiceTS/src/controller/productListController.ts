@@ -1,8 +1,7 @@
 import { ProductModel, ProductData, ProductFilter, Product, SaveProductDataRequest } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { ImgService } from "../services/imageService.js";
-import { bindGetProduct } from "../services/bindGetProduct.js";
-import { handleError } from "../services/errorHandler.js";
+import { bindGetProduct, handleError } from "./baseController.js";
 
 export class ProductListController {
   private currentProducts: Product[] = [];
@@ -110,11 +109,11 @@ export class ProductListController {
     editingId: string | null
   ): Promise<void> => {
     try {
-      const [productImage, brandImage] = await this.imgService.uploadImages([data.productImage, data.brandImage]);
-      data.productImage = productImage;
-      data.brandImage = brandImage;
 
       if (mode === 'add') {
+        const [productImage, brandImage] = await this.imgService.uploadImages([data.productImage, data.brandImage]);
+        data.productImage = productImage;
+        data.brandImage = brandImage;
         await this.handleAddProduct(data);
       } else if (mode === 'edit' && editingId) {
         await this.handleEditProduct(data, editingId);

@@ -1,8 +1,7 @@
 import { ProductModel } from "../models/productModel.js";
 import { ProductView } from "../view/components/productView.js";
 import { ImgService } from "../services/imageService.js";
-import { bindGetProduct } from "../services/bindGetProduct.js";
-import { handleError } from "../services/errorHandler.js";
+import { bindGetProduct, handleError } from "./baseController.js";
 
 export class ProductDetailController {
   constructor(
